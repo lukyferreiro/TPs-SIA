@@ -22,7 +22,7 @@ Parado en la carpeta del tp0 ejecutar
 pipenv install
 ```
 
-para instalar las dependencias necesarias en el ambiente virtual
+para instalar las dependencias necesarias en el ambiente virtual.
 
 ## Ejecución
 
