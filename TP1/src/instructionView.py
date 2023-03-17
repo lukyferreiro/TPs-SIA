@@ -1,5 +1,5 @@
 import arcade
-from src.fillZoneView import FillZone
+from src.algorithmsView import AlgorithmsView
 
 class InstructionView(arcade.View):
     """ View to show instructions """
@@ -26,6 +26,5 @@ class InstructionView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         """ If the user presses the mouse button, start the game. """
-        game_view = FillZone()
-        game_view.setup()
-        self.window.show_view(game_view)
+        algorithm_view = AlgorithmsView()
+        self.window.show_view(algorithm_view)

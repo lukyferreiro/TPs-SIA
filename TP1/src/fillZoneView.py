@@ -34,6 +34,7 @@ class FillZone(arcade.View):
         """
 
         super().__init__()
+        print(self.window.algorithm_type)
         self.grid = None
 
         arcade.set_background_color(arcade.color.WHITE)

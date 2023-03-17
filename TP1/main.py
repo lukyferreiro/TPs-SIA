@@ -12,7 +12,7 @@ def main():
 
     window = arcade.Window(get_screen_width(row_num), get_screen_height(col_num), SCREEN_TITLE)
     start_view = InstructionView()
-    window.algorithm_type = 0
+    window.algorithm_type = ''
     window.show_view(start_view)
     arcade.run()
 
