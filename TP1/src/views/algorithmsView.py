@@ -48,26 +48,24 @@ class AlgorithmsView(arcade.View):
                          width=self.window.width - 50)
         
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.KEY_1:
-            self.window.algorithm_type = 'BFS'
-            game_view = FillZone()
-            game_view.setup()
-            self.window.show_view(game_view)
+        match key:
+            case arcade.key.KEY_1:
+                self.window.algorithm_type = 'BFS'
+                game_view = FillZone()
+                game_view.setup()
+                self.window.show_view(game_view)
 
-        elif key == arcade.key.KEY_2:
-            self.window.algorithm_type = 'DFS'
-            game_view = FillZone()
-            game_view.setup()
-            self.window.show_view(game_view)
+            case arcade.key.KEY_2:
+                self.window.algorithm_type = 'DFS'
+                game_view = FillZone()
+                game_view.setup()
+                self.window.show_view(game_view)
 
-        elif key == arcade.key.KEY_3:
-            self.window.algorithm_type = 'GREEDY'
-            heuristics_view = HeuristicsView()
-            self.window.show_view(heuristics_view)
-        
-        elif key == arcade.key.KEY_4:
-            self.window.algorithm_type = 'A*'
-            heuristics_view = HeuristicsView()
-            self.window.show_view(heuristics_view)
-
-        
+            case arcade.key.KEY_3:
+                self.window.algorithm_type = 'GREEDY'
+                heuristics_view = HeuristicsView()
+                self.window.show_view(heuristics_view)
+            case arcade.key.KEY_4:
+                self.window.algorithm_type = 'A*'
+                heuristics_view = HeuristicsView()
+                self.window.show_view(heuristics_view)

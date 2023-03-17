@@ -20,8 +20,8 @@ class square:
     def getColor(self):
         return self.squareColor
 
-    def hasSameColor(self, Squeare):
-        return self.squareColor == Squeare.squareColor
+    def hasSameColor(self, Square):
+        return self.squareColor == Square.squareColor
 
     def setIsPlayer(self, isPlayer):
         self.isPlayer = isPlayer

@@ -14,7 +14,7 @@ class Board:
         self.colorList = dict(colors)
         for i in range(N):
             for j in range(N):
-                newColor = random.choice(list(self.colorList.keys()))
+                newColor = random.choice(list(self.colorList.values()))
                 if i == 0 and j == 0:
                     self.board[i].append(square(i, j, newColor, True))
                     self.playerColor = newColor
@@ -44,22 +44,13 @@ class Board:
     def getSquare(self, x, y):
         return self.board[x][y]
 
-    def printState(self):
-        data = np.zeros((self.N, self.N), dtype=int)
-        for i in range(self.N):
-            for j in range(self.N):
-                data[i][j] = self.board[i][j].getColor()
-
-        for i in range(self.N):
-            print(data[i])
-
     def changeColor(self, color):
         colorToChange = self.colorList[color]
         self.playerColor = colorToChange
         for cell in self.playerSquares:
             cell.setColor(colorToChange)
 
-        self.addChilds()
+        self.addSquares()
 
     def getPlayerColor(self):
         return self.playerColor

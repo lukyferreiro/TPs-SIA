@@ -11,12 +11,12 @@ SCREEN_TITLE = "FillZone"
 
 # Colors
 COLORS = {
-    arcade.color.BLUE: 0,
-    arcade.color.GREEN: 1,
-    arcade.color.RED: 2,
-    arcade.color.YELLOW: 3,
-    arcade.color.PURPLE: 4,
-    arcade.color.ORANGE: 5,
+    0: arcade.color.BLUE,
+    1: arcade.color.GREEN,
+    2: arcade.color.RED,
+    3: arcade.color.YELLOW,
+    4: arcade.color.PURPLE,
+    5: arcade.color.ORANGE
 }
 
 # Do the math to figure out our screen dimensions
