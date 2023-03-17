@@ -1,17 +1,12 @@
 import arcade
 from src.views.algorithmsView import AlgorithmsView
 
+""" View to show instructions """
 class InstructionView(arcade.View):
-    """ View to show instructions """
-
     
-
     def on_show_view(self):
         """ This is run once when we switch to this view """
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_BLUE)
-
-        # Reset the viewport, necessary if we have a scrolling game and we need
-        # to reset the viewport back to the start so we can see what we draw.
         arcade.set_viewport(0, self.window.width, 0, self.window.height)
 
     def on_draw(self):

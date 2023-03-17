@@ -7,9 +7,6 @@ class AlgorithmsView(arcade.View):
     def on_show_view(self):
         """ This is run once when we switch to this view """
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_BLUE)
-
-        # Reset the viewport, necessary if we have a scrolling game and we need
-        # to reset the viewport back to the start so we can see what we draw.
         arcade.set_viewport(0, self.window.width, 0, self.window.height)
 
     def on_draw(self):
@@ -27,7 +24,7 @@ class AlgorithmsView(arcade.View):
                          align="center", 
                          width=self.window.width - 50)
         
-        arcade.draw_text("press the number to select the option", 
+        arcade.draw_text("Press the number to select the option", 
                          self.window.width / 2, 
                          self.window.height / 2+(self.window.width/12),
                          arcade.color.WHITE, 
@@ -37,10 +34,10 @@ class AlgorithmsView(arcade.View):
                          align="center", 
                          width=self.window.width - 50)
         
-        arcade.draw_text("1- BFS\n"
-                         "2- DFS\n"
-                         "3- GREEDY\n"
-                         "4- A*\n",
+        arcade.draw_text("1. BFS\n"
+                         "2. DFS\n"
+                         "3. GREEDY\n"
+                         "4. A*\n",
                          self.window.width / 2, 
                          (self.window.height / 2+(self.window.width/12))-self.window.width/4,
                          arcade.color.WHITE, 

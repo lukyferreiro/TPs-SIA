@@ -4,23 +4,17 @@ from src.utils import SCREEN_TITLE, get_screen_height, get_screen_width
 
 def main():
 
-    row_count = -1
-    row_count = int(input("BIENVENIDO A FILL ZONE, ANTES DE EMPEZAR\n\n"
+    N = -1
+    N = int(input("BIENVENIDO A FILL ZONE\n\n"
                        "Ingrese el numero de filas y columnas que desee para el tablero: "))
     
-    while row_count <= 3:
-
-        print("El valor ingresado no es valido. Ingrese un numero entero mayor a 4")
-        row_count = int(input("BIENVENIDO A FILL ZONE, ANTES DE EMPEZAR\n\n"
-                       "Ingrese el numero de filas y columnas que desee para el tablero: "))
+    while N <= 3:
+        N = int(input("El valor ingresado no es valido. Ingrese un numero entero mayor a 4"))
     
-    col_count = row_count
-
-    window = arcade.Window(get_screen_width(row_count), get_screen_height(col_count), SCREEN_TITLE)
+    window = arcade.Window(get_screen_width(N), get_screen_height(N), SCREEN_TITLE)
     
     #Window variables
-    window.row_count = row_count
-    window.col_count = col_count
+    window.N = N
     window.algorithm_type = ''
     window.heuristic_type = ''
 
