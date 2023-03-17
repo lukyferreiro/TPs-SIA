@@ -65,9 +65,7 @@ class FillZone(arcade.View):
                 arcade.draw_rectangle_filled(x, y, WIDTH, HEIGHT, color)
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.R:
-            self.setup()
         #This is an example of how to re-draw the view
-        elif key == arcade.key.F:
-            self.grid[9][0] = arcade.color.PURPLE
+        if key == arcade.key.RIGHT:
+            #Ejecutar codigo dependiendo algoritmo y heuristica
             self.on_draw()

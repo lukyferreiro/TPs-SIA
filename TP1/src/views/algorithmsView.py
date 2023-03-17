@@ -1,8 +1,9 @@
 import arcade
-from src.fillZoneView import FillZone
+from src.views.fillZoneView import FillZone
+from src.views.heuristicsView import HeuristicsView
 
-class HeuristicsView(arcade.View):
-
+class AlgorithmsView(arcade.View):
+    
     def on_show_view(self):
         """ This is run once when we switch to this view """
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_BLUE)
@@ -16,7 +17,7 @@ class HeuristicsView(arcade.View):
         self.clear()
         
         arcade.draw_text("Choose the "
-                         "heuristics", self.window.width / 2, 
+                         "algorithm", self.window.width / 2, 
                          self.window.height - (self.window.width/6),
                          arcade.color.WHITE, 
                          font_size=self.window.width/14, 
@@ -36,8 +37,10 @@ class HeuristicsView(arcade.View):
                          align="center", 
                          width=self.window.width - 50)
         
-        arcade.draw_text("1- Remaining colors\n"
-                         "2- Most neighbors\n",
+        arcade.draw_text("1- BFS\n"
+                         "2- DFS\n"
+                         "3- GREEDY\n"
+                         "4- A*\n",
                          self.window.width / 2, 
                          (self.window.height / 2+(self.window.width/12))-self.window.width/4,
                          arcade.color.WHITE, 
@@ -49,13 +52,25 @@ class HeuristicsView(arcade.View):
         
     def on_key_press(self, key, modifiers):
         if key == arcade.key.KEY_1:
-            self.window.heuristic_type = 'Remainig colors'
+            self.window.algorithm_type = 'BFS'
             game_view = FillZone()
             game_view.setup()
             self.window.show_view(game_view)
 
         elif key == arcade.key.KEY_2:
-            self.window.heuristic_type = 'Most neighbors'
+            self.window.algorithm_type = 'DFS'
             game_view = FillZone()
             game_view.setup()
             self.window.show_view(game_view)
+
+        elif key == arcade.key.KEY_3:
+            self.window.algorithm_type = 'GREEDY'
+            heuristics_view = HeuristicsView()
+            self.window.show_view(heuristics_view)
+        
+        elif key == arcade.key.KEY_4:
+            self.window.algorithm_type = 'A*'
+            heuristics_view = HeuristicsView()
+            self.window.show_view(heuristics_view)
+
+        

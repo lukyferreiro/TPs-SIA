@@ -1,5 +1,5 @@
 import arcade
-from src.algorithmsView import AlgorithmsView
+from src.views.algorithmsView import AlgorithmsView
 
 class InstructionView(arcade.View):
     """ View to show instructions """
@@ -21,8 +21,6 @@ class InstructionView(arcade.View):
                          arcade.color.WHITE, font_size=self.window.width/12, anchor_x="center", font_name="Kenney Future")
         arcade.draw_text("Instructions Screen", self.window.width / 2, self.window.height / 2,
                          arcade.color.WHITE, font_size=self.window.width/15, anchor_x="center")
-        arcade.draw_text("Press 'R' to reset the game", self.window.width / 2, (self.window.height/2) - (self.window.width/12),
-                         arcade.color.WHITE, font_size=self.window.width/24, anchor_x="center")
         arcade.draw_text("Click to advance", self.window.width / 2, (self.window.height/2) - (self.window.width/3),
                          arcade.color.WHITE, font_size=self.window.width/20, anchor_x="center")
 

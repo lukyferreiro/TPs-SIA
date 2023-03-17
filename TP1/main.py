@@ -1,10 +1,17 @@
 import arcade
-from src.instructionView import InstructionView
+from src.views.instructionView import InstructionView
 from src.utils import SCREEN_TITLE, get_screen_height, get_screen_width
 
 def main():
 
+    row_count = -1
     row_count = int(input("BIENVENIDO A FILL ZONE, ANTES DE EMPEZAR\n\n"
+                       "Ingrese el numero de filas y columnas que desee para el tablero: "))
+    
+    while row_count <= 3:
+
+        print("El valor ingresado no es valido. Ingrese un numero entero mayor a 4")
+        row_count = int(input("BIENVENIDO A FILL ZONE, ANTES DE EMPEZAR\n\n"
                        "Ingrese el numero de filas y columnas que desee para el tablero: "))
     
     col_count = row_count
