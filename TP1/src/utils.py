@@ -4,7 +4,7 @@ HEIGHT = 30
 
 # This sets the margin between each cell
 # and on the edges of the screen.
-MARGIN = 0
+MARGIN = 1
 
 SCREEN_TITLE = "FillZone"
 

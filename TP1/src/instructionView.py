@@ -4,6 +4,8 @@ from src.algorithmsView import AlgorithmsView
 class InstructionView(arcade.View):
     """ View to show instructions """
 
+    
+
     def on_show_view(self):
         """ This is run once when we switch to this view """
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_BLUE)

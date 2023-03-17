@@ -1,17 +1,6 @@
 import arcade
 import random
-
-# Set how many rows and columns we will have
-ROW_COUNT = 10
-COLUMN_COUNT = 10
-
-# This sets the WIDTH and HEIGHT of each grid location
-WIDTH = 30
-HEIGHT = 30
-
-# This sets the margin between each cell
-# and on the edges of the screen.
-MARGIN = 0
+from src.utils import MARGIN, WIDTH, HEIGHT
 
 # Colors
 COLORS = [
@@ -35,11 +24,15 @@ class FillZone(arcade.View):
 
         super().__init__()
         print(self.window.algorithm_type)
+        print(self.window.heuristic_type)
         self.grid = None
 
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
+
+        COLUMN_COUNT = self.window.col_count
+        ROW_COUNT = self.window.row_count
         # Create a 2 dimensional array. A two-dimensional
         self.grid = [[None for _ in range(COLUMN_COUNT)] for _ in range(ROW_COUNT)]
         for row in range(ROW_COUNT):
@@ -56,6 +49,8 @@ class FillZone(arcade.View):
 
         # This command has to happen before we start drawing
         self.clear()
+        COLUMN_COUNT = self.window.col_count
+        ROW_COUNT = self.window.row_count
 
         # Draw the grid
         for row in range(ROW_COUNT):
