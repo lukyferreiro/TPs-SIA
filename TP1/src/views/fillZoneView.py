@@ -1,13 +1,9 @@
 import arcade
-import random
-from src.utils import MARGIN, WIDTH, HEIGHT, COLORS
+from src.utils import MARGIN, WIDTH, HEIGHT, COLORS, get_screen_height
 from src.game_state.board import Board
 from src.search_methods.node import Node
-from src.utils import COLORS
-from src.utils import get_screen_height
-from src.search_methods.algorithms import bfs
-from src.search_methods.algorithms import dfs
-from TP1.src.utils import get_frontier_nodes, get_dimensions, get_solution_steps, print_all
+from src.search_methods.algorithms import bfs, dfs, greedy, astar
+from src.views.resultsView import ResultsView
 
 """ Main application class. """
 class FillZone(arcade.View):
@@ -25,6 +21,8 @@ class FillZone(arcade.View):
         self.visited = []
         self.solution = []
         self.drawIndex = 0
+        self.time = 0
+        self.bfs = False
         
 
     def setup(self):
@@ -46,11 +44,20 @@ class FillZone(arcade.View):
                 # TODO: check tiempo que tarda para tableros más grandes
                 self.solution = dfs(self.visited, self.rootNode)
                 print('Solucion lista')
-        #     case 'GREEDY':
-        #         #
-        #     case 'A*':
-        #
-        #     case _:
+            case 'GREEDY':
+                print('Solucion con GREEDY')
+                self.on_draw()
+                # TODO: check tiempo que tarda para tableros más grandes
+                self.solution = greedy(self.visited, self.rootNode)
+                print('Solucion lista')
+            case 'A*':
+                print('Solucion con A*')
+                self.on_draw()
+                # TODO: check tiempo que tarda para tableros más grandes
+                self.solution = astar(self.visited, self.rootNode)
+                print('Solucion lista')
+            case _:
+       
 
     def on_draw(self):
         """Render the screen """
@@ -65,7 +72,6 @@ class FillZone(arcade.View):
                     color = self.solution[self.drawIndex].getSquare(row, column).getColor()
 
                 # Do the math to figure out where the box is
-
                 x = (MARGIN + WIDTH) * column + MARGIN + WIDTH // 2
                 y = screen_height - ((MARGIN + HEIGHT) * row + MARGIN + HEIGHT // 2)
 
@@ -74,35 +80,10 @@ class FillZone(arcade.View):
 
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.RIGHT and self.drawIndex < len(self.solution) -1 :
-            self.on_draw()
-            self.drawIndex += 1
-        # else:
-
-            # Imprimir un resumen de los pasos.
-            # Pasos
-            # Nodos expandidos
-            # Nodos frontera
-            # Solución --> array mostrando los colores elegidos
-            # Tiempo de Procesamiento
-
-
-
-        def show_data(visited, time, solution, bfs, plot):
-            print('board dimension: ', get_dimensions(visited))
-            print('result: success')
-            if bfs:
-                print('solution cost: ', len(solution), ' turns')
+        if key == arcade.key.RIGHT :
+            if self.drawIndex < len(self.solution)-1 :
+                self.on_draw()
+                self.drawIndex += 1
             else:
-                print('solution cost: ', len(visited), ' turns')
-            print('frontier nodes: ', get_frontier_nodes(visited), ' nodes')
-            print('expanded nodes: ', len(visited), ' nodes')
-            print('processing time: ', time, ' ms')
-            if bfs:
-                print('solution steps:\n', get_solution_steps(solution))
-                if plot == 1:
-                    print_all(solution)
-            else:
-                print('solution steps:\n', get_solution_steps(visited))
-                if plot == 1:
-                    print_all(visited)
+                results_view = ResultsView()
+                self.window.show_view(results_view)

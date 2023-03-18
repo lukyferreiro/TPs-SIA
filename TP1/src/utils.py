@@ -70,3 +70,22 @@ def print_all(visited):
         turns.append(matrix)
         plt.matshow(matrix, cmap=cmap, vmin=0, vmax=len(visited[0].getState().getColorDict().keys()) - 1)
         plt.show()
+
+def show_data(visited, time, solution, bfs, plot):
+    print('board dimension: ', get_dimensions(visited))
+    print('result: success')
+    if bfs:
+        print('solution cost: ', len(solution), ' turns')
+    else:
+        print('solution cost: ', len(visited), ' turns')
+    print('frontier nodes: ', get_frontier_nodes(visited), ' nodes')
+    print('expanded nodes: ', len(visited), ' nodes')
+    print('processing time: ', time, ' ms')
+    if bfs:
+        print('solution steps:\n', get_solution_steps(solution))
+        if plot == 1:
+            print_all(solution)
+    else:
+        print('solution steps:\n', get_solution_steps(visited))
+        if plot == 1:
+            print_all(visited)

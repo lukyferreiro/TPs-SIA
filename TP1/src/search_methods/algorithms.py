@@ -53,3 +53,10 @@ def reverseList(solution):
     for node in solution:
         reversed.insert(0, node)
     return reversed
+
+def greedy(visited, node):
+     print('TODO')
+
+
+def astar(visited, node):
+    print('TODO')

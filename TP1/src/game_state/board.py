@@ -3,7 +3,6 @@ import random
 import copy
 from src.game_state.square import square
 
-
 class Board:
     def __init__(self, N, colors):
         self.playerColor = None
