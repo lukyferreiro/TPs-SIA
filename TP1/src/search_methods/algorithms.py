@@ -3,15 +3,16 @@ from src.game_state.square import square
 def bfs(visited, node):  # function for BFS
     solution = []
     queue = []
+    solved = False
 
     queue.append(node)
     visited.append(node)
 
-    while queue:  # Creating loop to visit each node
+    while queue and not solved:  # Creating loop to visit each node
         m = queue.pop(0)
         if m.getBoard().isSolved():
             traceBack(m, solution)
-            break
+            solved = True
         else:
             children = m.getChildren()
             for child in children:
@@ -23,6 +24,20 @@ def bfs(visited, node):  # function for BFS
     queue.clear()
     solution = reverseList(solution)
     return solution
+
+def dfs(visited, node):
+    queue = [node]
+
+    while True:
+        n = queue.pop(0)
+        if n not in visited:
+            visited.append(n)
+            if n.getBoard().isSolved():
+                break
+            children = n.getChildren()
+            queue.append(children[0])  # all neighbors can reach solution so I can choose any neighbor I want
+
+    return visited
 
 def traceBack(node, solution):
     queue = [node]
