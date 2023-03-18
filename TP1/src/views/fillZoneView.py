@@ -7,6 +7,7 @@ from src.utils import COLORS
 from src.utils import get_screen_height
 from src.search_methods.algorithms import bfs
 from src.search_methods.algorithms import dfs
+from TP1.src.utils import get_frontier_nodes, get_dimensions, get_solution_steps, print_all
 
 """ Main application class. """
 class FillZone(arcade.View):
@@ -84,3 +85,24 @@ class FillZone(arcade.View):
             # Nodos frontera
             # Solución --> array mostrando los colores elegidos
             # Tiempo de Procesamiento
+
+
+
+        def show_data(visited, time, solution, bfs, plot):
+            print('board dimension: ', get_dimensions(visited))
+            print('result: success')
+            if bfs:
+                print('solution cost: ', len(solution), ' turns')
+            else:
+                print('solution cost: ', len(visited), ' turns')
+            print('frontier nodes: ', get_frontier_nodes(visited), ' nodes')
+            print('expanded nodes: ', len(visited), ' nodes')
+            print('processing time: ', time, ' ms')
+            if bfs:
+                print('solution steps:\n', get_solution_steps(solution))
+                if plot == 1:
+                    print_all(solution)
+            else:
+                print('solution steps:\n', get_solution_steps(visited))
+                if plot == 1:
+                    print_all(visited)
