@@ -52,6 +52,7 @@ class Node:
 
     def getSquare(self, x, y):
         return self.board.getSquare(x, y)
+    
     def __repr__(self) -> str:
         return self.__str__()
 

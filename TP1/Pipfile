@@ -12,6 +12,7 @@ notebook = "*"
 pandas = "*"
 plotly = "*"
 arcade = "*"
+networkx = "*"
 
 [dev-packages]
 

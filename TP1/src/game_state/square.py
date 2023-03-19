@@ -29,8 +29,8 @@ class square:
     def getIsPlayer(self):
         return self.isPlayer
 
-    def hasRight(self, maxValueX):
-        return self.y < maxValueX - 1
+    def hasRight(self, maxValueY):
+        return self.y < maxValueY - 1
 
     def hasTop(self):
         return self.x > 0

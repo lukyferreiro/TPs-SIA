@@ -1,6 +1,23 @@
-from src.game_state.square import square
+from src.search_methods.heuristics import neighborPicker
 
-def bfs(visited, node):  # function for BFS
+def traceBack(node, solution):
+    queue = [node]
+    while queue:
+        m = queue.pop(0)
+        solution.append(m)
+        if m.getParent() is None:
+            break
+        else:
+            queue.append(m.getParent())
+
+def reverseList(solution):
+    reversed = []
+    for node in solution:
+        reversed.insert(0, node)
+    return reversed
+
+# Function for BFS
+def bfs(visited, node):  
     solution = []
     queue = []
     solved = False
@@ -20,11 +37,11 @@ def bfs(visited, node):  # function for BFS
                     queue.append(child)
                     visited.append(child)
 
-    # Retorna la solución de estados a correr.
     queue.clear()
     solution = reverseList(solution)
-    return solution
+    return solution # Returns solutios with all states
 
+# Function for DFS
 def dfs(visited, node):
     queue = [node]
 
@@ -35,28 +52,31 @@ def dfs(visited, node):
             if n.getBoard().isSolved():
                 break
             children = n.getChildren()
-            queue.append(children[0])  # all neighbors can reach solution so I can choose any neighbor I want
+            queue.append(children[0])  # All neighbors can reach solution so I can choose any neighbor I want
 
     return visited
 
-def traceBack(node, solution):
+# Function for GREEDY
+def greedy(visited, node, option):
     queue = [node]
-    while queue:
-        m = queue.pop(0)
-        solution.append(m)
-        if m.getParent() is None:
-            break
-        else:
-            queue.append(m.getParent())
-def reverseList(solution):
-    reversed = []
-    for node in solution:
-        reversed.insert(0, node)
-    return reversed
-
-def greedy(visited, node):
-     print('TODO')
+    while True:
+        n = queue.pop(0)
+        if n not in visited:
+            visited.append(n)
+            if n.getBoard().isSolved():
+                break
+            neighborPicked = neighborPicker(n.getNeighbors(), option, 0)
+            queue.append(neighborPicked)
 
 
-def astar(visited, node):
-    print('TODO')
+# Function for A*
+def astar(visited, node, option):
+    queue = [node]
+    while True:
+        n = queue.pop(0)
+        if n not in visited:
+            visited.append(n)
+            if n.getBoard().isSolved():
+                break
+            neighborPicked = neighborPicker(n.getNeighbors(), option, 1)
+            queue.append(neighborPicked)

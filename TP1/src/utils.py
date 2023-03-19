@@ -1,4 +1,5 @@
 import arcade
+import time
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
@@ -22,6 +23,15 @@ COLORS = {
     5: arcade.color.ORANGE
 }
 
+COLORS_2 = {
+    arcade.color.BLUE : 'blue',
+    arcade.color.GREEN: 'green',
+    arcade.color.RED: 'red',
+    arcade.color.YELLOW: 'yellow',
+    arcade.color.PURPLE: 'purple',
+    arcade.color.ORANGE: 'orange'
+}
+
 
 # Do the math to figure out our screen dimensions
 def get_screen_width(col_count):
@@ -31,61 +41,33 @@ def get_screen_width(col_count):
 def get_screen_height(row_count):
     return (HEIGHT + MARGIN) * row_count + MARGIN
 
+def currentMilliTime():
+    return round(time.time() * 1000)
 
 def get_dimensions(visited):
     dim = ''
-    dim += str(visited[0].getState().N)
+    dim += str(visited[0].getBoard().N)
     dim += 'x'
-    dim += str(visited[0].getState().N)
+    dim += str(visited[0].getBoard().N)
     return dim
 
 
 def get_frontier_nodes(visited):
     total = 0
     for state in visited:
-        total += len(state.getNeighbors())
+        total += len(state.getChildren())
     return total
 
 
 def get_solution_steps(visited):
     steps = ''
     for node in visited:
-        steps += steps[node.getState().getPlayerColor()]
+        steps += transform_color(node.getBoard().getPlayerColor())
         if node != visited[len(visited) - 1]:
             steps += ' ---> '
     return steps
 
-
-def print_all(visited):
-    turns = []
-    cmap = ListedColormap(visited[0].getState().getColorDict().keys())
-    for node in visited:
-        grid = node.getState().getGrid()
-        dimension = node.getState().N
-        matrix = np.zeros(dimension * dimension, dtype=int)
-        matrix = matrix.reshape((dimension, dimension))
-        for i in range(dimension):
-            for j in range(dimension):
-                matrix[i][j] = grid[i][j].tileColor
-        turns.append(matrix)
-        plt.matshow(matrix, cmap=cmap, vmin=0, vmax=len(visited[0].getState().getColorDict().keys()) - 1)
-        plt.show()
-
-def show_data(visited, time, solution, bfs, plot):
-    print('board dimension: ', get_dimensions(visited))
-    print('result: success')
-    if bfs:
-        print('solution cost: ', len(solution), ' turns')
-    else:
-        print('solution cost: ', len(visited), ' turns')
-    print('frontier nodes: ', get_frontier_nodes(visited), ' nodes')
-    print('expanded nodes: ', len(visited), ' nodes')
-    print('processing time: ', time, ' ms')
-    if bfs:
-        print('solution steps:\n', get_solution_steps(solution))
-        if plot == 1:
-            print_all(solution)
-    else:
-        print('solution steps:\n', get_solution_steps(visited))
-        if plot == 1:
-            print_all(visited)
+def transform_color(arcade_color):
+    for color in COLORS_2.keys():
+        if arcade_color == color:
+            return COLORS_2[color]

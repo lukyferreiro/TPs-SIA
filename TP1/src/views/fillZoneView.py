@@ -1,5 +1,5 @@
 import arcade
-from src.utils import MARGIN, WIDTH, HEIGHT, COLORS, get_screen_height
+from src.utils import MARGIN, WIDTH, HEIGHT, COLORS, get_screen_height, currentMilliTime
 from src.game_state.board import Board
 from src.search_methods.node import Node
 from src.search_methods.algorithms import bfs, dfs, greedy, astar
@@ -30,33 +30,37 @@ class FillZone(arcade.View):
         self.board = Board(SIZE, COLORS)
         self.rootNode = Node(self.board, None)
 
-        #
+        #TODO: check tiempo que tarda para tableros más grandes
         match self.window.algorithm_type:
             case 'BFS':
                 print('Solucion con BFS')
                 self.on_draw()
-                #TODO: check tiempo que tarda para tableros más grandes
+                self.bfs = True
+                t0 = currentMilliTime()
                 self.solution = bfs(self.visited, self.rootNode)
+                self.time = currentMilliTime() - t0
                 print('Solucion lista')
             case 'DFS':
                 print('Solucion con DFS')
                 self.on_draw()
-                # TODO: check tiempo que tarda para tableros más grandes
+                t0 = currentMilliTime()
                 self.solution = dfs(self.visited, self.rootNode)
+                self.time = currentMilliTime() - t0
                 print('Solucion lista')
             case 'GREEDY':
                 print('Solucion con GREEDY')
                 self.on_draw()
-                # TODO: check tiempo que tarda para tableros más grandes
+                t0 = currentMilliTime()
                 self.solution = greedy(self.visited, self.rootNode)
+                self.time = currentMilliTime() - t0
                 print('Solucion lista')
             case 'A*':
                 print('Solucion con A*')
                 self.on_draw()
-                # TODO: check tiempo que tarda para tableros más grandes
+                t0 = currentMilliTime()
                 self.solution = astar(self.visited, self.rootNode)
+                self.time = currentMilliTime() - t0
                 print('Solucion lista')
-            case _:
        
 
     def on_draw(self):
@@ -85,5 +89,5 @@ class FillZone(arcade.View):
                 self.on_draw()
                 self.drawIndex += 1
             else:
-                results_view = ResultsView()
+                results_view = ResultsView(self.visited, self.solution, self.time, self.bfs)
                 self.window.show_view(results_view)
