@@ -59,32 +59,33 @@ class Board:
         return len(self.playerSquares) == self.N * self.N
 
     def addSquares(self):
-        for square in self.playerSquares:
-            if square.hasTop():
-                top = self.board[square.x - 1][square.y]
-                if not top.getIsPlayer() and square.hasSameColor(top):
-                    top.setIsPlayer(True)
-                    self.playerSquares.append(top)
-                    self.looseSquares.remove(top)
-            if square.hasRight(self.N):
-                right = self.board[square.x][square.y + 1]
-                if not right.getIsPlayer() and square.hasSameColor(right):
-                    right.setIsPlayer(True)
-                    self.playerSquares.append(right)
-                    self.looseSquares.remove(right)
-            if square.hasDown(self.N):
-                down = self.board[square.x + 1][square.y]
-                if not down.getIsPlayer() and square.hasSameColor(down):
-                    down.setIsPlayer(True)
-                    self.playerSquares.append(down)
-                    self.looseSquares.remove(down)
-            if square.hasLeft():
-                left = self.board[square.x][square.y - 1]
-                if not left.getIsPlayer() and square.hasSameColor(left):
-                    left.setIsPlayer(True)
-                    self.playerSquares.append(left)
-                    self.looseSquares.remove(left)
-
+        for cell in self.playerSquares:
+            if cell.isBorder(self.board, self.N):
+                if cell.hasTop():
+                    top = self.board[cell.x - 1][cell.y]
+                    if not top.getIsPlayer() and cell.hasSameColor(top):
+                        top.setIsPlayer(True)
+                        self.playerSquares.append(top)
+                        self.looseSquares.remove(top)
+                if cell.hasRight(self.N):
+                    right = self.board[cell.x][cell.y + 1]
+                    if not right.getIsPlayer() and cell.hasSameColor(right):
+                        right.setIsPlayer(True)
+                        self.playerSquares.append(right)
+                        self.looseSquares.remove(right)
+                if cell.hasDown(self.N):
+                    down = self.board[cell.x + 1][cell.y]
+                    if not down.getIsPlayer() and cell.hasSameColor(down):
+                        down.setIsPlayer(True)
+                        self.playerSquares.append(down)
+                        self.looseSquares.remove(down)
+                if cell.hasLeft():
+                    left = self.board[cell.x][cell.y - 1]
+                    if not left.getIsPlayer() and cell.hasSameColor(left):
+                        left.setIsPlayer(True)
+                        self.playerSquares.append(left)
+                        self.looseSquares.remove(left)
+                        
     def getStateCopy(self):
         return copy.deepcopy(self)
 

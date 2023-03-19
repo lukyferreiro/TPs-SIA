@@ -19,10 +19,9 @@ def reverseList(solution):
 # Function for BFS
 def bfs(visited, node):  
     solution = []
-    queue = []
+    queue = [node]
     solved = False
 
-    queue.append(node)
     visited.append(node)
 
     while queue and not solved:  # Creating loop to visit each node
@@ -44,15 +43,20 @@ def bfs(visited, node):
 # Function for DFS
 def dfs(visited, node):
     queue = [node]
+    solved = False
 
-    while True:
+    while not solved:
         n = queue.pop(0)
-        if n not in visited:
-            visited.append(n)
-            if n.getBoard().isSolved():
-                break
-            children = n.getChildren()
-            queue.append(children[0])  # All neighbors can reach solution so I can choose any neighbor I want
+
+        if n.getBoard().isSolved():
+            solved = True
+        else:
+            if n not in visited:
+                visited.append(n)
+                if n.getBoard().isSolved():
+                    break
+                children = n.getChildren()
+                queue.append(children[0])
 
     return visited
 

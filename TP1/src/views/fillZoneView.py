@@ -61,6 +61,8 @@ class FillZone(arcade.View):
                 self.solution = astar(self.visited, self.rootNode)
                 self.time = currentMilliTime() - t0
                 print('Solucion lista')
+            case _:
+                print('Default')
        
 
     def on_draw(self):
