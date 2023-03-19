@@ -1,4 +1,4 @@
-from src.search_methods.heuristics import neighborPicker
+from src.search_methods.heuristics import childPicker
 
 def traceBack(node, solution):
     queue = [node]
@@ -69,8 +69,8 @@ def greedy(visited, node, heuristic):
             visited.append(n)
             if n.getBoard().isSolved():
                 break
-            neighborPicked = neighborPicker(n.getNeighbors(), heuristic, 0)
-            queue.append(neighborPicked)
+            childPicked = childPicker(n.getChildren(), heuristic, 0)
+            queue.append(childPicked)
 
 
 # Function for A*
@@ -82,5 +82,5 @@ def astar(visited, node, heuristic):
             visited.append(n)
             if n.getBoard().isSolved():
                 break
-            neighborPicked = neighborPicker(n.getNeighbors(), heuristic, 1)
-            queue.append(neighborPicked)
+            childPicked = childPicker(n.getChildren(), heuristic, 1)
+            queue.append(childPicked)
