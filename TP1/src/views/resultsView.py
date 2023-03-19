@@ -37,7 +37,7 @@ class ResultsView(arcade.View):
         else: 
             arcade.draw_text(f"Your results with {ALGORITHM}",
                             self.window.width / 2, 
-                            self.window.height - (self.window.width/6),
+                            self.window.height - (self.window.width/12),
                             arcade.color.WHITE, 
                             font_size=self.window.width/22, 
                             anchor_x="center", 
@@ -60,7 +60,7 @@ class ResultsView(arcade.View):
                          f"Processing time: {self.time} ms\n"
                          f"Solution steps: {solution_steps}\n",
                          self.window.width / 2, 
-                         (self.window.height / 2+(self.window.width/15))-self.window.width/5,
+                         self.window.height / 2+(self.window.width/5),
                          arcade.color.WHITE, 
                          font_size=self.window.width/26, 
                          anchor_x="center",

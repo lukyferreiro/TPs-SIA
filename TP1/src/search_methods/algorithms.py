@@ -61,7 +61,7 @@ def dfs(visited, node):
     return visited
 
 # Function for GREEDY
-def greedy(visited, node, option):
+def greedy(visited, node, heuristic):
     queue = [node]
     while True:
         n = queue.pop(0)
@@ -69,12 +69,12 @@ def greedy(visited, node, option):
             visited.append(n)
             if n.getBoard().isSolved():
                 break
-            neighborPicked = neighborPicker(n.getNeighbors(), option, 0)
+            neighborPicked = neighborPicker(n.getNeighbors(), heuristic, 0)
             queue.append(neighborPicked)
 
 
 # Function for A*
-def astar(visited, node, option):
+def astar(visited, node, heuristic):
     queue = [node]
     while True:
         n = queue.pop(0)
@@ -82,5 +82,5 @@ def astar(visited, node, option):
             visited.append(n)
             if n.getBoard().isSolved():
                 break
-            neighborPicked = neighborPicker(n.getNeighbors(), option, 1)
+            neighborPicked = neighborPicker(n.getNeighbors(), heuristic, 1)
             queue.append(neighborPicked)

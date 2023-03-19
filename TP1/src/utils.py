@@ -1,8 +1,5 @@
 import arcade
 import time
-import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib.colors import ListedColormap
 
 # This sets the WIDTH and HEIGHT of each grid location
 WIDTH = 30
@@ -24,12 +21,12 @@ COLORS = {
 }
 
 COLORS_2 = {
-    arcade.color.BLUE : 'blue',
-    arcade.color.GREEN: 'green',
-    arcade.color.RED: 'red',
-    arcade.color.YELLOW: 'yellow',
-    arcade.color.PURPLE: 'purple',
-    arcade.color.ORANGE: 'orange'
+    arcade.color.BLUE : 'B',
+    arcade.color.GREEN: 'G',
+    arcade.color.RED: 'R',
+    arcade.color.YELLOW: 'Y',
+    arcade.color.PURPLE: 'P',
+    arcade.color.ORANGE: 'O'
 }
 
 
@@ -64,7 +61,7 @@ def get_solution_steps(visited):
     for node in visited:
         steps += transform_color(node.getBoard().getPlayerColor())
         if node != visited[len(visited) - 1]:
-            steps += ' ---> '
+            steps += ' -> '
     return steps
 
 def transform_color(arcade_color):

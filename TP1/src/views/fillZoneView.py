@@ -51,14 +51,14 @@ class FillZone(arcade.View):
                 print('Solucion con GREEDY')
                 self.on_draw()
                 t0 = currentMilliTime()
-                self.solution = greedy(self.visited, self.rootNode)
+                self.solution = greedy(self.visited, self.rootNode, self.window.heuristic_type)
                 self.time = currentMilliTime() - t0
                 print('Solucion lista')
             case 'A*':
                 print('Solucion con A*')
                 self.on_draw()
                 t0 = currentMilliTime()
-                self.solution = astar(self.visited, self.rootNode)
+                self.solution = astar(self.visited, self.rootNode, self.window.heuristic_type)
                 self.time = currentMilliTime() - t0
                 print('Solucion lista')
             case _:
@@ -80,8 +80,6 @@ class FillZone(arcade.View):
                 # Do the math to figure out where the box is
                 x = (MARGIN + WIDTH) * column + MARGIN + WIDTH // 2
                 y = screen_height - ((MARGIN + HEIGHT) * row + MARGIN + HEIGHT // 2)
-
-                # Draw the box
                 arcade.draw_rectangle_filled(x, y, WIDTH, HEIGHT, color)
 
 
