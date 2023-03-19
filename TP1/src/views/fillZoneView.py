@@ -32,7 +32,6 @@ class FillZone(arcade.View):
         self.solution, self.visited, self.time = chooseAlgorithm(
             self.window.algorithm_type,self.window.heuristic_type,
             self.solution, self.visited, self.rootNode, self.time)
-        print('Solucion lista')
        
     def on_draw(self):
         """Render the screen """

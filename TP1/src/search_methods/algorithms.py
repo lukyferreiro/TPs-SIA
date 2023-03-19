@@ -25,6 +25,7 @@ def chooseAlgorithm(algorithm_type, heuristic, solution, visited, rootNode, time
                 t0 = currentMilliTime()
                 solution, visited = astar(visited, rootNode, heuristic)
                 time = currentMilliTime() - t0
+    print('Solucion lista')
     return solution, visited, time
 
 def traceBack(node, solution):
