@@ -1,6 +1,31 @@
 from collections import deque
 from src.search_methods.heuristics import childPicker
+from src.utils import currentMilliTime
 
+
+def chooseAlgorithm(algorithm_type, heuristic, solution, visited, rootNode, time):
+    match algorithm_type:
+            case 'BFS':
+                print('Solucion con BFS')
+                t0 = currentMilliTime()
+                solution, visited = bfs(visited, rootNode)
+                time = currentMilliTime() - t0
+            case 'DFS':
+                print('Solucion con DFS')
+                t0 = currentMilliTime()
+                solution, visited = dfs(visited, rootNode)
+                time = currentMilliTime() - t0
+            case 'GREEDY':
+                print('Solucion con GREEDY')
+                t0 = currentMilliTime()
+                solution, visited = greedy(visited, rootNode, heuristic)
+                time = currentMilliTime() - t0
+            case 'A*':
+                print('Solucion con A*')
+                t0 = currentMilliTime()
+                solution, visited = astar(visited, rootNode, heuristic)
+                time = currentMilliTime() - t0
+    return solution, visited, time
 
 def traceBack(node, solution):
     queue = [node]
@@ -38,7 +63,7 @@ def bfs(visited, node):
                     visited.add(child) # add child to visited using the "add" method of a set
 
     solution = reverseList(solution)
-    return solution
+    return solution, visited
 
 # Function for DFS
 def dfs(visited, node):
@@ -60,7 +85,7 @@ def dfs(visited, node):
                 queue.append(children[0])
 
     solution = reverseList(solution)
-    return solution
+    return solution, visited
 
 # Function for GREEDY
 def greedy(visited, node, heuristic):
@@ -82,7 +107,7 @@ def greedy(visited, node, heuristic):
                 queue.append(childPicked)
 
     solution = reverseList(solution)
-    return solution
+    return solution, visited
 
 
 # Function for A*
@@ -105,4 +130,4 @@ def astar(visited, node, heuristic):
                 queue.append(childPicked)
                 
     solution = reverseList(solution)
-    return solution
+    return solution, visited

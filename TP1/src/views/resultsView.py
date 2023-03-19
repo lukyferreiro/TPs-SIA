@@ -3,13 +3,12 @@ from src.utils import get_solution_steps, get_frontier_nodes
 
 class ResultsView(arcade.View):
     
-    def __init__(self, visited, solution, time, bfs, N):
+    def __init__(self, visited, solution, time, N):
         """ Set up the application. """
         super().__init__()
         self.visited = visited
         self.solution = solution
         self.time = time
-        self.bfs = bfs
         self.N = N
         self.ALGORITHM = self.window.algorithm_type
         self.HEURISITC = self.window.heuristic_type
