@@ -57,6 +57,7 @@ class FillZone(arcade.View):
                 self.solution = astar(self.visited, self.rootNode)
                 print('Solucion lista')
             case _:
+                print('Default')
        
 
     def on_draw(self):
