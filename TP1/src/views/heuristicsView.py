@@ -48,7 +48,7 @@ class HeuristicsView(arcade.View):
     def on_key_press(self, key, modifiers):
         match key:
             case arcade.key.KEY_1:
-                self.window.heuristic_type = 'Remainig colors'
+                self.window.heuristic_type = 'Remaining colors'
                 game_view = FillZone()
                 game_view.setup()
                 self.window.show_view(game_view)

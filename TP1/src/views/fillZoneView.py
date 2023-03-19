@@ -32,33 +32,8 @@ class FillZone(arcade.View):
         self.solution, self.visited, self.time = chooseAlgorithm(
             self.window.algorithm_type,self.window.heuristic_type,
             self.solution, self.visited, self.rootNode, self.time)
-        """
-        match self.window.algorithm_type:
-            case 'BFS':
-                print('Solucion con BFS')
-                t0 = currentMilliTime()
-                self.solution = bfs(self.visited, self.rootNode)
-                self.time = currentMilliTime() - t0
-            case 'DFS':
-                print('Solucion con DFS')
-                t0 = currentMilliTime()
-                self.solution = dfs(self.visited, self.rootNode)
-                self.time = currentMilliTime() - t0
-            case 'GREEDY':
-                print('Solucion con GREEDY')
-                t0 = currentMilliTime()
-                self.solution = greedy(self.visited, self.rootNode, self.window.heuristic_type)
-                self.time = currentMilliTime() - t0
-            case 'A*':
-                print('Solucion con A*')
-                t0 = currentMilliTime()
-                self.solution = astar(self.visited, self.rootNode, self.window.heuristic_type)
-                self.time = currentMilliTime() - t0
-        """
-
-        print('Solucion lista')        
+        print('Solucion lista')
        
-
     def on_draw(self):
         """Render the screen """
         self.clear()

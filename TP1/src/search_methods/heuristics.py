@@ -5,7 +5,7 @@ def childPicker(children, heuristic, edgeWeight):
     childValues = []
     EDGE_WEIGHT = edgeWeight
     for child in children:
-        if heuristic == 'Remainig colors':
+        if heuristic == 'Remaining colors':
             childValue = remainingColorsHeuristic(child)
         if heuristic == 'Most neighbors':
             childValue = mostNeighborsHeuristic(child)
