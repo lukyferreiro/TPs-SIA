@@ -6,10 +6,10 @@ def main():
 
     N = -1
     N = int(input("BIENVENIDO A FILL ZONE\n\n"
-                       "Ingrese el numero de filas y columnas que desee para el tablero: "))
+                       "Ingrese la dimension NxN (N>=4) del tablero: "))
     
-    while N <= 3:
-        N = int(input("El valor ingresado no es valido. Ingrese un numero entero mayor a 4"))
+    while N < 4:
+        N = int(input("Ingrese un numero entero mayor a 4"))
     
     window = arcade.Window(get_screen_width(N), get_screen_height(N), SCREEN_TITLE)
     

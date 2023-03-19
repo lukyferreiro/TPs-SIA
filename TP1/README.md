@@ -2,7 +2,7 @@
 # TP1 SIA - Métodos de Búsqueda para Fill-Zone
 
 ## Introducción
-El siguiente TP se encarga de implementar las soluciones para distitos metodos
+El siguiente TP se encarga de implementar las soluciones para distintos metodos
 de busqueda del juego Fill-Zone (http://www.mygamesworld.com/game/7682/Fill_Zone.html)
 y obtener conclusiones de que metodos son mas eficientes.
 
@@ -12,8 +12,6 @@ y obtener conclusiones de que metodos son mas eficientes.
 - pip3
 - [pipenv](https://pypi.org/project/pipenv/)
 - Python Arcade 2.6.17
-- Numpy
-- Random
 
 ### Instalación
 

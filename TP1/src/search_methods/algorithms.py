@@ -1,5 +1,6 @@
-from src.search_methods.heuristics import childPicker
 from collections import deque
+from src.search_methods.heuristics import childPicker
+
 
 def traceBack(node, solution):
     queue = [node]

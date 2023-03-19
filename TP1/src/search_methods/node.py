@@ -1,4 +1,5 @@
 class Node:
+    
     def __init__(self, board, parent):
         self.board = board
         self.children = []
@@ -20,12 +21,8 @@ class Node:
                 if self.board.getPlayerColor() != colorDict[colorKey]:
                     newState = self.board.getStateCopy()
                     newState.changeColor(colorKey)
-
                     # Solo seguimos explorando el nodo si hubo un cambio en la cantidad de cuadrados que controla el jugador
-                    # Sino, podríamos analizar infinitamente cambios de 1 color a otro:
-                    # EJ numérico:
-                    # 1 2    3 2    1 2    3 2
-                    # 2 3 -> 2 3 -> 2 3 -> 2 3
+                    # Sino, podríamos analizar infinitamente cambios de 1 color a otro
                     if self.board.getPlayerCount() < newState.getPlayerCount():
                         newNode = Node(newState, self)
                         self.children.append(newNode)

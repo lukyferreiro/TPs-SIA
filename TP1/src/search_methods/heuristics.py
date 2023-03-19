@@ -1,21 +1,19 @@
-from src.game_state.square import square
-
 def childPicker(children, heuristic, edgeWeight):
-    neighborValues = []
+    childValues = []
     EDGE_WEIGHT = edgeWeight
-    for neighbor in children:
+    for child in children:
         if heuristic == 'Remainig colors':
-            neighborValue = remainingColorsHeuristic(neighbor)
+            neighborValue = remainingColorsHeuristic(child)
         if heuristic == 'Most neighbors':
-            neighborValue = mostNeighborsHeuristic(neighbor)
-        neighborValues.append(neighborValue)
+            neighborValue = mostNeighborsHeuristic(child)
+        childValues.append(neighborValue)
 
-    minValue = neighborValues[0] + EDGE_WEIGHT  # get MinValue neighbor
+    minValue = childValues[0] + EDGE_WEIGHT  # get MinValue child
     index = 0
-    for i in range(len(neighborValues) - 1):
-        if neighborValues[i + 1] + EDGE_WEIGHT < minValue:
+    for i in range(len(childValues) - 1):
+        if childValues[i + 1] + EDGE_WEIGHT < minValue:
             index = i + 1
-            minValue = neighborValues[i + 1] + EDGE_WEIGHT
+            minValue = childValues[i + 1] + EDGE_WEIGHT
 
     return children[index]
     

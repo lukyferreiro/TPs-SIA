@@ -1,4 +1,3 @@
-import numpy as np
 import random
 import copy
 from src.game_state.square import square
@@ -41,23 +40,6 @@ class Board:
     def __hash__(self):
         return hash((len(self.playerSquares), self.playerColor))
 
-    def getSquare(self, x, y):
-        return self.board[x][y]
-
-    def changeColor(self, color):
-        colorToChange = self.colorList[color]
-        self.playerColor = colorToChange
-        for cell in self.playerSquares:
-            cell.setColor(colorToChange)
-
-        self.addSquares()
-
-    def getPlayerColor(self):
-        return self.playerColor
-
-    def isSolved(self):
-        return len(self.playerSquares) == self.N * self.N
-
     def addSquares(self):
         for cell in self.playerSquares:
             if cell.isBorder(self.board, self.N):
@@ -85,6 +67,23 @@ class Board:
                         left.setIsPlayer(True)
                         self.playerSquares.append(left)
                         self.looseSquares.remove(left)
+
+    def getSquare(self, x, y):
+        return self.board[x][y]
+
+    def changeColor(self, color):
+        colorToChange = self.colorList[color]
+        self.playerColor = colorToChange
+        for cell in self.playerSquares:
+            cell.setColor(colorToChange)
+
+        self.addSquares()
+
+    def getPlayerColor(self):
+        return self.playerColor
+
+    def isSolved(self):
+        return len(self.playerSquares) == self.N * self.N
                         
     def getStateCopy(self):
         return copy.deepcopy(self)
