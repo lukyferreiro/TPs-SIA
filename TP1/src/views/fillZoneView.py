@@ -91,3 +91,7 @@ class FillZone(arcade.View):
             else:
                 results_view = ResultsView(self.visited, self.solution, self.time, self.bfs, self.board.N)
                 self.window.show_view(results_view)
+                
+        if key == arcade.key.ENTER:
+            results_view = ResultsView(self.visited, self.solution, self.time, self.bfs, self.board.N)
+            self.window.show_view(results_view)

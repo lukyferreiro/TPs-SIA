@@ -23,7 +23,6 @@ def bfs(visited, node):
     solution = []
     queue = deque([node])
     solved = False
-
     visited.add(node) # initialize visited as a set
 
     while queue and not solved:
@@ -49,7 +48,6 @@ def dfs(visited, node):
 
     while not solved:
         n = queue.popleft()
-
         if n.getBoard().isSolved():
             traceBack(n, solution)
             solved = True
@@ -66,25 +64,45 @@ def dfs(visited, node):
 
 # Function for GREEDY
 def greedy(visited, node, heuristic):
+    solution = []
     queue = deque([node])
-    while True:
+    solved = False
+
+    while not solved:
         n = queue.popleft()
-        if n not in visited:
-            visited.add(n)
-            if n.getBoard().isSolved():
-                break
-            childPicked = childPicker(n.getChildren(), heuristic, 0)
-            queue.append(childPicked)
+        if n.getBoard().isSolved():
+            traceBack(n, solution)
+            solved = True
+        else:
+            if n not in visited:
+                visited.add(n)
+                if n.getBoard().isSolved():
+                    break
+                childPicked = childPicker(n.getChildren(), heuristic, 0)
+                queue.append(childPicked)
+
+    solution = reverseList(solution)
+    return solution
 
 
 # Function for A*
 def astar(visited, node, heuristic):
+    solution = []
     queue = deque([node])
-    while True:
+    solved = False
+
+    while not solved:
         n = queue.popleft()
-        if n not in visited:
-            visited.add(n)
-            if n.getBoard().isSolved():
-                break
-            childPicked = childPicker(n.getChildren(), heuristic, 1)
-            queue.append(childPicked)
+        if n.getBoard().isSolved():
+            traceBack(n, solution)
+            solved = True
+        else:
+            if n not in visited:
+                visited.add(n)
+                if n.getBoard().isSolved():
+                    break
+                childPicked = childPicker(n.getChildren(), heuristic, 1)
+                queue.append(childPicked)
+                
+    solution = reverseList(solution)
+    return solution

@@ -65,6 +65,7 @@ class AlgorithmsView(arcade.View):
                 self.window.algorithm_type = 'GREEDY'
                 heuristics_view = HeuristicsView()
                 self.window.show_view(heuristics_view)
+                
             case arcade.key.KEY_4:
                 self.window.algorithm_type = 'A*'
                 heuristics_view = HeuristicsView()

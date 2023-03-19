@@ -34,25 +34,33 @@ class HeuristicsView(arcade.View):
                          width=self.window.width - 50)
         
         arcade.draw_text("1. Remaining colors\n"
-                         "2. Most neighbors\n",
+                         "2. Most neighbors\n"
+                         "3. Bronson distance\n",
                          self.window.width / 2, 
                          (self.window.height / 2+(self.window.width/12))-self.window.width/4,
                          arcade.color.WHITE, 
-                         font_size=self.window.width/24, 
+                         font_size=self.window.width/28, 
                          anchor_x="center",
                          multiline=True, 
                          align="left", 
                          width=self.window.width - 50)
         
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.KEY_1:
-            self.window.heuristic_type = 'Remainig colors'
-            game_view = FillZone()
-            game_view.setup()
-            self.window.show_view(game_view)
+        match key:
+            case arcade.key.KEY_1:
+                self.window.heuristic_type = 'Remainig colors'
+                game_view = FillZone()
+                game_view.setup()
+                self.window.show_view(game_view)
 
-        elif key == arcade.key.KEY_2:
-            self.window.heuristic_type = 'Most neighbors'
-            game_view = FillZone()
-            game_view.setup()
-            self.window.show_view(game_view)
+            case arcade.key.KEY_2:
+                self.window.heuristic_type = 'Most neighbors'
+                game_view = FillZone()
+                game_view.setup()
+                self.window.show_view(game_view)
+
+            case arcade.key.KEY_3:
+                self.window.heuristic_type = 'Bronson distance'
+                game_view = FillZone()
+                game_view.setup()
+                self.window.show_view(game_view)

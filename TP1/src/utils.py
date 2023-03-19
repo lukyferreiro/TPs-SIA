@@ -10,7 +10,6 @@ MARGIN = 1
 
 SCREEN_TITLE = "FillZone"
 
-# Colors
 COLORS = {
     0: arcade.color.BLUE,
     1: arcade.color.GREEN,
@@ -48,11 +47,11 @@ def get_frontier_nodes(visited):
     return total
 
 
-def get_solution_steps(visited):
+def get_solution_steps(solution):
     steps = ''
-    for node in visited:
+    for node in solution:
         steps += transform_color(node.getBoard().getPlayerColor())
-        if node != visited[len(visited) - 1]:
+        if node != solution[len(solution) - 1]:
             steps += ' -> '
     return steps
 
