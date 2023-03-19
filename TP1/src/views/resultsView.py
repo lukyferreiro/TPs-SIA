@@ -1,15 +1,16 @@
 import arcade
-from src.utils import get_dimensions, get_solution_steps, get_frontier_nodes
+from src.utils import get_solution_steps, get_frontier_nodes
 
 class ResultsView(arcade.View):
     
-    def __init__(self, visited, solution, time, bfs):
+    def __init__(self, visited, solution, time, bfs, N):
         """ Set up the application. """
         super().__init__()
         self.visited = visited
         self.solution = solution
         self.time = time
         self.bfs = bfs
+        self.N = N
 
     def on_show_view(self):
         """ This is run once when we switch to this view """
@@ -53,7 +54,7 @@ class ResultsView(arcade.View):
             solution_cost = len(self.visited)
             solution_steps = get_solution_steps(self.visited)
 
-        arcade.draw_text(f"Board dimension: {get_dimensions(self.visited)}\n"
+        arcade.draw_text(f"Board dimension: {self.N}x{self.N}\n"
                          f"Solution cost: {solution_cost} turns\n"
                          f"Frontier nodes: {get_frontier_nodes(self.visited)} nodes\n"
                          f"Expanded nodes: {len(self.visited)} nodes\n"

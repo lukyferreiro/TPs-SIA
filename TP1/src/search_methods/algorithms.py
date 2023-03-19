@@ -1,4 +1,5 @@
 from src.search_methods.heuristics import childPicker
+from collections import deque
 
 def traceBack(node, solution):
     queue = [node]
@@ -19,54 +20,56 @@ def reverseList(solution):
 # Function for BFS
 def bfs(visited, node):  
     solution = []
-    queue = [node]
+    queue = deque([node])
     solved = False
 
-    visited.append(node)
+    visited.add(node) # initialize visited as a set
 
-    while queue and not solved:  # Creating loop to visit each node
-        m = queue.pop(0)
-        if m.getBoard().isSolved():
-            traceBack(m, solution)
+    while queue and not solved:
+        n = queue.popleft()
+        if n.getBoard().isSolved():
+            traceBack(n, solution)
             solved = True
         else:
-            children = m.getChildren()
+            children = n.getChildren()
             for child in children:
-                if m.isUseful(child) and child not in visited:
+                if n.isUseful(child) and child not in visited: # use "not in visited" instead of "child not in visited"
                     queue.append(child)
-                    visited.append(child)
+                    visited.add(child) # add child to visited using the "add" method of a set
 
-    queue.clear()
     solution = reverseList(solution)
-    return solution # Returns solutios with all states
+    return solution
 
 # Function for DFS
 def dfs(visited, node):
-    queue = [node]
+    solution = []
+    queue = deque([node])
     solved = False
 
     while not solved:
-        n = queue.pop(0)
+        n = queue.popleft()
 
         if n.getBoard().isSolved():
+            traceBack(n, solution)
             solved = True
         else:
             if n not in visited:
-                visited.append(n)
+                visited.add(n)
                 if n.getBoard().isSolved():
                     break
                 children = n.getChildren()
                 queue.append(children[0])
 
-    return visited
+    solution = reverseList(solution)
+    return solution
 
 # Function for GREEDY
 def greedy(visited, node, heuristic):
-    queue = [node]
+    queue = deque([node])
     while True:
-        n = queue.pop(0)
+        n = queue.popleft()
         if n not in visited:
-            visited.append(n)
+            visited.add(n)
             if n.getBoard().isSolved():
                 break
             childPicked = childPicker(n.getChildren(), heuristic, 0)
@@ -75,11 +78,11 @@ def greedy(visited, node, heuristic):
 
 # Function for A*
 def astar(visited, node, heuristic):
-    queue = [node]
+    queue = deque([node])
     while True:
-        n = queue.pop(0)
+        n = queue.popleft()
         if n not in visited:
-            visited.append(n)
+            visited.add(n)
             if n.getBoard().isSolved():
                 break
             childPicked = childPicker(n.getChildren(), heuristic, 1)

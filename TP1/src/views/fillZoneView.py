@@ -18,7 +18,7 @@ class FillZone(arcade.View):
 
         self.board = None
         self.rootNode = None
-        self.visited = []
+        self.visited = set()
         self.solution = []
         self.drawIndex = 0
         self.time = 0
@@ -89,5 +89,5 @@ class FillZone(arcade.View):
                 self.on_draw()
                 self.drawIndex += 1
             else:
-                results_view = ResultsView(self.visited, self.solution, self.time, self.bfs)
+                results_view = ResultsView(self.visited, self.solution, self.time, self.bfs, self.board.N)
                 self.window.show_view(results_view)

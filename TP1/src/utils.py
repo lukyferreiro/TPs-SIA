@@ -41,14 +41,6 @@ def get_screen_height(row_count):
 def currentMilliTime():
     return round(time.time() * 1000)
 
-def get_dimensions(visited):
-    dim = ''
-    dim += str(visited[0].getBoard().N)
-    dim += 'x'
-    dim += str(visited[0].getBoard().N)
-    return dim
-
-
 def get_frontier_nodes(visited):
     total = 0
     for state in visited:
