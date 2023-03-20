@@ -72,7 +72,7 @@ def dfs(visited, node):
     queue = deque([node])
     solved = False
 
-    while not solved:
+    while queue and not solved:
         n = queue.popleft()
         if n.getBoard().isSolved():
             traceBack(n, solution)
@@ -80,8 +80,6 @@ def dfs(visited, node):
         else:
             if n not in visited:
                 visited.add(n)
-                if n.getBoard().isSolved():
-                    break
                 children = n.getChildren()
                 queue.append(children[0])
 
@@ -94,7 +92,7 @@ def greedy(visited, node, heuristic):
     queue = deque([node])
     solved = False
 
-    while not solved:
+    while queue and not solved:
         n = queue.popleft()
         if n.getBoard().isSolved():
             traceBack(n, solution)
@@ -102,8 +100,6 @@ def greedy(visited, node, heuristic):
         else:
             if n not in visited:
                 visited.add(n)
-                if n.getBoard().isSolved():
-                    break
                 childPicked = childPicker(n.getChildren(), heuristic, 0)
                 queue.append(childPicked)
 
@@ -117,7 +113,7 @@ def astar(visited, node, heuristic):
     queue = deque([node])
     solved = False
 
-    while not solved:
+    while queue and not solved:
         n = queue.popleft()
         if n.getBoard().isSolved():
             traceBack(n, solution)
