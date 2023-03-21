@@ -4,28 +4,31 @@ from src.game_state.square import square
 #En el juego FillZone, todos los "movimientos" tienen coste 1
 #Cuando estoy en greedy --> tengo en cuenta heuristic
 #Cuando estoy en A* --> tengo en cuenta heuristic + cost
-def childPicker(children, heuristic, cost):
+def greedyChildPicker(children, heuristic):
     childValues = []
-    COST = cost
     for child in children:
-        match heuristic:
-            case 'Remaining colors':
-                childValue = remainingColorsHeuristic(child) #Returns heuristic value
-            case 'Most neighbors':
-                childValue = mostNeighborsHeuristic(child) #Returns heuristic value
-            case 'Bronson distance':
-                childValue = bronsonHeuristic(child) #Returns heuristic value
+        childValue = heuristicCalculator(heuristic, child)
         childValues.append(childValue)
 
-    minValue = childValues[0] + COST  # 5
+    minValue = childValues[0]
     index = 0
     for i in range(len(childValues) - 1):
-        if childValues[i+1] + COST < minValue:
+        if childValues[i+1] < minValue:
             index = i+1
-            minValue = childValues[i+1] + COST
+            minValue = childValues[i+1]
 
     return children[index]
 
+def heuristicCalculator(heuristic, child):
+    match heuristic:
+        case 'Remaining colors':
+            childValue = remainingColorsHeuristic(child)  # Returns heuristic value
+        case 'Most neighbors':
+            childValue = mostNeighborsHeuristic(child)  # Returns heuristic value
+        case 'Bronson distance':
+            childValue = bronsonHeuristic(child)  # Returns heuristic value
+
+    return childValue
 def mostNeighborsHeuristic(child):
     return child.getBoard().N ** 2 - child.getBoard().getPlayerCount()
 

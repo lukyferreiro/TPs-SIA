@@ -27,7 +27,7 @@ class FillZone(arcade.View):
     def setup(self):
         SIZE = self.window.N
         self.board = Board(SIZE, self.window.count_colors)
-        self.rootNode = Node(self.board, None, 0)
+        self.rootNode = Node(self.board, None)
 
         self.solution, self.visited, self.time = chooseAlgorithm(
             self.window.algorithm_type, self.window.heuristic_type,

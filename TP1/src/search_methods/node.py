@@ -1,18 +1,20 @@
+from src.utils import transform_color
+
 class Node:
-    
-    def __init__(self, board, parent, cost):
+    g_cost = 0
+    f_cost = 0
+    def __init__(self, board, parent):
         self.board = board
         self.children = []
         self.parent = parent
-        self.cost = cost
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        return self.board == other.board and self.cost == other.cost
+        return self.board == other.board and self.g_cost == other.g_cost and self.f_cost == other.f_cost
 
     def __hash__(self):
-        return hash((self.board, self.cost))
+        return hash((self.board, self.g_cost, self.f_cost))
 
     def processChildren(self):
         if not self.board.isSolved():
@@ -24,7 +26,7 @@ class Node:
                     # Solo seguimos explorando el nodo si hubo un cambio en la cantidad de cuadrados que controla el jugador
                     # Sino, podríamos analizar infinitamente cambios de 1 color a otro
                     if self.board.getPlayerCount() < newState.getPlayerCount():
-                        newNode = Node(newState, self, self.cost + 1)
+                        newNode = Node(newState, self)
                         self.children.append(newNode)
 
     def getChildren(self):

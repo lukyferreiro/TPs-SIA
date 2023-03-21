@@ -11,10 +11,10 @@ def main():
     while N < 4:
         N = int(input("Ingrese un numero entero mayor a 4: "))
 
-    count_colors = int(input("Ingrese la cantidad de colores (entre 2 y 8): "))
+    count_colors = int(input("Ingrese la cantidad de colores (entre 2 y 9): "))
     
-    while count_colors < 2 or count_colors > 8:
-        count_colors = int(input("Ingrese la cantidad de colores (entre 2 y 8):"))
+    while count_colors < 2 or count_colors > 9:
+        count_colors = int(input("Ingrese la cantidad de colores (entre 2 y 9):"))
     
     window = arcade.Window(get_screen_width(N), get_screen_height(N), SCREEN_TITLE)
     
