@@ -1,5 +1,5 @@
 import arcade
-from src.utils import MARGIN, WIDTH, HEIGHT, COLORS, get_screen_height
+from src.utils import MARGIN, WIDTH, HEIGHT, get_screen_height
 from src.game_state.board import Board
 from src.search_methods.node import Node
 from src.search_methods.algorithms import chooseAlgorithm
@@ -26,7 +26,7 @@ class FillZone(arcade.View):
 
     def setup(self):
         SIZE = self.window.N
-        self.board = Board(SIZE, COLORS)
+        self.board = Board(SIZE, self.window.count_colors)
         self.rootNode = Node(self.board, None)
 
         self.solution, self.visited, self.time = chooseAlgorithm(

@@ -1,16 +1,18 @@
 import random
+import itertools
 import copy
 from src.game_state.square import square
+from src.utils import COLORS
 
 class Board:
 
-    def __init__(self, N, colors):
+    def __init__(self, N, count_colors):
         self.playerColor = None
         self.N = N
         self.board = [[] for _ in range(N)]
         self.playerSquares = []
         self.looseSquares = []
-        self.colorList = dict(colors)
+        self.colorList = dict(itertools.islice(COLORS.items(), count_colors))
         for i in range(N):
             for j in range(N):
                 newColor = random.choice(list(self.colorList.values()))

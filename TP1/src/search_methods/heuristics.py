@@ -5,27 +5,26 @@ def childPicker(children, heuristic, edgeWeight):
     childValues = []
     EDGE_WEIGHT = edgeWeight
     for child in children:
-        if heuristic == 'Remaining colors':
-            childValue = remainingColorsHeuristic(child)
-        if heuristic == 'Most neighbors':
-            childValue = mostNeighborsHeuristic(child)
-        if heuristic == 'Bronson distance':
-            childValue = bronsonHeuristic(child)
+        match heuristic:
+            case 'Remaining colors':
+                childValue = remainingColorsHeuristic(child)
+            case 'Most neighbors':
+                childValue = mostNeighborsHeuristic(child)
+            case 'Bronson distance':
+                childValue = bronsonHeuristic(child)
         childValues.append(childValue)
 
-    # Gey min value child
     minValue = childValues[0] + EDGE_WEIGHT  
     index = 0
     for i in range(len(childValues) - 1):
-        if childValues[i + 1] + EDGE_WEIGHT < minValue:
-            index = i + 1
-            minValue = childValues[i + 1] + EDGE_WEIGHT
+        if childValues[i+1] + EDGE_WEIGHT < minValue:
+            index = i+1
+            minValue = childValues[i+1] + EDGE_WEIGHT
 
     return children[index]
     
 def mostNeighborsHeuristic(child):
-    totalSquares = child.getBoard().N ** 2
-    return totalSquares - child.getBoard().getPlayerCount()
+    return child.getBoard().N ** 2 - child.getBoard().getPlayerCount()
 
 def remainingColorsHeuristic(child):
     colorValues = child.getBoard().getColorDict().values()

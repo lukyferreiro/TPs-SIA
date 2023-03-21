@@ -21,7 +21,7 @@ class ResultsView(arcade.View):
         self.clear()
 
         if self.ALGORITHM == 'GREEDY' or self.ALGORITHM == 'A*':
-            arcade.draw_text(f"Results with {self.ALGORITHM} and heuristic '{self.HEURISITC}'",
+            arcade.draw_text(f"Results with {self.ALGORITHM} and '{self.HEURISITC}'",
                             self.window.width / 2, 
                             self.window.height - (self.window.width/12),
                             arcade.color.WHITE, 
@@ -32,7 +32,7 @@ class ResultsView(arcade.View):
                             align="center", 
                             width=self.window.width - 20)
         else: 
-            arcade.draw_text(f"Your results with {self.ALGORITHM}",
+            arcade.draw_text(f"Results with {self.ALGORITHM}",
                             self.window.width / 2, 
                             self.window.height - (self.window.width/12),
                             arcade.color.WHITE, 
@@ -43,16 +43,23 @@ class ResultsView(arcade.View):
                             align="center", 
                             width=self.window.width - 20)
 
+        if(self.window.N > 13):
+            aux = 40
+        else:
+            aux = 30
+
         arcade.draw_text(f"Board dimension: {self.N}x{self.N}\n"
+                         f"Count colors: {self.window.count_colors}\n"
                          f"Solution cost: {len(self.solution)} turns\n"
                          f"Frontier nodes: {get_frontier_nodes(self.visited)} nodes\n"
                          f"Expanded nodes: {len(self.visited)} nodes\n"
                          f"Processing time: {self.time} ms\n"
-                         f"Solution steps: {get_solution_steps(self.solution)}\n",
+                         "Solution steps: \n"
+                         f"{get_solution_steps(self.solution)}\n",
                          self.window.width / 2, 
-                         self.window.height / 2+(self.window.width/7),
+                         self.window.height / 2+(self.window.width/5.5),
                          arcade.color.WHITE, 
-                         font_size=self.window.width/26, 
+                         font_size=self.window.width/aux, 
                          anchor_x="center",
                          multiline=True, 
                          align="left", 

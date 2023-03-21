@@ -16,7 +16,6 @@ class Node:
     def processChildren(self):
         if not self.board.isSolved():
             colorDict = self.board.getColorDict()
-
             for colorKey in colorDict.keys():
                 if self.board.getPlayerColor() != colorDict[colorKey]:
                     newState = self.board.getStateCopy()

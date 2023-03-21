@@ -15,8 +15,11 @@ COLORS = {
     1: arcade.color.GREEN,
     2: arcade.color.RED,
     3: arcade.color.YELLOW,
-    4: arcade.color.PURPLE,
-    5: arcade.color.ORANGE
+    4: arcade.color.PINK,
+    5: arcade.color.ORANGE,
+    6: arcade.color.VIOLET,
+    7: arcade.color.AQUA,
+    8: arcade.color.WHITE
 }
 
 COLORS_2 = {
@@ -24,8 +27,11 @@ COLORS_2 = {
     arcade.color.GREEN: 'G',
     arcade.color.RED: 'R',
     arcade.color.YELLOW: 'Y',
-    arcade.color.PURPLE: 'P',
-    arcade.color.ORANGE: 'O'
+    arcade.color.PINK: 'P',
+    arcade.color.ORANGE: 'O',
+    arcade.color.VIOLET: 'V',
+    arcade.color.AQUA: 'A',
+    arcade.color.WHITE: 'W'
 }
 
 
