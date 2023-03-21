@@ -17,7 +17,7 @@ def childPicker(children, heuristic, cost):
                 childValue = bronsonHeuristic(child) #Returns heuristic value
         childValues.append(childValue)
 
-    minValue = childValues[0] + COST  
+    minValue = childValues[0] + COST  # 5
     index = 0
     for i in range(len(childValues) - 1):
         if childValues[i+1] + COST < minValue:
@@ -25,7 +25,7 @@ def childPicker(children, heuristic, cost):
             minValue = childValues[i+1] + COST
 
     return children[index]
-    
+
 def mostNeighborsHeuristic(child):
     return child.getBoard().N ** 2 - child.getBoard().getPlayerCount()
 

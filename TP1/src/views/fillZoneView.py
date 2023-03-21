@@ -27,10 +27,10 @@ class FillZone(arcade.View):
     def setup(self):
         SIZE = self.window.N
         self.board = Board(SIZE, self.window.count_colors)
-        self.rootNode = Node(self.board, None)
+        self.rootNode = Node(self.board, None, 0)
 
         self.solution, self.visited, self.time = chooseAlgorithm(
-            self.window.algorithm_type,self.window.heuristic_type,
+            self.window.algorithm_type, self.window.heuristic_type,
             self.solution, self.visited, self.rootNode, self.time)
        
     def on_draw(self):
@@ -52,14 +52,20 @@ class FillZone(arcade.View):
 
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.RIGHT :
+        if key == arcade.key.RIGHT:
             if self.drawIndex < len(self.solution)-1 :
-                self.on_draw()
                 self.drawIndex += 1
+                self.on_draw()
             else:
                 results_view = ResultsView(self.visited, self.solution, self.time, self.board.N)
                 self.window.show_view(results_view)
-                
+
+        if key == arcade.key.LEFT:
+            if self.drawIndex > 0:
+                self.drawIndex -= 1
+                self.on_draw()
+
+
         if key == arcade.key.ENTER:
             results_view = ResultsView(self.visited, self.solution, self.time, self.board.N)
             self.window.show_view(results_view)

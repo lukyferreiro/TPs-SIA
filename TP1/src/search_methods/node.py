@@ -1,17 +1,18 @@
 class Node:
     
-    def __init__(self, board, parent):
+    def __init__(self, board, parent, cost):
         self.board = board
         self.children = []
         self.parent = parent
+        self.cost = cost
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        return self.board == other.board
+        return self.board == other.board and self.cost == other.cost
 
     def __hash__(self):
-        return hash(self.board)
+        return hash((self.board, self.cost))
 
     def processChildren(self):
         if not self.board.isSolved():
@@ -23,7 +24,7 @@ class Node:
                     # Solo seguimos explorando el nodo si hubo un cambio en la cantidad de cuadrados que controla el jugador
                     # Sino, podríamos analizar infinitamente cambios de 1 color a otro
                     if self.board.getPlayerCount() < newState.getPlayerCount():
-                        newNode = Node(newState, self)
+                        newNode = Node(newState, self, self.cost + 1)
                         self.children.append(newNode)
 
     def getChildren(self):
@@ -40,9 +41,6 @@ class Node:
     def getPlayerColor(self):
         return self.board.getPlayerColor()
 
-    def printNode(self):
-        self.board.printState()
-
     def getBoard(self):
         return self.board
 
@@ -51,9 +49,6 @@ class Node:
     
     def __repr__(self) -> str:
         return self.__str__()
-
-    def __str__(self) -> str:
-        return self.gameState.printState()
 
     def isUseful(self, node):
         return self.board.getPlayerCount() < node.board.getPlayerCount()

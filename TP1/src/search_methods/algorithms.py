@@ -6,26 +6,21 @@ from src.utils import currentMilliTime
 def chooseAlgorithm(algorithm_type, heuristic, solution, visited, rootNode, time):
     match algorithm_type:
             case 'BFS':
-                print('Solucion con BFS')
                 t0 = currentMilliTime()
                 solution, visited = bfs(visited, rootNode)
                 time = currentMilliTime() - t0
             case 'DFS':
-                print('Solucion con DFS')
                 t0 = currentMilliTime()
                 solution, visited = dfs(visited, rootNode)
                 time = currentMilliTime() - t0
             case 'GREEDY':
-                print('Solucion con GREEDY')
                 t0 = currentMilliTime()
                 solution, visited = greedy(visited, rootNode, heuristic)
                 time = currentMilliTime() - t0
             case 'A*':
-                print('Solucion con A*')
                 t0 = currentMilliTime()
                 solution, visited = astar(visited, rootNode, heuristic)
                 time = currentMilliTime() - t0
-    print('Solucion lista')
     return solution, visited, time
 
 def traceBack(node, solution):
@@ -112,6 +107,7 @@ def astar(visited, node, heuristic):
     solution = []
     queue = deque([node])
     solved = False
+    frontier = []
 
     while queue and not solved:
         n = queue.popleft()
@@ -123,8 +119,12 @@ def astar(visited, node, heuristic):
                 visited.add(n)
                 if n.getBoard().isSolved():
                     break
-                childPicked = childPicker(n.getChildren(), heuristic, 1)
+
+                children = n.getChildren()
+                frontier.extend(children)
+                childPicked = childPicker(frontier, heuristic, n.cost)
                 queue.append(childPicked)
+                frontier.remove(childPicked)
                 
     solution = reverseList(solution)
     return solution, visited
