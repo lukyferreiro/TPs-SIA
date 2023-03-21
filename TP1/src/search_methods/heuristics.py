@@ -1,25 +1,28 @@
 import networkx as nx
 from src.game_state.square import square
 
-def childPicker(children, heuristic, edgeWeight):
+#En el juego FillZone, todos los "movimientos" tienen coste 1
+#Cuando estoy en greedy --> tengo en cuenta heuristic
+#Cuando estoy en A* --> tengo en cuenta heuristic + cost
+def childPicker(children, heuristic, cost):
     childValues = []
-    EDGE_WEIGHT = edgeWeight
+    COST = cost
     for child in children:
         match heuristic:
             case 'Remaining colors':
-                childValue = remainingColorsHeuristic(child)
+                childValue = remainingColorsHeuristic(child) #Returns heuristic value
             case 'Most neighbors':
-                childValue = mostNeighborsHeuristic(child)
+                childValue = mostNeighborsHeuristic(child) #Returns heuristic value
             case 'Bronson distance':
-                childValue = bronsonHeuristic(child)
+                childValue = bronsonHeuristic(child) #Returns heuristic value
         childValues.append(childValue)
 
-    minValue = childValues[0] + EDGE_WEIGHT  
+    minValue = childValues[0] + COST  
     index = 0
     for i in range(len(childValues) - 1):
-        if childValues[i+1] + EDGE_WEIGHT < minValue:
+        if childValues[i+1] + COST < minValue:
             index = i+1
-            minValue = childValues[i+1] + EDGE_WEIGHT
+            minValue = childValues[i+1] + COST
 
     return children[index]
     
