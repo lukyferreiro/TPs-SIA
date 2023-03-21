@@ -119,19 +119,14 @@ def astar(visited, start_node, heuristic):
 
         for node in frontier:
             if node.f_cost < current_node.f_cost:
-                 visited.add(current_node)
                  current_node = node
-            elif node.f_cost == current_node.f_cost and node.g_cost < current_node.g_cost:
-                visited.add(current_node)
-                current_node = node
-            else:
-                frontier.remove(node)
 
         if current_node.getBoard().isSolved():
             solution = traceBack(current_node, solution)
             solved = True
         else:
             visited.add(current_node)
+            frontier.remove(current_node)
 
             children = current_node.getChildren()
 
