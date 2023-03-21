@@ -50,7 +50,7 @@ class ResultsView(arcade.View):
 
         arcade.draw_text(f"Board dimension: {self.N}x{self.N}\n"
                          f"Count colors: {self.window.count_colors}\n"
-                         f"Solution cost: {len(self.solution)} turns\n"
+                         f"Solution cost: {len(self.solution)-1} turns\n"
                          f"Frontier nodes: {get_frontier_nodes(self.visited)} nodes\n"
                          f"Expanded nodes: {len(self.visited)} nodes\n"
                          f"Processing time: {self.time} ms\n"

@@ -33,6 +33,8 @@ def traceBack(node, solution):
         else:
             queue.append(m.getParent())
 
+    return solution
+
 # Function for BFS
 def bfs(visited, node):  
     solution = []
@@ -43,7 +45,7 @@ def bfs(visited, node):
     while queue and not solved:
         n = queue.popleft()
         if n.getBoard().isSolved():
-            traceBack(n, solution)
+            solution = traceBack(n, solution)
             solved = True
         else:
             children = n.getChildren()
@@ -64,7 +66,7 @@ def dfs(visited, node):
     while not solved:
         n = queue.popleft()
         if n.getBoard().isSolved():
-            traceBack(n, solution)
+            solution = traceBack(n, solution)
             solved = True
         else:
             if n not in visited:
@@ -85,7 +87,7 @@ def greedy(visited, node, heuristic):
     while queue and not solved:
         n = queue.popleft()
         if n.getBoard().isSolved():
-            traceBack(n, solution)
+            solution = traceBack(n, solution)
             solved = True
         else:
             if n not in visited:
@@ -126,7 +128,7 @@ def astar(visited, start_node, heuristic):
                 frontier.remove(node)
 
         if current_node.getBoard().isSolved():
-            traceBack(current_node, solution)
+            solution = traceBack(current_node, solution)
             solved = True
         else:
             visited.add(current_node)
