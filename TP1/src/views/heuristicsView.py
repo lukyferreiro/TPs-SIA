@@ -35,7 +35,7 @@ class HeuristicsView(arcade.View):
         
         arcade.draw_text("1. Remaining colors\n"
                          "2. Most neighbors\n"
-                         "3. Bronson distance\n",
+                         "3. Dijkstra distance\n",
                          self.window.width / 2, 
                          (self.window.height / 2+(self.window.width/12))-self.window.width/4,
                          arcade.color.WHITE, 
@@ -60,7 +60,7 @@ class HeuristicsView(arcade.View):
                 self.window.show_view(game_view)
 
             case arcade.key.KEY_3:
-                self.window.heuristic_type = 'Bronson distance'
+                self.window.heuristic_type = 'Dijkstra distance'
                 game_view = FillZone()
                 game_view.setup()
                 self.window.show_view(game_view)

@@ -65,7 +65,6 @@ class FillZone(arcade.View):
                 self.drawIndex -= 1
                 self.on_draw()
 
-
         if key == arcade.key.ENTER:
             results_view = ResultsView(self.visited, self.solution, self.time, self.board.N)
             self.window.show_view(results_view)

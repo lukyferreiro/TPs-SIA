@@ -25,10 +25,11 @@ def heuristicCalculator(heuristic, child):
             childValue = remainingColorsHeuristic(child)  # Returns heuristic value
         case 'Most neighbors':
             childValue = mostNeighborsHeuristic(child)  # Returns heuristic value
-        case 'Bronson distance':
-            childValue = bronsonHeuristic(child)  # Returns heuristic value
-
+        case 'Dijkstra distance':
+            childValue = dijkstraHeuristic(child)  # Returns heuristic value
     return childValue
+
+#Heurisitca no admisible
 def mostNeighborsHeuristic(child):
     return child.getBoard().N ** 2 - child.getBoard().getPlayerCount()
 
@@ -43,12 +44,12 @@ def remainingColorsHeuristic(child):
 
     return len(colorSeen)
 
-def bronsonHeuristic(child):
+def dijkstraHeuristic(child):
     DISTANCE = 0
     state = child.getBoard()
     playerSquare = square(state.N + 1, state.N + 1, 0,
                       True)  # this squeare does not exist in board and represents all player squares in graph
-    graph = generateBronsonGraph(child.getBoard(), playerSquare)
+    graph = generateDijkstraGraph(child.getBoard(), playerSquare)
     len_path = dict(nx.all_pairs_dijkstra(graph))
     maxValue = 0
     for key in len_path[playerSquare][DISTANCE]:
@@ -56,7 +57,7 @@ def bronsonHeuristic(child):
             maxValue = len_path[playerSquare][DISTANCE][key]
     return maxValue
 
-def generateBronsonGraph(state, playerSquare):
+def generateDijkstraGraph(state, playerSquare):
     board = state.getBoard()
     graph = nx.Graph()
     graph.add_node(playerSquare)
