@@ -8,10 +8,9 @@ y obtener conclusiones de que metodos son mas eficientes.
 
 ### Requisitos
 
-- Python3
+- Python 3.10.
 - pip3
 - [pipenv](https://pypi.org/project/pipenv/)
-- Python Arcade 2.6.17
 
 ### Instalación
 
@@ -19,15 +18,15 @@ Posicionado en la carpeta del TP1 ejecutar:
 
 ```sh
 pipenv install
-pipenv shell
 ```
 
 para instalar las dependencias necesarias en el ambiente virtual.
 
 ## Ejecución
 
-```
-pipenv run python main.py 
+```sh
+pipenv shell
+python main.py
 ```
 
 
