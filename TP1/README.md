@@ -36,7 +36,7 @@ terminal el tamaño del tablero (mayor o igual a 4) y la cantidad de colores (en
 y 9). 
 
 Se recomienda no superar el tamaño 20x20 y no usar los algoritmos BFS y A* con Dijkstra Distance
-(ha no ser que te encuentra muy paciente).
+(ha no ser que te encuentres muy paciente).
 
 Tras ingresar esos dos valores, se desplegara una pantalla acorde al tamaño elegido,
 con instrucciones para poder elegir el método de búsqueda a usar y la heurística a aplicar
