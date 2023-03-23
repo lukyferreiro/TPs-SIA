@@ -23,14 +23,14 @@ def heuristicCalculator(heuristic, child):
     match heuristic:
         case 'Remaining colors':
             childValue = remainingColorsHeuristic(child)  # Returns heuristic value
-        case 'Most neighbors':
-            childValue = mostNeighborsHeuristic(child)  # Returns heuristic value
+        case 'Remaining cells':
+            childValue = remainingCellsHeuristic(child)  # Returns heuristic value
         case 'Dijkstra distance':
             childValue = dijkstraHeuristic(child)  # Returns heuristic value
     return childValue
 
 #Heurisitca no admisible
-def mostNeighborsHeuristic(child):
+def remainingCellsHeuristic(child):
     return child.getBoard().N ** 2 - child.getBoard().getPlayerCount()
 
 def remainingColorsHeuristic(child):
