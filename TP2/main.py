@@ -12,7 +12,7 @@ def main():
     print(target_color)
 
     # Llamar a función que corra el algoritmo de aprendizaje genético
-    N = 100     # Poblacion 
+    N = 5     # Poblacion 
     # Obtener por input de usuario ? 
     genetic_algorithm(palette, target_color, N)
 

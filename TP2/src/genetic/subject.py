@@ -32,10 +32,9 @@ class Subject:
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if self.color_rgb != other.color_rgb:
+        if self.color_rgb != other.color_rgb or self.fitness != other.fitness:
             return False
         return True
 
     def __hash__(self):
-        return hash(self.color_rgb)
-    
+        return hash(self.fitness)

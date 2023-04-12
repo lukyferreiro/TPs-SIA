@@ -1,5 +1,6 @@
 import numpy as np
 from src.genetic.subject import Subject
+from src.genetic.selection import selector
 
 def genetic_algorithm(palette, target_color, N):
 
@@ -10,15 +11,16 @@ def genetic_algorithm(palette, target_color, N):
     population = [] 
 
     for _ in range(N):
-      population.append(Subject(palette, generation, target_color))
+        population.append(Subject(palette, generation, target_color))
 
     while(not end):
-      print("Generacion numero: " + str(generation))
+        print("Generacion numero: " + str(generation))
 
         # Check si es necesario terminar o no
-        
 
         # Selector
+        parents = selector(population, N, "ELITE")
+        # Print fitness of selected individuals
 
         # Cruza 
 
@@ -26,4 +28,5 @@ def genetic_algorithm(palette, target_color, N):
 
         # Reasignar la population 
         
-     #   generation += 1
+        generation += 1
+        end = True
