@@ -46,6 +46,10 @@ def select_roulette(population, K):
     return np.array(selection)
 
 
+def select_universal(population, N):
+    pass  #TODO
+
+
 def select_tournament(population, K):
     selection = []
     for i in range(K):
