@@ -1,17 +1,22 @@
+import numpy as np
+from src.genetic.subject import Subject
 
 def genetic_algorithm(palette, target_color, N):
 
     end = False
-    iteration = 0 
+    generation = 0 
+    prueba = Subject(palette, generation, target_color)
+
+    population = [] 
+
+    for _ in range(N):
+      population.append(Subject(palette, generation, target_color))
 
     while(not end):
-        print("Iteracion numero: " + str(iteration))
+      print("Generacion numero: " + str(generation))
 
-        # Función que mezcle los colores según los porcentajes 
-        
-
-        
         # Check si es necesario terminar o no
+        
 
         # Selector
 
@@ -21,4 +26,4 @@ def genetic_algorithm(palette, target_color, N):
 
         # Reasignar la population 
         
-        iteration += 1
+     #   generation += 1
