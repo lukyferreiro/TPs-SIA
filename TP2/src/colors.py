@@ -1,17 +1,21 @@
-import numpy as np
-from csv import reader
+import math 
 
 """
 Implementar metodos de combinar colores
 """
 
-def get_palette(path) -> np.ndarray:
-  file = open(path)
-  csvreader = reader(file)
-  colores = []
+#TODO chequear si funciona usar este calculo de distancia https://www.compuphase.com/cmetric.htm
+#en vez de realizar la distancia "normal"
+def get_distance_between_colors(c1, c2):
+  r1, g1, b1 = c1
+  r2, g2, b2 = c2
 
-  for row in csvreader:
-    r, g, b = (int(x) for x in row)
-    colores.append( [r, g, b] )
+  d_r = r1 - r2
+  d_g = g1 - g2
+  d_b = b1 - b2
+  
+  d = math.sqrt( (d_r**2) + (d_g**2) + (d_b**2) )
 
-  return np.array(colores)
+  return d
+
+MAX_DISTANCIA = get_distance_between_colors((0,0,0), (255,255,255))

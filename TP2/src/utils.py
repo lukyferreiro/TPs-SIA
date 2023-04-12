@@ -1,8 +1,16 @@
 import numpy as np
+from csv import reader
 
-"""
-En caso de funciones extras
-"""
+def get_palette(path) -> np.ndarray:
+  file = open(path)
+  csvreader = reader(file)
+  colores = []
+
+  for row in csvreader:
+    r, g, b = (int(x) for x in row)
+    colores.append( [r, g, b] )
+
+  return np.array(colores)
 
 def get_target_color() -> np.ndarray:
 

@@ -1,5 +1,4 @@
-from src.colors import get_palette
-from src.utils import get_target_color
+from src.utils import get_palette, get_target_color
 from src.genetic_algorithm import genetic_algorithm
 
 def main(): 
