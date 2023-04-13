@@ -1,0 +1,11 @@
+{
+    "palette_csv_path": "./src/colores.csv",
+    "population": 100, 
+    "max_generations": 50,
+    "target_color": [255, 255, 0],
+    "selection_method": "ELITE",
+    "crossing_type": "cross",
+    "mutation_type": "",
+    "k": 100,
+    "d_error": 0.01
+}

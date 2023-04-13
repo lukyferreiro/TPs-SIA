@@ -11,18 +11,17 @@ Implementar:
 """
 
 
-def selector(population, N, K, method):
-    match method:
-        case "ELITE":
-            return select_elite(population, N, K)
-        case "ROULETTE":
-            return select_roulette(population, K)
-        case "UNIVERSAL":
-            return select_universal(population, K)
-        case "TOURNAMENT_DETERMINISTIC":
-            return select_tournament_deterministic(population, N, K)
-        case "TOURNAMENT_PROBABILISTIC":
-            return select_tournament_probabilistic(population, K)
+def selector(population, N, K, selection_method):
+    switcher = {
+        "ELITE": select_elite(population, N, K),
+        "ROULETTE": select_roulette(population, K),
+        "UNIVERSAL": select_universal(population, K),
+        "TOURNAMENT_DETERMINISTIC": select_tournament_deterministic(population, N, K),
+        "TOURNAMENT_PROBABILISTIC": select_tournament_probabilistic(population, K)
+    }
+
+    return switcher.get(selection_method, "Selection method not valid")
+        
 
 """
 Seleccionar K individuos de un conjunto de tamaño N, los ordena según el fitness

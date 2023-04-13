@@ -2,7 +2,7 @@ import numpy as np
 from src.genetic.subject import Subject
 from src.genetic.selection import selector
 
-def genetic_algorithm(palette, target_color, N):
+def genetic_algorithm(palette, target_color, population, data):
 
     end = False
     generation = 0 

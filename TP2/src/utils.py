@@ -10,19 +10,18 @@ def get_palette(path) -> np.ndarray:
     r, g, b = (int(x) for x in row)
     colores.append( [r, g, b] )
 
-  return np.array(colores)
+  return np.array(colores)   
 
-def get_target_color() -> np.ndarray:
-
-    print("Ingrese el color objetivo en formato RGB:")
-    R = input("R: ")
-    while not R.isdigit() or int(R) < 0 or int(R) > 255:
-        R = input("Proporcion invalida\nR:")
-    G = input("G: ")
-    while not G.isdigit() or int(G) < 0 or int(G) > 255:
-        G = input("Proporcion invalida\nG:")
-    B = input("B: ")
-    while not B.isdigit() or int(B) < 0 or int(B) > 255:
-        B = input("Proporcion invalida\nB:")
+def check_target_color(color):
+    
+    for i in range(len(color)):
+       if not type(color[i])==int or color[i] < 0 or color[i] > 255:
+          raise ValueError("The target color must be a number between 0 and 255 ")
   
-    return np.array([int(R),int(G),int(B)])
+    return color 
+
+def check_positivity(num):
+   if not type(num) == int or num < 0:
+      raise ValueError("An invalid data on config was assigned")
+   
+   return num
