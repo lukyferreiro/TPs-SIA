@@ -11,53 +11,98 @@ Implementar:
 """
 
 
-def selector(population, N, method):
+def selector(population, N, K, method):
     match method:
         case "ELITE":
-            return select_elite(population, N)
+            return select_elite(population, N, K)
         case "ROULETTE":
-            return select_roulette(population, N)
+            return select_roulette(population, K)
         case "UNIVERSAL":
-            return select_universal(population, N)
+            return select_universal(population, K)
         case "TOURNAMENT":
-            return select_tournament(population, N)
+            return select_tournament(population, N, K)
 
+"""
+Seleccionar K individuos de un conjunto de tamaño N, los ordena según el fitness
+y elije cada uno n(i) veces, según la siguiente formula:
 
-def select_elite(population, K):
-    sorted_subjects = sorted(population, key=lambda x: x.fitness, reverse=True)
-    return sorted_subjects[:K]
+n(i) = ⌈ K-i/N ⌉
 
+"""
+def select_elite(population, N, K):
 
+    idx = np.random.default_rng().choice(len(population), size=K, replace=False)
+    selection = sorted(population[idx], key=lambda x: x.fitness, reverse=True)
+    #TODO hacer "elije cada uno n(i) veces, según n(i) = ⌈ K-i/N ⌉" 
+    # Quien es "i" ????
+    return selection
+
+"""
+Calcular aptitudes relativas pj y las aptitudes relativas acumuladas q_i 
+Se generan K números aleatorios y se seleccionan los K individuos x_i que cumplen:
+
+q_{i-1} < rj <= qi      Donde rj <-- UniformRandom[0,1)
+
+"""
 def select_roulette(population, K):
-    sorted_subjects = sorted(population, key=lambda x: x.get_fitness(), reverse=True)
-    fitness = np.array([subject.get_fitness() for subject in sorted_subjects])
+    fitness = np.array([subject.get_fitness() for subject in population])
     sum_fitness = np.sum(fitness)
 
-    ps = fitness / sum_fitness
-    qs = np.cumsum(ps)
-    rs = np.random.uniform(0., 1., size=(K,))
+    ps = fitness / sum_fitness      #Aptitudes relativas
+    qs = np.cumsum(ps)              #Aptitudes relativas acumuladas
+    rs = np.random.default_rng().uniform(0., 1., size=(K,))
 
     selection = []
     for ri in rs:
         for i in range(len(qs)):
-            if qs[i - 1] < ri <= qs[i]:
-                selection.append(sorted_subjects[i])
+            if qs[i-1] < ri <= qs[i]:
+                selection.append(population[i])
+                #TODO, si ya lo encuentra, que no siga recorriendo el 2do for
 
     return np.array(selection)
 
+"""
+Igual que en ruleta, pero la forma de calcular los rj es la siguiente:
 
-def select_universal(population, N):
-    pass  #TODO
+rj = r+j/K      Donde rj <-- UniformRandom[0,1) y j en [0,(K-1)]
 
+"""
+def select_universal(population, K):
+    fitness = np.array([subject.get_fitness() for subject in population])
+    sum_fitness = np.sum(fitness)
 
-def select_tournament(population, K):
+    ps = fitness / sum_fitness      #Aptitudes relativas
+    qs = np.cumsum(ps)              #Aptitudes relativas acumuladas
+    
+    r = np.random.default_rng().uniform(0., 1.)
+    rj_array = []
+    for j in range(len(K-1)):
+        rj_aux = (r+j)/K
+        rj_array.append(rj_aux)
+
     selection = []
-    for i in range(K):
-        # Seleccionar dos individuos al azar de la población
-        idx = np.random.choice(len(population), size=2, replace=False)
+    for rj in rj_array:
+        for i in range(len(qs)):
+            if qs[i-1] < rj <= qs[i]:
+                selection.append(population[i])
+                #TODO, si ya lo encuentra, que no siga recorriendo el 2do for
+
+    return np.array(selection)
+
+"""
+1. De la población de tamaño N, se eligen M individuos al azar.
+2. De los M individuos, se elige el mejor.
+3. Se repite el proceso hasta conseguir los K individuos que se precisan.
+"""
+def select_tournament(population, N, K):
+    M = np.random.default_rng().uniform(1., N)
+    selection = []
+    for _ in range(K):
+        # Seleccionar M individuos al azar de la población
+        idx = np.random.default_rng().choice(len(population), size=M, replace=False)
         competitors = population[idx]
 
-        # Seleccionar al ganador como el individuo con la mayor aptitud
+        # Seleccionar de los M individuos al ganador (mayor aptitud)
         winner = max(competitors, key=lambda subject: subject.get_fitness())
         selection.append(winner)
 

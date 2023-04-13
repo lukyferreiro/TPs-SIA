@@ -17,9 +17,10 @@ def genetic_algorithm(palette, target_color, N):
         print("Generacion numero: " + str(generation))
 
         # Check si es necesario terminar o no
-
+        
+        K = 10  #TODO agregar al config.json
         # Selector
-        parents = selector(population, N, "ELITE")
+        parents = selector(population, N, K, "ELITE")
         # Print fitness of selected individuals
 
         # Cruza 
