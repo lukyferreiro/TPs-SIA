@@ -27,11 +27,11 @@ def main():
 
     palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, k, d_error = destructre_data(data)
 
-    print(f"-------------TP2-------------\n"
+    print("-------------TP2-------------\n"
           "Paleta de colores\n"
-          "{palette}\n"
+          f"{palette}\n"
           "Color deseado\n"
-          "{target_color}"
+          f"{target_color}"
           )
 
     #todo: ver despues que sera necesario pasarle a genetic_algorithm
