@@ -3,9 +3,18 @@
     "population": 100, 
     "max_generations": 50,
     "target_color": [255, 255, 0],
-    "selection_method": "ELITE",
-    "crossing_type": "cross",
-    "mutation_type": "",
+    "selection_method": "ELITE", 
+    "crossing_type": "ONE_POINT",       
+    "mutation_type": "",            
     "k": 100,
-    "d_error": 0.01
+    "d_error": 0.01,
+    "selection_options": [
+        "ELITE", "ROULETTE", "UNIVERSAL", "TOURNAMENT_DETERMINISTIC", "TOURNAMENT_PROBABILISTIC"
+    ],
+    "crossing_options": [
+        "ONE_POINT", "DOUBLE_POINT", "ANGULAR", "UNIFORM"
+    ],
+    "mutation_options": [
+
+    ]
 }

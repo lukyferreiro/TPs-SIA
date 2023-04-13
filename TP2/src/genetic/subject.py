@@ -2,8 +2,12 @@ import numpy as np
 from src.colors import get_distance_between_colors, MAX_DISTANCE, mix_color
 
 class Subject:
-    def __init__(self, palette, generation, target_color):
-        self.color_proportions = np.random.default_rng().uniform(0., 1., size=(len(palette)))
+    def __init__(self, palette, generation, target_color, color_proportions):
+        if (generation == 0):
+            self.color_proportions = np.random.default_rng().uniform(0., 1., size=(len(palette)))
+        else:
+            self.color_proportions = color_proportions
+            
         self.color_rgb = mix_color(self.color_proportions, palette)
         self.generation = generation
         self.fitness = self.calculate_fitness(target_color)

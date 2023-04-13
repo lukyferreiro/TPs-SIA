@@ -1,29 +1,33 @@
 import numpy as np
 from src.genetic.subject import Subject
 from src.genetic.selection import selector
+from src.genetic.crossover import crossover
 
-def genetic_algorithm(palette, target_color, population, data):
-
+def genetic_algorithm(palette, N, max_generations, target_color, selection_method, crossing_type, mutation_type, K, d_error):
     end = False
     generation = 0 
-    prueba = Subject(palette, generation, target_color)
 
     population = [] 
 
     for _ in range(N):
-        population.append(Subject(palette, generation, target_color))
+        population.append(Subject(palette, generation, target_color, None))
+
+    for i in range(N):
+        print(population[i].get_color_proportions())
 
     while(not end):
         print("Generacion numero: " + str(generation))
 
         # Check si es necesario terminar o no
         
-        K = 10  #TODO agregar al config.json
-        # Selector
-        parents = selector(population, N, K, "ELITE")
+        parents = selector(population, N, K, selection_method)
         # Print fitness of selected individuals
 
         # Cruza 
+        children = crossover(parents, crossing_type, palette, target_color)
+
+        for i in range(N):
+            print(children[i].get_color_proportions())
 
         # Mutar
 

@@ -1,16 +1,5 @@
 import numpy as np
 
-"""
-Implementar:
-    --Elite
-    --Por ruleta
-    --Universal
-    --Torneos
-    --Por ranking
-    --Boltzmann
-"""
-
-
 def selector(population, N, K, selection_method):
     switcher = {
         "ELITE": select_elite(population, N, K),
@@ -20,27 +9,22 @@ def selector(population, N, K, selection_method):
         "TOURNAMENT_PROBABILISTIC": select_tournament_probabilistic(population, K)
     }
 
-    return switcher.get(selection_method, "Selection method not valid")
+    return switcher.get(selection_method, "Metodo de seleccion invalido")
         
 
 """
 Seleccionar K individuos de un conjunto de tamaño N, los ordena según el fitness
-y elije cada uno n(i) veces, según la siguiente formula:
-
-n(i) = ⌈ K-i/N ⌉
+y elije cada uno n(i) veces, según n(i) = ⌈ K-i/N ⌉
 
 """
 def select_elite(population, N, K):
+    sorted_pop = sorted(population, key=lambda x: x.fitness, reverse=True)
 
-    idx = np.random.default_rng().choice(len(population), size=K, replace=False)
-    selection = sorted(population[idx], key=lambda x: x.fitness, reverse=True)
-    #TODO hacer "elije cada uno n(i) veces, según n(i) = ⌈ K-i/N ⌉" 
-    # Quien es "i" ????
-    return selection
+    return sorted_pop[:K]
 
 """
-Calcular aptitudes relativas pj y las aptitudes relativas acumuladas q_i 
-Se generan K números aleatorios y se seleccionan los K individuos x_i que cumplen:
+Calcular aptitudes relativas pj y las aptitudes relativas acumuladas qi 
+Se generan K números aleatorios y se seleccionan los K individuos xi que cumplen:
 
 q_{i-1} < rj <= qi      Donde rj <-- UniformRandom[0,1)
 
@@ -58,7 +42,7 @@ def select_roulette(population, K):
         for i in range(len(qs)):
             if qs[i-1] < ri <= qs[i]:
                 selection.append(population[i])
-                #TODO, si ya lo encuentra, que no siga recorriendo el 2do for
+                break
 
     return np.array(selection)
 
@@ -86,7 +70,7 @@ def select_universal(population, K):
         for i in range(len(qs)):
             if qs[i-1] < rj <= qs[i]:
                 selection.append(population[i])
-                #TODO, si ya lo encuentra, que no siga recorriendo el 2do for
+                break
 
     return np.array(selection)
 

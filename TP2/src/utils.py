@@ -25,3 +25,21 @@ def check_positivity(num):
       raise ValueError("An invalid data on config was assigned")
    
    return num
+
+def destructure_data(data):
+    palette = get_palette(data['palette_csv_path'])
+    population = check_positivity(data['population'])
+    max_generations= check_positivity(data['max_generations'])
+    target_color = check_target_color(data['target_color'])
+    selection_method = data['selection_method']
+    crossing_type = data['crossing_type']
+    mutation_type = data['mutation_type']
+    k = check_positivity(data['k'])
+    
+    if not type(data['d_error']) == float or data['d_error'] < 0:
+        raise ValueError("Delta error must by a positive float")
+    else:
+        d_error = data['d_error']
+    
+
+    return palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, k, d_error
