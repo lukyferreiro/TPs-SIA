@@ -34,6 +34,7 @@ def destructure_data(data):
     selection_method = data['selection_method']
     crossing_type = data['crossing_type']
     mutation_type = data['mutation_type']
+    mutation_pm = data['mutation_pm']
     k = check_positivity(data['k'])
     
     if not type(data['d_error']) == float or data['d_error'] < 0:
@@ -42,4 +43,4 @@ def destructure_data(data):
         d_error = data['d_error']
     
 
-    return palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, k, d_error
+    return palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, mutation_pm, k, d_error

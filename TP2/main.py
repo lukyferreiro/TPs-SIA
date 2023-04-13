@@ -7,7 +7,7 @@ def main():
     with open('./config.json', 'r') as f:
         data = json.load(f)
 
-    palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, k, d_error = destructure_data(data)
+    palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, mutation_pm, k, d_error = destructure_data(data)
 
     print("-------------TP2-------------\n"
           "Paleta de colores\n"
@@ -17,7 +17,7 @@ def main():
           )
 
     #todo: ver despues que sera necesario pasarle a genetic_algorithm
-    genetic_algorithm( palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, k, d_error)
+    genetic_algorithm( palette, population, max_generations, target_color, selection_method, crossing_type, mutation_type, mutation_pm, k, d_error)
 
 if __name__ == "__main__":
     main()

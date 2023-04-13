@@ -5,7 +5,8 @@
     "target_color": [255, 255, 0],
     "selection_method": "ELITE", 
     "crossing_type": "ONE_POINT",       
-    "mutation_type": "",            
+    "mutation_type": "ONE_GEN",   
+    "mutation_pm": 0.5,
     "k": 100,
     "d_error": 0.01,
     "selection_options": [
@@ -15,6 +16,6 @@
         "ONE_POINT", "DOUBLE_POINT", "ANGULAR", "UNIFORM"
     ],
     "mutation_options": [
-
+        "ONE_GEN", "MULTIGEN_LIMITED", "MULTIGEN_UNIFORM", "COMPLETE"
     ]
 }

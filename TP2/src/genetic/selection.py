@@ -20,7 +20,11 @@ y elije cada uno n(i) veces, según n(i) = ⌈ K-i/N ⌉
 def select_elite(population, N, K):
     sorted_pop = sorted(population, key=lambda x: x.fitness, reverse=True)
 
-    return sorted_pop[:K]
+    if (K < N):
+        return sorted_pop[:K]
+    else:
+        # TODO: Agregar función que contatene n veces los distintos subjects
+        return sorted_pop[:K]
 
 """
 Calcular aptitudes relativas pj y las aptitudes relativas acumuladas qi 
