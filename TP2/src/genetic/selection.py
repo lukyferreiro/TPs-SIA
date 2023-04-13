@@ -19,8 +19,10 @@ def selector(population, N, K, method):
             return select_roulette(population, K)
         case "UNIVERSAL":
             return select_universal(population, K)
-        case "TOURNAMENT":
-            return select_tournament(population, N, K)
+        case "TOURNAMENT_DETERMINISTIC":
+            return select_tournament_deterministic(population, N, K)
+        case "TOURNAMENT_PROBABILISTIC":
+            return select_tournament_probabilistic(population, K)
 
 """
 Seleccionar K individuos de un conjunto de tamaño N, los ordena según el fitness
@@ -94,7 +96,7 @@ def select_universal(population, K):
 2. De los M individuos, se elige el mejor.
 3. Se repite el proceso hasta conseguir los K individuos que se precisan.
 """
-def select_tournament(population, N, K):
+def select_tournament_deterministic(population, N, K):
     M = np.random.default_rng().uniform(1., N)
     selection = []
     for _ in range(K):
@@ -104,6 +106,34 @@ def select_tournament(population, N, K):
 
         # Seleccionar de los M individuos al ganador (mayor aptitud)
         winner = max(competitors, key=lambda subject: subject.get_fitness())
+        selection.append(winner)
+
+    return np.array(selection)
+
+
+"""
+1. Se elige un valor de Threshold en [0.5, 1] aleatorio.
+2. De la población de tamaño N, se eligen 2 individuos al azar.
+3. Se toma un valor r al azar uniformemente en [0,1].
+    1. Si r < Threshold se selecciona el más apto.
+    2. Caso contrario, se selecciona el menos apto.
+4. Se repite el proceso hasta conseguir los K individuos que se precisan.
+"""
+def select_tournament_probabilistic(population, K):
+    threshold = np.random.default_rng().uniform(0.5, 1.)
+    selection = []
+    for _ in range(K):
+        # Seleccionar 2 individuos al azar de la población
+        idx = np.random.default_rng().choice(len(population), size=2, replace=False)
+        competitors = population[idx]
+
+        r = np.random.default_rng().uniform(0., 1.)
+
+        if(r < threshold):
+            winner = max(competitors, key=lambda subject: subject.get_fitness())
+        else:
+            winner = min(competitors, key=lambda subject: subject.get_fitness())
+        
         selection.append(winner)
 
     return np.array(selection)
