@@ -49,7 +49,7 @@ A continuacion se detalla en una tabla las posibles variables, su obligatoriedad
 | K                 | Siempre                 | Numero natural que representa la cantidad de individuos a seleccionar           |
 | max_generations   | Opcional                | Numero natural que representa la cantidad maxima de generaciones a esperar hasta obtener la solucion   |       
 | d_error           | Opcional                | Numero real entre (0,1) que representa el error minimo entre el individuo mas apto y el color objetivo |
-| time              | Opcional                | Numero natural que representa el tiempo maximo a esperar la solucion            |
+| time              | Opcional                | Numero natural que representa el tiempo maximo en segundos a esperar la solucion  |
 | selection_options | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de seleccion implementados                   |
 | crossing_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de cruza implementados                       |
 | mutation_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de mutacion implementados                    |
@@ -72,7 +72,7 @@ Nota: max_generations, d_error y time son las condiciones de corte y es obligato
     "K": 100,
     "max_generations": 1000,
     "d_error": 0.01,
-    "time": 10000000,
+    "time": 60,
     "selection_options": [
         "ELITE", "ROULETTE", "UNIVERSAL", "TOURNAMENT_DETERMINISTIC", "TOURNAMENT_PROBABILISTIC"
     ],

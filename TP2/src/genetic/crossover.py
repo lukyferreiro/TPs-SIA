@@ -29,16 +29,14 @@ P=[0,S-1]
 def cross_one_point(parent1, parent2, palette, target_color):
     color_props1 = parent1.get_color_proportions()
     color_props2 = parent2.get_color_proportions()
-    generation = parent1.get_generation() + 1 
-
     S = len(color_props1)
     P = np.random.default_rng().integers(0, S-1)
 
     child1_props = np.concatenate((color_props1[:P], color_props2[P:]), axis=0)
     child2_props = np.concatenate((color_props2[:P], color_props1[P:]), axis=0)
 
-    child1 = Subject(palette, generation, target_color, child1_props)
-    child2 = Subject(palette, generation, target_color, child2_props)
+    child1 = Subject(palette, target_color, child1_props)
+    child2 = Subject(palette, target_color, child2_props)
 
     return child1, child2
 
@@ -51,7 +49,6 @@ P_1=[0,S-1]  P_2=[0,S-1] ; P_1 <= P_2
 def cross_double_point(parent1, parent2, palette, target_color):
     color_props1 = parent1.get_color_proportions()
     color_props2 = parent2.get_color_proportions()
-    generation = parent1.get_generation() + 1 
 
     S = len(color_props1)
     P1, P2 = np.sort(np.random.default_rng().integers(0, S-1, size=2))
@@ -59,8 +56,8 @@ def cross_double_point(parent1, parent2, palette, target_color):
     child1_props = np.concatenate((color_props1[:P1], color_props2[P1:P2], color_props1[P2:]), axis=0)
     child2_props = np.concatenate((color_props2[:P1], color_props1[P1:P2], color_props2[P2:]), axis=0)
 
-    child1 = Subject(palette, generation, target_color, child1_props)
-    child2 = Subject(palette, generation, target_color, child2_props)
+    child1 = Subject(palette, target_color, child1_props)
+    child2 = Subject(palette, target_color, child2_props)
 
     return child1, child2
 
@@ -73,7 +70,6 @@ P=[0,S-1] L=[0, ⌈ S/2 ⌉]
 def cross_angular(parent1, parent2, palette, target_color):
     color_props1 = parent1.get_color_proportions()
     color_props2 = parent2.get_color_proportions()
-    generation = parent1.get_generation() + 1 
 
     S = len(color_props1)
     L = np.random.default_rng().integers(0, math.ceil(S/2))
@@ -87,8 +83,8 @@ def cross_angular(parent1, parent2, palette, target_color):
         child1_props = np.concatenate((color_props1[:P], color_props2[P:P+L], color_props1[P+L:]), axis=0)
         child2_props = np.concatenate((color_props2[:P], color_props1[P:P+L], color_props2[P+L:]), axis=0)
     
-    child1 = Subject(palette, generation, target_color, child1_props)
-    child2 = Subject(palette, generation, target_color, child2_props)
+    child1 = Subject(palette, target_color, child1_props)
+    child2 = Subject(palette, target_color, child2_props)
 
     return child1, child2
 
@@ -103,7 +99,6 @@ def cross_uniform(parent1, parent2, palette, target_color):
     color_props2 = parent2.get_color_proportions()
     length = len(color_props1)
     
-    generation = parent1.get_generation() + 1
     ps = np.random.default_rng().uniform(0., 1., size=length)
   
     child1_props = []
@@ -116,7 +111,7 @@ def cross_uniform(parent1, parent2, palette, target_color):
             child1_props.append(color_props1[i])
             child2_props.append(color_props2[i])
 
-    child1 = Subject(palette, generation, target_color, child1_props)
-    child2 = Subject(palette, generation, target_color, child2_props)
+    child1 = Subject(palette, target_color, child1_props)
+    child2 = Subject(palette, target_color, child2_props)
 
     return child1, child2

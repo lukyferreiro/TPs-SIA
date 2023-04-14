@@ -10,7 +10,7 @@
     "K": 100,
     "max_generations": 1000,
     "d_error": 0.01,
-    "time": 10000000,
+    "time": 60,
     "selection_options": [
         "ELITE", "ROULETTE", "UNIVERSAL", "TOURNAMENT_DETERMINISTIC", "TOURNAMENT_PROBABILISTIC"
     ],

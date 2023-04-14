@@ -1,9 +1,5 @@
 import numpy as np
 from csv import reader
-import time
-
-def currentMilliTime():
-    return round(time.time() * 1000)
 
 def get_palette(path) -> np.ndarray:
   file = open(path)
