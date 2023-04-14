@@ -34,9 +34,11 @@ def cross_one_point(parent1, parent2, palette, target_color):
     S = len(color_props1)
     P = np.random.default_rng().integers(0, S-1)
 
+    child1_props = np.concatenate((color_props1[:P], color_props2[P:]), axis=0)
+    child2_props = np.concatenate((color_props2[:P], color_props1[P:]), axis=0)
 
-    child1 = Subject(palette, generation, target_color, [color_props1[:P], color_props2[P:]])
-    child2 = Subject(palette, generation, target_color, [color_props2[:P], color_props1[P:]])
+    child1 = Subject(palette, generation, target_color, child1_props)
+    child2 = Subject(palette, generation, target_color, child2_props)
 
     return child1, child2
 
@@ -54,8 +56,11 @@ def cross_double_point(parent1, parent2, palette, target_color):
     S = len(color_props1)
     P1, P2 = np.sort(np.random.default_rng().integers(0, S-1, size=2))
 
-    child1 = Subject(palette, generation, target_color, [color_props1[:P1], color_props2[P1:P2], color_props1[P2:]])
-    child2 = Subject(palette, generation, target_color, [color_props2[:P1], color_props1[P1:P2], color_props2[P2:]])
+    child1_props = np.concatenate((color_props1[:P1], color_props2[P1:P2], color_props1[P2:]), axis=0)
+    child2_props = np.concatenate((color_props2[:P1], color_props1[P1:P2], color_props2[P2:]), axis=0)
+
+    child1 = Subject(palette, generation, target_color, child1_props)
+    child2 = Subject(palette, generation, target_color, child2_props)
 
     return child1, child2
 

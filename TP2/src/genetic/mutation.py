@@ -10,6 +10,14 @@ def mutator(children, mutation_method, mutation_pm):
 
     return switcher.get(mutation_method, "Metodo de mutacion invalido")
 
+# Función que realmente modifica el valor del cromosoma pedido
+def mutate_gen(gen):
+    u = gen * 0.5  
+    delta = np.random.default_rng().uniform(-u, u)
+
+    # Podría ser delta directo 
+    return gen + delta if gen + delta < 1 else 1 
+
 """
 Se altera un solo gen con una probabilidad Pm
 """
@@ -22,7 +30,7 @@ def mutate_one_gen(children, mutation_pm):
         idx = np.random.default_rng().integers(0, gen_length-1)
         mutate = np.random.default_rng().uniform(0, 1)
         if (mutate < mutation_pm):
-            children[i].get_color_proportions()[idx] = mutate(children[i].get_color_proportions()[idx])
+            children[i].get_color_proportions()[idx] = mutate_gen(children[i].get_color_proportions()[idx])
 
     return children
 
@@ -41,7 +49,7 @@ def mutate_multigen_limited(children, mutation_pm):
             mutate = np.random.default_rng().uniform(0, 1)
             #change to choice
             if (mutate < mutation_pm):
-                color_props[j] = mutate(color_props[j])
+                color_props[j] = mutate_gen(color_props[j])
 
     return children
 
@@ -59,7 +67,7 @@ def mutate_multigen_uniform(children, mutation_pm):
         for j in range(gen_length):
             mutate = np.random.default_rng().uniform(0, 1)
             if (mutate < mutation_pm):
-                color_props[j] = mutate(color_props[j])
+                color_props[j] = mutate_gen(color_props[j])
 
     return children
 
@@ -76,14 +84,6 @@ def mutate_complete(children, mutation_pm):
 
         if (mutate < mutation_pm):
             for j in range(gen_length):
-                    color_props[j] = mutate(color_props[j])
+                    color_props[j] = mutate_gen(color_props[j])
 
     return children
-
-# Función que realmente modifica el valor del cromosoma pedido
-def mutate(gen):
-    u = gen * 0.5  
-    delta = np.random.default_rng().uniform(-u, u)
-
-    # Podría ser delta directo 
-    return gen + delta if gen + delta < 1 else 1 

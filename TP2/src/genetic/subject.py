@@ -42,3 +42,9 @@ class Subject:
 
     def __hash__(self):
         return hash(self.fitness)
+    
+    def __str__(self) -> str:
+        return "Sujeto: \n--Proporciones: " + str(self.color_proportions) + " \n--RGB: " + str(self.color_rgb) + " \n--Generacion: " + str(self.generation) + " \n--Aptitud: " + str(self.fitness) + '\n'
+
+    def __repr__(self) -> str:
+        return self.__str__()

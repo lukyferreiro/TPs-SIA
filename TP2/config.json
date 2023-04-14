@@ -1,6 +1,6 @@
 {
     "palette_csv_path": "./src/colores.csv",
-    "population": 100, 
+    "N": 100, 
     "target_color": [255, 255, 0],
     "selection_type": "ELITE", 
     "crossing_type": "ONE_POINT",       

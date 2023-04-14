@@ -65,7 +65,7 @@ def select_universal(population, K):
     
     r = np.random.default_rng().uniform(0., 1.)
     rj_array = []
-    for j in range(len(K-1)):
+    for j in range(K-1):
         rj_aux = (r+j)/K
         rj_array.append(rj_aux)
 
@@ -84,12 +84,13 @@ def select_universal(population, K):
 3. Se repite el proceso hasta conseguir los K individuos que se precisan.
 """
 def select_tournament_deterministic(population, N, K):
-    M = np.random.default_rng().uniform(1., N)
+    M = np.random.default_rng().choice(range(1, N))
+    population_count = len(population)
     selection = []
     for _ in range(K):
         # Seleccionar M individuos al azar de la población
-        idx = np.random.default_rng().choice(len(population), size=M, replace=False)
-        competitors = population[idx]
+        idx = np.random.default_rng().choice(range(population_count), size=M, replace=False)
+        competitors = [population[i] for i in idx]
 
         # Seleccionar de los M individuos al ganador (mayor aptitud)
         winner = max(competitors, key=lambda subject: subject.get_fitness())
@@ -108,11 +109,12 @@ def select_tournament_deterministic(population, N, K):
 """
 def select_tournament_probabilistic(population, K):
     threshold = np.random.default_rng().uniform(0.5, 1.)
+    population_count = len(population)
     selection = []
     for _ in range(K):
         # Seleccionar 2 individuos al azar de la población
-        idx = np.random.default_rng().choice(len(population), size=2, replace=False)
-        competitors = population[idx]
+        idx = np.random.default_rng().choice(range(population_count), size=2, replace=False)
+        competitors = [population[i] for i in idx]
 
         r = np.random.default_rng().uniform(0., 1.)
 

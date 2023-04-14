@@ -39,7 +39,7 @@ A continuacion se detalla en una tabla las posibles variables, su obligatoriedad
 | Variables         | Casos de uso            | Descripción                                                          
 |-------------------|-------------------------|---------------------------------------------------------------------------------|
 | palette_csv_path  | Siempre                 | String al path del archivo csv (desde main.py) con la paleta de colores         |
-| population        | Siempre                 | Numero natural que representa la poblacion inical                               | 
+| N                 | Siempre                 | Numero natural que representa la poblacion inical                               | 
 | target_color      | Siempre                 | Arreglo [R,G,B], con 0 <= R,G,B <= 255 que representa el color objetivo         | 
 | selection_method  | Siempre                 | Metodo de seleccion a usar. Debe ser alguno de los valores de selection_options | 
 | crossing_type     | Siempre                 | Metodo de cruza a usar. Debe ser alguno de los valores de crossing_options      | 
@@ -53,7 +53,7 @@ A continuacion se detalla en una tabla las posibles variables, su obligatoriedad
 | crossing_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de cruza implementados                       |
 | mutation_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de mutacion implementados                    |
 
-Nota: max_generations, d_error y time son las condiciones de corte. Es obligatorio especificar al menos 1 de los 3 posibles valores de corte
+Nota: max_generations, d_error y time son las condiciones de corte y es obligatorio especificar al menos 1 de los 3 posibles valores.
 
 ### Ejemplo de config.json
 
