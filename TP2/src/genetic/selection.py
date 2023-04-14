@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 def selector(population, N, K, selection_type):
     switcher = {
@@ -20,11 +21,15 @@ y elije cada uno n(i) veces, según n(i) = ⌈ K-i/N ⌉
 def select_elite(population, N, K):
     sorted_pop = sorted(population, key=lambda x: x.fitness, reverse=True)
 
-    if (K < N):
+    if (K <= N):
         return sorted_pop[:K]
     else:
-        # TODO: Agregar función que contatene n veces los distintos subjects
-        return sorted_pop[:K]
+        repeated_pop = []
+        for i in range(K):
+            repetitions = math.ceil((K - i) / N)
+            for _ in range(repetitions):
+                repeated_pop.append(sorted_pop[i])
+        return repeated_pop
 
 """
 Calcular aptitudes relativas pj y las aptitudes relativas acumuladas qi 
@@ -81,13 +86,14 @@ def select_universal(population, K):
 """
 1. De la población de tamaño N, se eligen M individuos al azar.
 2. De los M individuos, se elige el mejor.
-3. Se repite el proceso hasta conseguir los K individuos que se precisan.
+3. Se repite el proceso 1. hasta conseguir los K individuos que se precisan.
 """
 def select_tournament_deterministic(population, N, K):
-    M = np.random.default_rng().choice(range(1, N))
     population_count = len(population)
     selection = []
     for _ in range(K):
+        M = np.random.default_rng().choice(range(1, N))
+
         # Seleccionar M individuos al azar de la población
         idx = np.random.default_rng().choice(range(population_count), size=M, replace=False)
         competitors = [population[i] for i in idx]

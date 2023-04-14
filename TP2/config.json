@@ -7,9 +7,9 @@
     "mutation_type": "ONE_GEN",   
     "mutation_pm": 0.5,
     "K": 100,
-    "max_generations": 50,
+    "max_generations": 1000,
     "d_error": 0.01,
-    "time": 10000,
+    "time": 1000000,
     "selection_options": [
         "ELITE", "ROULETTE", "UNIVERSAL", "TOURNAMENT_DETERMINISTIC", "TOURNAMENT_PROBABILISTIC"
     ],

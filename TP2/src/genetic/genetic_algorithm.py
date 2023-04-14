@@ -29,7 +29,6 @@ def genetic_algorithm(palette, N, target_color, selection_type,
         end = check_finished(population, max_generations, d_error, time, current_time)
         
         parents = selector(population, N, K, selection_type)
-        # Print fitness of selected individuals
 
         # Cruza 
         children = crossover(parents, crossing_type, palette, target_color)

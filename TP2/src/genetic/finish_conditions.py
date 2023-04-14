@@ -5,6 +5,7 @@ def check_finished(population, max_generations, d_error, time, current_time):
   sorted_pop = sorted(population, key=lambda x: x.fitness, reverse=True)
   best_subject = sorted_pop[0]
 
+  print("---------Mejor sujeto---------")
   print(best_subject)
 
   if ( best_subject.generation >= max_generations
