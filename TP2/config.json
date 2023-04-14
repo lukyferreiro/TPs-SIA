@@ -1,14 +1,15 @@
 {
     "palette_csv_path": "./src/colores.csv",
     "population": 100, 
-    "max_generations": 50,
     "target_color": [255, 255, 0],
-    "selection_method": "ELITE", 
+    "selection_type": "ELITE", 
     "crossing_type": "ONE_POINT",       
     "mutation_type": "ONE_GEN",   
     "mutation_pm": 0.5,
-    "k": 100,
+    "K": 100,
+    "max_generations": 50,
     "d_error": 0.01,
+    "time": 10000,
     "selection_options": [
         "ELITE", "ROULETTE", "UNIVERSAL", "TOURNAMENT_DETERMINISTIC", "TOURNAMENT_PROBABILISTIC"
     ],

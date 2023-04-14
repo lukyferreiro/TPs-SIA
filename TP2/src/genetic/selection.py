@@ -1,6 +1,6 @@
 import numpy as np
 
-def selector(population, N, K, selection_method):
+def selector(population, N, K, selection_type):
     switcher = {
         "ELITE": select_elite(population, N, K),
         "ROULETTE": select_roulette(population, K),
@@ -9,7 +9,7 @@ def selector(population, N, K, selection_method):
         "TOURNAMENT_PROBABILISTIC": select_tournament_probabilistic(population, K)
     }
 
-    return switcher.get(selection_method, "Metodo de seleccion invalido")
+    return switcher.get(selection_type, "Metodo de seleccion invalido")
         
 
 """

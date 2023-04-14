@@ -4,12 +4,14 @@ from src.genetic.selection import selector
 from src.genetic.mutation import mutator
 from src.genetic.crossover import crossover
 
-def genetic_algorithm(palette, N, max_generations, target_color, selection_method, crossing_type, mutation_type, mutation_pm, K, d_error):
+def genetic_algorithm(palette, N, target_color, selection_type,
+                      crossing_type, mutation_type, mutation_pm,
+                      K, max_generations, d_error, time):
+    
     end = False
     generation = 0 
 
     population = [] 
-
     for _ in range(N):
         population.append(Subject(palette, generation, target_color, None))
 
@@ -21,7 +23,7 @@ def genetic_algorithm(palette, N, max_generations, target_color, selection_metho
 
         # Check si es necesario terminar o no
         
-        parents = selector(population, N, K, selection_method)
+        parents = selector(population, N, K, selection_type)
         # Print fitness of selected individuals
 
         # Cruza 
