@@ -63,7 +63,7 @@ def mutate_multigen_uniform(children, mutation_pm):
     for i in range(children_len):
         color_props = children[i].get_color_proportions()
 
-        # Muto todos con posibilidad de 
+        # Muto todos con posibilidad Pm
         for j in range(gen_length):
             mutate = np.random.default_rng().uniform(0, 1)
             if (mutate < mutation_pm):
@@ -72,7 +72,7 @@ def mutate_multigen_uniform(children, mutation_pm):
     return children
 
 """
-Con una probabilidad Pm se mutan todos los genes del individuo, acorde a la función de mutación definida para cada gen.
+Con una probabilidad Pm se mutan todos los genes del individuo.
 """
 def mutate_complete(children, mutation_pm):
     children_len = len(children)

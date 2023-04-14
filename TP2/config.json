@@ -6,10 +6,11 @@
     "crossing_type": "ONE_POINT",       
     "mutation_type": "ONE_GEN",   
     "mutation_pm": 0.5,
+    "select_new_generation_type": "USE_ALL",
     "K": 100,
     "max_generations": 1000,
     "d_error": 0.01,
-    "time": 1000000,
+    "time": 10000000,
     "selection_options": [
         "ELITE", "ROULETTE", "UNIVERSAL", "TOURNAMENT_DETERMINISTIC", "TOURNAMENT_PROBABILISTIC"
     ],
@@ -18,5 +19,8 @@
     ],
     "mutation_options": [
         "ONE_GEN", "MULTIGEN_LIMITED", "MULTIGEN_UNIFORM", "COMPLETE"
+    ],
+    "select_new_generation_options": [
+        "USE_ALL", "NEW_OVER_ACTUAL"
     ]
 }

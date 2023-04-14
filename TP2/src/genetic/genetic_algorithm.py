@@ -4,10 +4,11 @@ from src.genetic.selection import selector
 from src.genetic.mutation import mutator
 from src.genetic.crossover import crossover
 from src.genetic.finish_conditions import check_finished
+from src.genetic.select_new_generation import select_new_generation
 
 def genetic_algorithm(palette, N, target_color, selection_type,
                       crossing_type, mutation_type, mutation_pm,
-                      K, max_generations, d_error, time):
+                      select_new_generation_type, K, max_generations, d_error, time):
     
     end = False
     generation = 0 
@@ -22,25 +23,30 @@ def genetic_algorithm(palette, N, target_color, selection_type,
     initial_time = currentMilliTime()
     current_time = currentMilliTime()
 
+    best_subject = None
+    finish_condition = None
+
     while(not end):
         print("Generacion numero: " + str(generation))
 
         # Check si es necesario terminar o no
-        end = check_finished(population, max_generations, d_error, time, current_time)
+        end, best_subject, finish_condition = check_finished(population, max_generations, d_error, time, current_time)
         
+        # Metodo de seleccion
         parents = selector(population, N, K, selection_type)
 
         # Cruza 
         children = crossover(parents, crossing_type, palette, target_color)
 
-        # Mutar
-        # Recombinar
-
-        # TODO: Tal vez mutar después de recombinación, chequeando generación para no mutar dos veces a parents
+        # Mutacion 
         mutated_children = mutator(children, mutation_type, mutation_pm)
 
-        # Reasignar la population 
-        #TODO
+        # Nueva poblacion
+        population = select_new_generation(mutated_children, parents, N, K, select_new_generation_type)
         
         generation += 1
         current_time = currentMilliTime() - initial_time
+
+    print("------------GANADOR------------")
+    print(f"{finish_condition}")
+    print(best_subject)

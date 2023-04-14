@@ -10,7 +10,13 @@ def check_finished(population, max_generations, d_error, time, current_time):
 
   if ( best_subject.generation >= max_generations
        or 1 - best_subject.fitness < d_error 
-       or time >= current_time ):
-    return True
+       or current_time >= time ):
+    if(best_subject.generation >= max_generations):
+      finish_condition = "Corto por superar maxima generacion"
+    elif(1 - best_subject.fitness < d_error ):
+      finish_condition = "Corto por encontrar solucion con delta de error minimo"
+    else:
+      finish_condition = "Corto por superar tiempo maximo"
+    return True, best_subject, finish_condition
 
-  return False
+  return False, None, None

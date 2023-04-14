@@ -79,13 +79,16 @@ def cross_angular(parent1, parent2, palette, target_color):
     L = np.random.default_rng().integers(0, math.ceil(S/2))
     P = np.random.default_rng().integers(0, S-1)
     
-    end_index = (P + L) % S  # calculate end index, wrapping around to the beginning if necessary
+    if P + L > S:
+        remainder = P+L-S
+        child1_props = np.concatenate((color_props2[:remainder], color_props1[remainder:P], color_props2[P:]), axis=0)
+        child2_props = np.concatenate((color_props1[:remainder], color_props2[remainder:P], color_props1[P:]), axis=0)
+    else:
+        child1_props = np.concatenate((color_props1[:P], color_props2[P:P+L], color_props1[P+L:]), axis=0)
+        child2_props = np.concatenate((color_props2[:P], color_props1[P:P+L], color_props2[P+L:]), axis=0)
     
-    # TODO : fix 
-    color_props1[P:end_index], arr2[P:end_index] = arr2[P:end_index], color_props1[P:end_index]  # exchange elements between arrays
-    
-    child1 = Subject(palette, generation, target_color, [color_props1[:P1], color_props2[P1:P2], color_props1[P2:]])
-    child2 = Subject(palette, generation, target_color, [color_props2[:P1], color_props1[P1:P2], color_props2[P2:]])
+    child1 = Subject(palette, generation, target_color, child1_props)
+    child2 = Subject(palette, generation, target_color, child2_props)
 
     return child1, child2
 

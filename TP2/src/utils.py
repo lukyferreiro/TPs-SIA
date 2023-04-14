@@ -49,9 +49,10 @@ def destructure_data(data):
     crossing_type = check_type(data['crossing_type'], data['crossing_options'], "cruza")
     mutation_type = check_type(data['mutation_type'], data['mutation_options'], "mutacion")
     mutation_pm = check_prob(data['mutation_pm'], "Pm")
+    select_new_generation_type = check_type(data['select_new_generation_type'], data['select_new_generation_options'], "seleccion de nueva generacion")
     K = check_positivity(data['K'], "K (indiviudos a seleccionar)")
     max_generations= check_positivity(data['max_generations'], "generaciones maximas")
     d_error = check_prob(data['d_error'], "delta de error minimo")
     time = check_positivity(data['time'], "tiempo maximo")
     
-    return palette, N, target_color, selection_type, crossing_type, mutation_type, mutation_pm, K, max_generations, d_error, time
+    return palette, N, target_color, selection_type, crossing_type, mutation_type, mutation_pm, select_new_generation_type, K, max_generations, d_error, time
