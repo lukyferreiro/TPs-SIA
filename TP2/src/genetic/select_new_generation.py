@@ -16,7 +16,7 @@ def select_use_all(mutated_children, parents, N):
     all_subjects = np.concatenate((mutated_children, parents), axis=0)
     count_all_subjects = len(all_subjects)
     # Seleccionar N individuos del conjunto [N+K]
-    idx = np.random.default_rng().choice(range(count_all_subjects), size=N, replace=False)
+    idx = np.random.default_rng().choice(range(count_all_subjects), size=N, replace=True)
     return [all_subjects[i] for i in idx]
 
 """

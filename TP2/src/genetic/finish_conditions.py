@@ -5,12 +5,12 @@ def check_finished(population, current_generation, max_generations, d_error, max
   sorted_pop = sorted(population, key=lambda x: x.fitness, reverse=True)
   best_subject = sorted_pop[0]
 
-  print("---------Mejor sujeto---------")
-  print(best_subject)
+  """ print("---------Mejor sujeto---------")
+  print(best_subject) """
 
   if ( current_generation >= max_generations
        or 1 - best_subject.fitness < d_error 
-       or time_passed > max_time ):
+       or (max_time != -1 and time_passed > max_time)):
     
     if(current_generation >= max_generations):
       finish_condition = "Corto por superar maxima generacion"

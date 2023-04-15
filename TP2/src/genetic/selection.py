@@ -95,7 +95,7 @@ def select_tournament_deterministic(population, N, K):
         M = np.random.default_rng().choice(range(1, N))
 
         # Seleccionar M individuos al azar de la población
-        idx = np.random.default_rng().choice(range(population_count), size=M, replace=False)
+        idx = np.random.default_rng().choice(range(population_count), size=M, replace=True)
         competitors = [population[i] for i in idx]
 
         # Seleccionar de los M individuos al ganador (mayor aptitud)
@@ -119,7 +119,7 @@ def select_tournament_probabilistic(population, K):
     selection = []
     for _ in range(K):
         # Seleccionar 2 individuos al azar de la población
-        idx = np.random.default_rng().choice(range(population_count), size=2, replace=False)
+        idx = np.random.default_rng().choice(range(population_count), size=2, replace=True)
         competitors = [population[i] for i in idx]
 
         r = np.random.default_rng().uniform(0., 1.)

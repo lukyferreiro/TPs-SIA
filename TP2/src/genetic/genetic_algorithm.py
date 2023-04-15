@@ -24,6 +24,7 @@ def genetic_algorithm(palette, N, target_color, selection_type,
 
     best_subject = None
     finish_condition = None
+    best_of_each_generation = []
 
     while(not end):
         print("Generacion numero: " + str(generation))
@@ -32,7 +33,9 @@ def genetic_algorithm(palette, N, target_color, selection_type,
 
         # Check si es necesario terminar o no
         end, best_subject, finish_condition = check_finished(population, generation, max_generations, d_error, max_time, time_passed)
-        
+
+        best_of_each_generation.append(best_subject)
+
         if(not end):
             # Metodo de seleccion
             parents = selector(population, N, K, selection_type)
@@ -48,6 +51,5 @@ def genetic_algorithm(palette, N, target_color, selection_type,
             
             generation += 1
 
-    print("------------GANADOR------------")
-    print(f"{finish_condition}")
-    print(best_subject)
+
+    return time_passed, finish_condition, best_subject, best_of_each_generation, generation
