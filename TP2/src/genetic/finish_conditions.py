@@ -20,4 +20,4 @@ def check_finished(population, current_generation, max_generations, d_error, max
       finish_condition = "Corto por superar tiempo maximo"
     return True, best_subject, finish_condition
 
-  return False, None, None
+  return False, best_subject, None

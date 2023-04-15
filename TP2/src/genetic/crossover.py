@@ -104,7 +104,7 @@ def cross_uniform(parent1, parent2, palette, target_color):
     child1_props = []
     child2_props = []
     for i in range(length):
-        if(ps < 0.5):
+        if(ps[i] < 0.5):
             child1_props.append(color_props2[i])
             child2_props.append(color_props1[i])
         else:

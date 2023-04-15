@@ -4,13 +4,13 @@ from csv import reader
 def get_palette(path) -> np.ndarray:
   file = open(path)
   csvreader = reader(file)
-  colores = []
+  colours = []
 
   for row in csvreader:
     r, g, b = (int(x) for x in row)
-    colores.append( [r, g, b] )
+    colours.append( [r, g, b] )
 
-  return np.array(colores)   
+  return np.array(colours)
 
 def check_target_color(color):
     for i in range(len(color)):
