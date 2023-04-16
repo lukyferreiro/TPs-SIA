@@ -8,14 +8,12 @@ import time
 
 def genetic_algorithm(palette, N, target_color, selection_type,
                       crossing_type, mutation_type, mutation_pm,
-                      select_new_generation_type, K, max_generations, d_error, max_time):
+                      select_new_generation_type, K, max_generations, d_error, max_time, start_population):
     
     end = False
     generation = 0 
 
-    population = [] 
-    for _ in range(N):
-        population.append(Subject(palette, target_color, []))
+    population = start_population.copy() 
 
     #for i in range(N):
     #   print(population[i].get_color_proportions())
@@ -53,3 +51,12 @@ def genetic_algorithm(palette, N, target_color, selection_type,
 
 
     return time_passed, finish_condition, best_subject, best_of_each_generation, generation
+
+
+def generate_start_population(N, palette, target_color):
+    population = []
+    for _ in range(N):
+        population.append(Subject(palette, target_color, []))
+
+    return population
+

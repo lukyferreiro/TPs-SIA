@@ -1,5 +1,5 @@
 from src.utils import destructure_data
-from src.genetic.genetic_algorithm import genetic_algorithm
+from src.genetic.genetic_algorithm import genetic_algorithm, generate_start_population
 import json
 
 def main(): 
@@ -14,10 +14,12 @@ def main():
           f"{palette}\n"
           f"Color deseado: {target_color}"
           )
+    
+    start_population = generate_start_population(N, palette, target_color)
 
     time_passed, finish_condition, best_subject, best_of_each_generation, generation = genetic_algorithm(palette, N, target_color, selection_type,
                       crossing_type, mutation_type, mutation_pm,
-                      select_new_generation_type, K, max_generations, d_error, time)
+                      select_new_generation_type, K, max_generations, d_error, time, start_population)
     
     print(f"TIEMPO: {time_passed}")
     
