@@ -3,7 +3,7 @@
 
 ## Introducción
 
-El siguiente TP implementa un sistema que, mediante Algoritmos Genéticos, logra encontrar
+El siguiente TP implementa un sistema, que mediante Algoritmos Genéticos, logra encontrar
 la forma de mezclar proporciones de diferentes colores para lograr el color que más se
 asemeje al color deseado.
 
