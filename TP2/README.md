@@ -3,7 +3,7 @@
 
 ## Introducción
 
-El siguiente TP implementa un sistema, que mediante Algoritmos Genéticos, logra encontrar
+El siguiente TP implementa un sistema que, mediante Algoritmos Genéticos, logra encontrar
 la forma de mezclar proporciones de diferentes colores para lograr el color que más se
 asemeje al color deseado.
 
@@ -47,15 +47,16 @@ A continuacion se detalla en una tabla las posibles variables, su obligatoriedad
 | mutation_pm       | Siempre                 | Numero real entre (0,1) que representa la probabilidad de mutacion              |
 | select_new_generation_type | Siempre        | Metodo de seleccion de la nueva generacion. Debe ser un valor de select_new_generation_options  |
 | K                 | Siempre                 | Numero natural que representa la cantidad de individuos a seleccionar           |
-| max_generations   | Opcional                | Numero natural que representa la cantidad maxima de generaciones a esperar hasta obtener la solucion   |       
-| d_error           | Opcional                | Numero real entre (0,1) que representa el error minimo entre el individuo mas apto y el color objetivo |
-| time              | Opcional                | Numero natural que representa el tiempo maximo en segundos a esperar la solucion  |
+| max_generations   | Siempre                 | Numero natural que representa la cantidad maxima de generaciones a esperar hasta obtener la solucion   |       
+| d_error           | Siempre                 | Numero real entre (0,1) que representa el error minimo entre el individuo mas apto y el color objetivo |
+| time              | Opcional                | Numero entero que representa el tiempo maximo en segundos a esperar la solucion  |
 | selection_options | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de seleccion implementados                   |
 | crossing_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de cruza implementados                       |
 | mutation_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de mutacion implementados                    |
 | select_new_generation_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de seleccion de la nueva generacion implementados     |
 
-Nota: max_generations, d_error y time son las condiciones de corte y es obligatorio especificar al menos 1 de los 3 posibles valores.
+Nota: max_generations, d_error y time son las condiciones de corte
+Time puede tener valor -1, en cuyo caso no se toma en cuenta dicha condición de corte
 
 ### Ejemplo de config.json
 
