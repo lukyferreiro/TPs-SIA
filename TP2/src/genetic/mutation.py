@@ -15,7 +15,6 @@ def mutate_gen(gen):
     u = gen * 0.5  
     delta = np.random.default_rng().uniform(-u, u)
 
-    # Podría ser delta directo 
     return gen + delta if gen + delta < 1 else 1 
 
 """

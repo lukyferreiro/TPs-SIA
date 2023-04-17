@@ -3,9 +3,8 @@
 
 ## Introducción
 
-El siguiente TP implementa un sistema que, mediante Algoritmos Genéticos, logra encontrar
-la forma de mezclar proporciones de diferentes colores para lograr el color que más se
-asemeje al color deseado.
+El siguiente TP implementa un sistema que, mediante Algoritmos Genéticos, mezcla proporciones
+de los diferentes colores de una paleta con el fin de encontrar un color deseado.
 
 ### Requisitos
 
@@ -33,7 +32,7 @@ python main.py
 ## Configuración
 Todas las posibles variables a configurar se deben detallar en el archivo config.json
 
-A continuacion se detalla en una tabla las posibles variables, su obligatoriedad de uso y descripcion
+A continuacion se detalla en una tabla las posibles variables, su caso de uso y descripcion:
 
 
 | Variables         | Casos de uso            | Descripción                                                          
@@ -44,7 +43,7 @@ A continuacion se detalla en una tabla las posibles variables, su obligatoriedad
 | selection_method  | Siempre                 | Metodo de seleccion a usar. Debe ser alguno de los valores de selection_options | 
 | crossing_type     | Siempre                 | Metodo de cruza a usar. Debe ser alguno de los valores de crossing_options      | 
 | mutation_type     | Siempre                 | Metodo de mutacion a usar. Debe ser alguno de los valores de mutation_options   |
-| mutation_pm       | Siempre                 | Numero real entre (0,1) que representa la probabilidad de mutacion              |
+| mutation_pm       | Siempre                 | Numero real entre [0,1] que representa la probabilidad de mutacion              |
 | select_new_generation_type | Siempre        | Metodo de seleccion de la nueva generacion. Debe ser un valor de select_new_generation_options  |
 | K                 | Siempre                 | Numero natural que representa la cantidad de individuos a seleccionar           |
 | max_generations   | Siempre                 | Numero natural que representa la cantidad maxima de generaciones a esperar hasta obtener la solucion   |       
