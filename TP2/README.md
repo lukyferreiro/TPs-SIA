@@ -55,12 +55,15 @@ A continuacion se detalla en una tabla las posibles variables, su caso de uso y 
 | select_new_generation_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de seleccion de la nueva generacion implementados     |
 
 #### Notas:
-1. max_generations, d_error y time son las condiciones de corte.
-2. time puede tener valor -1, en cuyo caso no se toma en cuenta dicha condición de corte.
-3. En el archivo csv con la paleta de colores, estos se deben especificar en formato RGB, como se muestra en el siguiente ejemplo:
+- max_generations, d_error y time son las condiciones de corte.
+- time puede tener valor -1, en cuyo caso no se toma en cuenta dicha condición de corte.
+- En el archivo csv con la paleta de colores, estos se deben especificar en formato RGB, como se muestra en el siguiente ejemplo:
+
+``` json
 255,0,0
 138,91,207
 0,0,8
+```
 
 ### Ejemplo de config.json
 
