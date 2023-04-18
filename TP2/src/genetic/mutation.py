@@ -10,7 +10,7 @@ def mutator(children, mutation_method, mutation_pm):
 
     return switcher.get(mutation_method, "Metodo de mutacion invalido")
 
-# Función que realmente modifica el valor del cromosoma pedido
+# Función que realmente modifica el valor del gen pedido
 def mutate_gen(gen):
     u = gen * 0.5  
     delta = np.random.default_rng().uniform(-u, u)
