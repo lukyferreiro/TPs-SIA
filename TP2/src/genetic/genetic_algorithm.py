@@ -25,7 +25,7 @@ def genetic_algorithm(palette, N, target_color, selection_type,
     best_of_each_generation = []
 
     while(not end):
-        # print("Generacion numero: " + str(generation))
+        print("Generacion numero: " + str(generation))
 
         time_passed = time.time() - initial_time
 

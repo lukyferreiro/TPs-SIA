@@ -38,7 +38,7 @@ A continuacion se detalla en una tabla las posibles variables, su caso de uso y 
 | Variables         | Casos de uso            | Descripción                                                          
 |-------------------|-------------------------|---------------------------------------------------------------------------------|
 | palette_csv_path  | Siempre                 | String al path del archivo csv (desde main.py) con la paleta de colores         |
-| N                 | Siempre                 | Numero natural que representa la poblacion inical                               | 
+| N                 | Siempre                 | Numero natural que representa la poblacion inicial                              | 
 | target_color      | Siempre                 | Arreglo [R,G,B], con 0 <= R,G,B <= 255 que representa el color objetivo         | 
 | selection_method  | Siempre                 | Metodo de seleccion a usar. Debe ser alguno de los valores de selection_options | 
 | crossing_type     | Siempre                 | Metodo de cruza a usar. Debe ser alguno de los valores de crossing_options      | 
@@ -54,8 +54,16 @@ A continuacion se detalla en una tabla las posibles variables, su caso de uso y 
 | mutation_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de mutacion implementados                    |
 | select_new_generation_options  | Siempre (NO MODIFICAR)  | Arreglo de strings con los metodos de seleccion de la nueva generacion implementados     |
 
-Nota: max_generations, d_error y time son las condiciones de corte
-Time puede tener valor -1, en cuyo caso no se toma en cuenta dicha condición de corte
+#### Notas:
+- max_generations, d_error y time son las condiciones de corte.
+- time puede tener valor -1, en cuyo caso no se toma en cuenta dicha condición de corte.
+- En el archivo csv con la paleta de colores, estos se deben especificar en formato RGB, como se muestra en el siguiente ejemplo:
+
+``` json
+255,0,0
+138,91,207
+0,0,8
+```
 
 ### Ejemplo de config.json
 
