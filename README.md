@@ -18,6 +18,10 @@ obtener conclusiones de que metodos son mas eficientes.
   
 ## TP2 - [Color Searcher](https://github.com/lukyferreiro/TPs-SIA/tree/main/TP2)
 
-En este TP se implementa un programa en Python para implementar un sistema que, mediante
+En este TP se realiza un programa en Python para implementar un sistema que, mediante
 algoritmos genéticos, logre encontrar la forma de mezclar proporciones de diferentes colores
 para lograr el color que más se asemeje al color deseado.
+
+## TP3 - [Redes Neuronales](https://github.com/lukyferreiro/TPs-SIA/tree/main/TP3)
+
+En este TP se realiza un programa en Python para
