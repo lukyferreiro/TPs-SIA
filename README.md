@@ -22,6 +22,10 @@ En este TP se realiza un programa en Python para implementar un sistema que, med
 algoritmos genéticos, logre encontrar la forma de mezclar proporciones de diferentes colores
 para lograr el color que más se asemeje al color deseado.
 
-## TP3 - [Redes Neuronales](https://github.com/lukyferreiro/TPs-SIA/tree/main/TP3)
+## TP3 - [Neural Networks](https://github.com/lukyferreiro/TPs-SIA/tree/main/TP3)
 
-En este TP se realiza un programa en Python para
+En este TP se realiza un programa en Python para resolver diferentes tipos de problemas usando diferentes estrategias de redes neuronales, donde se hace uso de:
+- Perceptron simple
+- Perceptron lineal
+- Perceptron no lineal
+- Perceptron multicapa
