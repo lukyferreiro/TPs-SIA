@@ -1,35 +1,33 @@
 
 import numpy as np
 
-def perceptron(input_data, expected_data, learning_rate, epochs):
+def perceptron(input_data, expected_data, learning_rate, epochs, weights):
     
-    # Lista de pesos
-    #weights = np.random.default_rng().uniform(0, 1, size=(len(input_data[0])))
-    weights = np.random.rand(len(input_data[0]))
+    print(f"Weights: {weights}")
+    n = 0
+    not_finished = True
+    while n < epochs and not_finished:
 
-    for _ in range(epochs):
-        for i in range(0, len(input_data)):
+        #TODO add condicion de corte
+
+        for i in range(len(input_data)):
             x = input_data[i]
 
             # Funcion de activacion
-            y = simple_escalon(np.dot(weights, x))
+            y = simple_escalon(np.dot(weights[1:], x[1:]) - weights[0])
+            
+            if(expected_data[i] != y):
+                for j in range(len(weights)):
+                    weights[j] = weights[j] + (2 * learning_rate * x[j] * expected_data[i])
 
-            """
-            error = expected_data[i] - y
-            weights += learning_rate * error * x
-            """ 
-            
-            for j in range(0, len(weights)):
-                weights[j] += learning_rate * (expected_data[i] - y) * x[j]
-            
-                 
-        print("w: ", weights)
-     
+        n += 1
+        print(f"Weights: {weights}")
+
     return weights
 
 
 def simple_escalon(value):
-    return 1 if value >= 0 else 0
+    return 1 if value >= 0 else -1
     
 def accuracy(out_true, out_pred):
     return np.sum(out_true == out_pred) / len(out_true)
