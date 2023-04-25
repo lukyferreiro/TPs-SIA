@@ -7,7 +7,7 @@ def operation_data(operation, bias):
 
     x, y = switcher.get(operation, "Operación invalida")
 
-    # (xo es el umbral/bias)
+    # xo es el umbral/bias
     for data in x:
         data.insert(0, bias)
 

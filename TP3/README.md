@@ -70,9 +70,29 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci�
 
 ``` json
 {
-   
+    "perceptron_type": "LINEAR",
+    "learning_rate": 0.1,
+    "epochs": 100,
+    "bias": 1,
+    "beta": 1.0,
+    "min_error": 0.01,
+    "training_percentage": 80, 
+    "perceptron_options": [
+        "LINEAR", "NON_LINEAR_TANH", "NON_LINEAR_LOG"
+    ]
 }
 ```
+
+| Variables           | Descripción                                                          
+|---------------------|------------------------------------------------------------------------------------------|
+| perceptron_type     | String con el tipo de perceptron. Debe ser alguno de los valores de perceptron_options   |
+| learning_rate       | Numero real entre [0,1] que representa la tasa de aprendizaje                            | 
+| epochs              | Numero natural que representa la cantidad de epocas                                      | 
+| bias                | Numero natural que representa el umbral/bias. Su valor no repercute en la resolución     | 
+| beta                | Numero flotante que representa el valor de beta para el perceptron no lineal             |   
+| min_error           | Numero real entre [0,1] que representa la candicion de corte de error minimo             | 
+| training_percentage | Numero real entre [0,1] que representa el porcentaje de los datos tomandos para entrenar | 
+| perceptron_options  | Arreglo de strings con los tipos de perceptrones validos (NO MODIFICAR)                  |
 
 ### Ejercicio 3
 

@@ -35,7 +35,7 @@ class Perceptron:
     def accuracy(self, correct):
         return np.sum(correct)/self.num_inputs
 
-    # En la posición 0 de x está el bias para tener longitudes iguales y poder utilizar np.dot
+    # En la posición x0 está el bias para tener longitudes iguales y poder utilizar np.dot
     def predict(self, x):
         return self.activation(np.dot(self.weights, x))
     

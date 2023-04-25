@@ -1,3 +1,12 @@
 {
-    
+    "perceptron_type": "LINEAR",
+    "learning_rate": 0.1,
+    "epochs": 100,
+    "bias": 1,
+    "beta": 1.0,
+    "min_error": 0.01,
+    "training_percentage": 0.8, 
+    "perceptron_options": [
+        "LINEAR", "NON_LINEAR_TANH", "NON_LINEAR_LOG"
+    ]
 }
