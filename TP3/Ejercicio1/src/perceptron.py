@@ -1,33 +1,43 @@
-
 import numpy as np
 
-def perceptron(input_data, expected_data, learning_rate, epochs, weights):
+class Perceptron:
+    def __init__(self, num_inputs, lr, epochs):
+        self.weights = np.random.rand(num_inputs)
+        self.num_inputs = num_inputs
+        self.lr = lr
+        self.epochs = epochs
     
-    print(f"Weights: {weights}")
-    n = 0
-    not_finished = True
-    while n < epochs and not_finished:
+    def activation(self, x):
+        return 1 if x>=0 else -1
+        
+    def train(self, inputs, targets):
+        target_epoch = 0
+        finished = False
+        errors = np.empty(self.num_inputs)
+        correct = np.empty(self.num_inputs)
 
-        #TODO add condicion de corte
+        while target_epoch < self.epochs and not finished:
+            for j in range(self.num_inputs):
+                x = np.array(inputs[j])
+                y = self.activation(np.dot(self.weights, x))
+                errors[j] = targets[j] - y
+                correct[j] = 1 if errors[j] == 0 else 0
 
-        for i in range(len(input_data)):
-            x = input_data[i]
+                self.weights += self.lr * errors[j] * x.astype(float)
 
-            # Funcion de activacion
-            y = simple_escalon(np.dot(weights[1:], x[1:]) - weights[0])
-            
-            if(expected_data[i] != y):
-                for j in range(len(weights)):
-                    weights[j] = weights[j] + (2 * learning_rate * x[j] * expected_data[i])
+            # Si la suma absoluta de los errores en cada paso es 0, se finaliza
+            # O si la cantidad de respuestas correctas es igual a la longitud del input
+            if (np.sum(np.abs(errors)) == 0 or self.accuracy(correct) == 1):
+                finished = True
 
-        n += 1
-        print(f"Weights: {weights}")
+            target_epoch += 1
 
-    return weights
+    def accuracy(self, correct):
+        return np.sum(correct)/self.num_inputs
 
-
-def simple_escalon(value):
-    return 1 if value >= 0 else -1
+    # En la posición 0 de x está el bias para tener longitudes iguales y poder utilizar np.dot
+    def predict(self, x):
+        return self.activation(np.dot(self.weights, x))
     
-def accuracy(out_true, out_pred):
-    return np.sum(out_true == out_pred) / len(out_true)
+    def get_weights(self):
+        return self.weights
