@@ -66,7 +66,7 @@ class Perceptron:
         for i in range(test_len):
             h = np.dot(self.weights, self.test_input[i])
             Os[i] = self.predict(h)
-            print(f"Predicted: {Os[i]}. Expected: {self.test_expected_data[i]}")
+            print(f"Predicted: {self.__denormalize_image(Os[i])}. Expected: {self.test_expected_data[i]}")
 
         print(f"Train MSE: {self.train_MSE} \n Test MSE: {self.__mid_square_error(Os, self.test_expected_data)}")
         
@@ -139,7 +139,7 @@ class Perceptron:
         # Image = (-1,1)
         return (2 * (values - self.min) / (self.max - self.min)) - 1
     def __normalize_non_linear_log_image(self, values):
-        # Image = (-1,1)
+        # Image = (0,1)
         return (values - self.min) / (self.max - self.min)
     
     # Funcion que desnormaliza los resultados segun la imagen de la funcion de activacion
