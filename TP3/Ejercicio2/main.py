@@ -13,10 +13,7 @@ def main():
 
     perceptron = Perceptron(input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage)
     perceptron.train()
-
-    for i in range(len(input_data)):
-        print(f"Predicted:{perceptron.predict(input_data[i])}. Expected: {expected_data[i]}")
-
+    perceptron.test()
     print(perceptron)
 
 

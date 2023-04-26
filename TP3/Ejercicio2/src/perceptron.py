@@ -4,8 +4,7 @@ import math
 class Perceptron:
     
     def __init__(self, input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage):
-        self.num_inputs = len(input_data[0])
-        self.weights = np.zeros(self.num_inputs)
+        self.weights = np.zeros(len(input_data[0]))
         self.training_percentage = training_percentage
         self.train_input, self.train_expected_data, self.test_input, self.test_expected_data = self.__divide_data_by_percentage(input_data, expected_data, self.training_percentage)
         self.perceptron_type = perceptron_type
@@ -13,10 +12,8 @@ class Perceptron:
         self.epochs = epochs
         self.beta = beta
         self.min_error = min_error
-        self.min, self.max = self.__calculate_min_and_max()
-
-    def __calculate_min_and_max(self):
-        return min(self.train_input)[0], max(self.train_input)[0]
+        self.train_MSE = -1
+        self.min, self.max = self.__calculate_min_and_max(expected_data)
 
     # Inicializar conjuntos de training y testing
     def __divide_data_by_percentage(self, input, expected, p):
@@ -34,13 +31,14 @@ class Perceptron:
 
     # Función de entrenamiento
     def train(self):
-        target_epoch = 0
+        current_epoch = 0
         finished = False
 
         train_len = len(self.train_input)
         Os = np.empty(train_len)
+        mse_errors = np.empty(self.epochs)
 
-        while target_epoch < self.epochs and not finished:
+        while current_epoch < self.epochs and not finished:
             for j in range(train_len):
                 x = np.array(self.train_input[j])
                 h = np.dot(self.weights, x)
@@ -48,10 +46,34 @@ class Perceptron:
                 expected = self.train_expected_data[j]
                 self.weights += self.calculate_delta_w(x, expected, Os[j])
 
-            if (self.__mid_square_error(Os, self.train_expected_data) < self.min_error):
+            mse_errors[current_epoch] = self.__mid_square_error(Os, self.train_expected_data)
+
+            # TODO check porque nunca entra aca, mse tiene vlaores altos
+            if (mse_errors[current_epoch] < self.min_error):
                 finished = True
 
-            target_epoch += 1
+            current_epoch += 1
+        
+        # Guardo el MSE error al finalizar el entrenamiento
+        self.train_MSE = mse_errors[current_epoch - 1]
+
+        return self.weights, mse_errors
+    
+    def test(self):
+        test_len = len(self.test_input)
+        Os = np.empty(test_len)
+
+        for i in range(test_len):
+            h = np.dot(self.weights, self.test_input[i])
+            Os[i] = self.predict(h)
+            print(f"Predicted: {Os[i]}. Expected: {self.test_expected_data[i]}")
+
+        print(f"Train MSE: {self.train_MSE} \n Test MSE: {self.__mid_square_error(Os, self.test_expected_data)}")
+        
+
+    # Funcion de prediccion
+    def predict(self, x):
+        return self.activation(x)
 
     # Funciónes de activación O segun el tipo de perceptron
     def activation(self, h):
@@ -93,13 +115,12 @@ class Perceptron:
     def __calculate_theta_diff_non_linear_log(self, O):
         return 2 * self.beta * O * (1 - O)
 
-    # Funcion de prediccion
-    def predict(self, x):
-        return self.activation(x)
-
     # Función de error MSE para finalizar entrenamiento
     def __mid_square_error(self, Os, expected):
-        return np.sum((expected - Os) ** 2) / len(expected)
+        return np.sum((expected - self.__denormalize_image(Os)) ** 2) / len(expected)
+
+    def __calculate_min_and_max(self, expected_data):
+        return np.min(expected_data), np.max(expected_data)
 
     # Funcion que normaliza los resultados segun la imagen de la funcion de activacion
     def __normalize_image(self, values):
