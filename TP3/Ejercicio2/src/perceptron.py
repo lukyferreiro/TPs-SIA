@@ -13,10 +13,10 @@ class Perceptron:
         self.epochs = epochs
         self.beta = beta
         self.min_error = min_error
-        self.min, self.max = self.__calculate_image()
+        self.min, self.max = self.__calculate_min_and_max()
 
-    def __calculate_image(self):
-        return 0,0
+    def __calculate_min_and_max(self):
+        return min(self.train_input)[0], max(self.train_input)[0]
 
     # Inicializar conjuntos de training y testing
     def __divide_data_by_percentage(self, input, expected, p):
@@ -43,61 +43,55 @@ class Perceptron:
         while target_epoch < self.epochs and not finished:
             for j in range(train_len):
                 x = np.array(self.train_input[j])
-                Os[j] = self.activation(x)
-                self.weights += self.calculate_delta_w(x, self.train_expected_data[j] - Os[j])
+                h = np.dot(self.weights, x)
+                Os[j] = self.activation(h)
+                self.weights += self.calculate_delta_w(x, self.train_expected_data[j] - Os[j], h)
 
             if (self.__mid_square_error(Os, self.train_expected_data) < self.min_error):
                 finished = True
 
             target_epoch += 1
 
-    # Funciónes de activación segun el tipo de perceptron
-    def activation(self, x):
+    # Funciónes de activación O segun el tipo de perceptron
+    def activation(self, h):
         switcher = {
-            "LINEAR": self.__activate_linear(x),
-            "NON_LINEAR_TANH": self.__activate_non_linear_tanh(x),
-            "NON_LINEAR_LOG": self.__activate_non_linear_log(x),
+            "LINEAR": self.__activate_linear(h),
+            "NON_LINEAR_TANH": self.__activate_non_linear_tanh(h),
+            "NON_LINEAR_LOG": self.__activate_non_linear_log(h),
         }
 
         return switcher.get(self.perceptron_type, "Tipo de perceptron invalido")
     
-    def __activate_linear(self, x):
-        return np.dot(self.weights, x)
-    def __activate_non_linear_tanh(self, x):
-        return any
-    def __activate_non_linear_log(self, x):
-        return any
+    def __activate_linear(self, h):
+        return h
+    def __activate_non_linear_tanh(self, h):
+        return math.tanh(self.beta * h)
+    def __activate_non_linear_log(self, h):
+        return 1 / (1 + math.pow(math.e, -2*self.beta*h))
     
-    # Funciones de Δw segun el tipo de perceptron
-    def calculate_delta_w(self, x, error):
+    # Funcion de Δw 
+    def calculate_delta_w(self, x, error, h):
+        theta = self.__calculate_theta_diff(h)
+        return self.learning_rate * error * theta * x
+
+    # Funcion que calcula θ' segun el tipo de perceptron
+    def __calculate_theta_diff(self, h):
         switcher = {
-            "LINEAR": self.__calculate_delta_w_linear(x, error),
-            "NON_LINEAR_TANH": self.__calculate_delta_w_non_linear_tanh(x, error),
-            "NON_LINEAR_LOG": self.__calculate_delta_w_non_linear_log(x, error),
+            "LINEAR": self.__calculate_theta_diff_linear(),
+            "NON_LINEAR_TANH": self.__calculate_theta_diff_non_linear_tanh(h),
+            "NON_LINEAR_LOG": self.__calculate_theta_diff_non_linear_log(h),
         }
 
         return switcher.get(self.perceptron_type, "Tipo de perceptron invalido")
 
-    def __calculate_delta_w_linear(self, x, error):
-        return self.learning_rate * error * x
-    
-    def __calculate_delta_w_non_linear_tanh(self, x, error):
-        aux = []
-        # TODO creo que se puede hacer matricialmente este for
-        for h in x:
-            theta = math.tanh(self.beta * h)
-            aux.append(self.beta * (1 - theta**2))
-
-        return self.learning_rate * error * x * aux
-    
-    def __calculate_delta_w_non_linear_log(self, x, error):
-        aux = []
-        # TODO creo que se puede hacer matricialmente este for
-        for h in x:
-            theta = 1 / (1 + math.pow(math.e, -2*self.beta*h))
-            aux.append(2 * self.beta * theta * (1 - theta) )
-
-        return self.learning_rate * error * x * aux
+    def __calculate_theta_diff_linear(self):
+        return 1
+    def __calculate_theta_diff_non_linear_tanh(self, h):
+        theta = self.activation(h)
+        return self.beta * (1 - theta**2)
+    def __calculate_theta_diff_non_linear_log(self, h):
+        theta = self.activation(h)
+        return 2 * self.beta * theta * (1 - theta)
 
     # Funcion de prediccion
     def predict(self, x):
