@@ -19,8 +19,8 @@ class Perceptron:
         while target_epoch < self.epochs and not finished:
             for j in range(self.num_inputs):
                 x = np.array(inputs[j])
-                y = self.activation(np.dot(self.weights, x))
-                errors[j] = targets[j] - y
+                O = self.activation(np.dot(self.weights, x))
+                errors[j] = targets[j] - O
                 correct[j] = 1 if errors[j] == 0 else 0
 
                 self.weights += self.lr * errors[j] * x.astype(float)
