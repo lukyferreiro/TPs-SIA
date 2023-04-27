@@ -3,16 +3,22 @@ import math
 
 class Perceptron:
     
-    def __init__(self, input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage):
+    def __init__(self, input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage, k):
         self.weights = np.zeros(len(input_data[0]))
         self.training_percentage = training_percentage
-        self.train_input, self.train_expected_data, self.test_input, self.test_expected_data = self.__divide_data_by_percentage(input_data, expected_data, self.training_percentage)
+
+        self.input_data = input_data
+        self.expected_data = expected_data
+
+        self.train_input = self.train_expected_data = self.test_input = self.test_expected_data = None
+
         self.perceptron_type = perceptron_type
         self.learning_rate = learning_rate
         self.epochs = epochs
         self.beta = beta
         self.min_error = min_error
         self.train_MSE = -1
+        self.k_fold = k
         self.min, self.max = self.__calculate_min_and_max(expected_data)
 
     # Inicializar conjuntos de training y testing
@@ -29,11 +35,16 @@ class Perceptron:
 
         return t1, e1, t2, e2
 
-    # Función de entrenamiento
+    # Función de entrenamiento por porcentajes
     def train(self):
+        if self.k_fold != -1:
+            raise("No puede entrenarse con porcentaje si se eligio k_fold")
+
         current_epoch = 0
         finished = False
-
+        
+        self.train_input, self.train_expected_data, self.test_input, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
+        
         train_len = len(self.train_input)
         Os = np.empty(train_len)
         mse_errors = np.empty(self.epochs)
@@ -58,6 +69,40 @@ class Perceptron:
         self.train_MSE = mse_errors[current_epoch - 1]
 
         return self.weights, mse_errors
+    
+    def train_k_fold(self):
+        if self.k_fold == -1:
+            raise("No puede entrenarse con k_fold si se eligio porcentaje")
+        
+        original_weights = self.weights
+        # falta dividir en k conjuntos ...
+
+        MSEs_array = np.empty(self.k_fold)
+        train_len = len(self.train_input)
+
+        for k in range(self.k_fold):
+            self.weights = original_weights
+            Os = np.empty(train_len)
+            mse_errors = np.empty(self.epochs)
+
+            while current_epoch < self.epochs and not finished:
+                for j in range(train_len):
+                    x = np.array(self.train_input[j])
+                    h = np.dot(self.weights, x)
+                    Os[j] = self.activation(h)
+                    expected = self.train_expected_data[j]
+                    self.weights += self.calculate_delta_w(x, expected, Os[j])
+
+                mse_errors[current_epoch] = self.__mid_square_error(Os, self.train_expected_data)
+
+                if (mse_errors[current_epoch] < self.min_error):
+                    finished = True
+
+                current_epoch += 1
+            
+            MSEs_array[k] = mse_errors[current_epoch - 1]
+        
+        return 
     
     def test(self):
         test_len = len(self.test_input)

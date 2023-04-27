@@ -41,3 +41,9 @@ class Perceptron:
     
     def get_weights(self):
         return self.weights
+    
+    def __str__(self) -> str:
+        return f"Perceptron: {self.weights}" 
+    
+    def __repr__(self) -> str:
+        return self.__str__()

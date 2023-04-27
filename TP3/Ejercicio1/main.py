@@ -14,6 +14,7 @@ def main():
     perceptron = Perceptron(len(input_data[0]), learning_rate, epochs)
     perceptron.train(input_data, expected_data)
 
+    print(perceptron)
     for i in range(len(input_data)):
         print(f"Predicted: {input_data[i][1]} {operation} {input_data[i][2]} = {perceptron.predict(input_data[i])}. Expected: {expected_data[i]}")
 

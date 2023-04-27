@@ -33,7 +33,8 @@ def destructure_data(data):
     beta = check_num(data['beta'], "beta")
     min_error = check_prob(data['min_error'], "cota de error")
     training_percentage = check_prob(data['training_percentage'], "porcentaje de entrenamiento")
-    return perceptron_type, learning_rate, epochs, bias, beta, min_error, training_percentage
+    k = (data['k_fold'], "k fold")
+    return perceptron_type, learning_rate, epochs, bias, beta, min_error, training_percentage, k
 
 def get_data(bias):
     data = pd.read_csv('Ej2-conjunto.csv')
