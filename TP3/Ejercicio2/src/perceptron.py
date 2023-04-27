@@ -10,8 +10,6 @@ class Perceptron:
         self.input_data = input_data
         self.expected_data = expected_data
 
-        self.train_input = self.train_expected_data = self.test_input = self.test_expected_data = None
-
         self.perceptron_type = perceptron_type
         self.learning_rate = learning_rate
         self.epochs = epochs
@@ -43,21 +41,21 @@ class Perceptron:
         current_epoch = 0
         finished = False
         
-        self.train_input, self.train_expected_data, self.test_input, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
+        train_input, train_expected_data, test_input, test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
         
-        train_len = len(self.train_input)
+        train_len = len(train_input)
         Os = np.empty(train_len)
         mse_errors = np.empty(self.epochs)
 
         while current_epoch < self.epochs and not finished:
             for j in range(train_len):
-                x = np.array(self.train_input[j])
+                x = np.array(train_input[j])
                 h = np.dot(self.weights, x)
                 Os[j] = self.activation(h)
-                expected = self.train_expected_data[j]
+                expected = train_expected_data[j]
                 self.weights += self.calculate_delta_w(x, expected, Os[j])
 
-            mse_errors[current_epoch] = self.__mid_square_error(Os, self.train_expected_data)
+            mse_errors[current_epoch] = self.__mid_square_error(Os, train_expected_data)
 
             # TODO check porque nunca entra aca, mse tiene vlaores altos
             if (mse_errors[current_epoch] < self.min_error):
@@ -68,6 +66,10 @@ class Perceptron:
         # Guardo el MSE error al finalizar el entrenamiento
         self.train_MSE = mse_errors[current_epoch - 1]
 
+        print("Finished Training")
+
+        self.test(test_input, test_expected_data)
+
         return self.weights, mse_errors
     
     def train_k_fold(self):
@@ -75,22 +77,34 @@ class Perceptron:
             raise("No puede entrenarse con k_fold si se eligio porcentaje")
         
         original_weights = self.weights
-        # falta dividir en k conjuntos ...
 
-        MSEs_array = np.empty(self.k_fold)
-        train_len = len(self.train_input)
+        input_data_sets = np.array_split(self.input_data, self.k_fold)
+        expected_data_sets = np.array_split(self.expected_data, self.k_fold)
+
+        print(input_data_sets)
+
+        MSEs_array_train = np.empty(self.k_fold)
+        MSEs_array_test = np.empty(self.k_fold)
+
+        all_weights = np.array([])
 
         for k in range(self.k_fold):
             self.weights = original_weights
+
+            # TODO. arreglar 
+            current_train = np.delete(self.input_data, input_data_sets[k], axis=0)
+            current_expected = np.delete(self.expected_data, expected_data_sets[k])
+            train_len = len(current_train)
+
             Os = np.empty(train_len)
             mse_errors = np.empty(self.epochs)
 
             while current_epoch < self.epochs and not finished:
                 for j in range(train_len):
-                    x = np.array(self.train_input[j])
+                    x = np.array(current_train[j])
                     h = np.dot(self.weights, x)
                     Os[j] = self.activation(h)
-                    expected = self.train_expected_data[j]
+                    expected = current_expected[j]
                     self.weights += self.calculate_delta_w(x, expected, Os[j])
 
                 mse_errors[current_epoch] = self.__mid_square_error(Os, self.train_expected_data)
@@ -100,20 +114,34 @@ class Perceptron:
 
                 current_epoch += 1
             
-            MSEs_array[k] = mse_errors[current_epoch - 1]
+            MSEs_array_train[k] = mse_errors[current_epoch - 1]
         
-        return 
+            print("Finished Training")
+
+            MSEs_array_test[k] = self.test(input_data_sets[k], expected_data_sets[k])
+            all_weights = np.append(all_weights, self.weights)
+
+        all_weights = all_weights.reshape((self.k_fold, len(self.weights)))
+
+        # TODO: ver como devolver el mejor
+
+        return MSEs_array_train, MSEs_array_test, all_weights
     
-    def test(self):
-        test_len = len(self.test_input)
+    def test(self, test_input, test_expected_data):
+        test_len = len(test_input)
         Os = np.empty(test_len)
 
         for i in range(test_len):
-            h = np.dot(self.weights, self.test_input[i])
+            h = np.dot(self.weights, test_input[i])
             Os[i] = self.predict(h)
-            print(f"Predicted: {self.__denormalize_image(Os[i])}. Expected: {self.test_expected_data[i]}")
+            print(f"Predicted: {self.__denormalize_image(Os[i])}. Expected: {test_expected_data[i]}")
 
-        print(f"Train MSE: {self.train_MSE} \n Test MSE: {self.__mid_square_error(Os, self.test_expected_data)}")
+        test_mse = self.__mid_square_error(Os, test_expected_data)
+        print(f"Train MSE: {self.train_MSE} \n Test MSE: {self.__mid_square_error(Os, test_expected_data)}")
+
+        print("Finished testing")
+
+        return test_mse
         
 
     # Funcion de prediccion

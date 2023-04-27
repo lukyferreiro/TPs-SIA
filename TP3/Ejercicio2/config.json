@@ -5,8 +5,8 @@
     "bias": 1,
     "beta": 1.0,
     "min_error": 0.1,
-    "training_percentage": 0.8, 
-    "k_fold": -1,
+    "training_percentage": 1.0, 
+    "k_fold": 4,
     "perceptron_options": [
         "LINEAR", "NON_LINEAR_TANH", "NON_LINEAR_LOG"
     ]

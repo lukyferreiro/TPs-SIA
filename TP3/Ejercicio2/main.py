@@ -11,8 +11,7 @@ def main():
     input_data, expected_data = get_data(bias)
 
     perceptron = Perceptron(input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage, k)
-    perceptron.train()
-    perceptron.test()
+    perceptron.train_k_fold()
     print(perceptron)
 
 
