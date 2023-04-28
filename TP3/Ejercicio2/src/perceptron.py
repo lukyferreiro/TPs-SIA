@@ -4,7 +4,7 @@ import math
 class Perceptron:
     
     def __init__(self, input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage, k):
-        self.weights = np.zeros(len(input_data[0]))
+        self.weights = np.random.rand(len(input_data[0]))
         self.training_percentage = training_percentage
 
         self.input_data = input_data
@@ -35,8 +35,8 @@ class Perceptron:
 
     # Función de entrenamiento por porcentajes
     def train(self):
-        if self.k_fold != -1:
-            raise("No puede entrenarse con porcentaje si se eligio k_fold")
+        if self.training_percentage < 0 or self.training_percentage > 1:
+            raise("No puede entrenarse con training_percentage. Parámetro p inválido")
 
         current_epoch = 0
         finished = False
@@ -57,7 +57,6 @@ class Perceptron:
 
             mse_errors[current_epoch] = self.__mid_square_error(Os, train_expected_data)
 
-            # TODO check porque nunca entra aca, mse tiene vlaores altos
             if (mse_errors[current_epoch] < self.min_error):
                 finished = True
 
@@ -73,8 +72,8 @@ class Perceptron:
         return self.weights, mse_errors
     
     def train_k_fold(self):
-        if self.k_fold == -1:
-            raise("No puede entrenarse con k_fold si se eligio porcentaje")
+        if self.k_fold == -1 or self.k_fold > len(self.input_data) :
+            raise("No puede entrenarse con k_fold. Parámetro k inválido")
         
         original_weights = self.weights
 
@@ -130,7 +129,6 @@ class Perceptron:
         all_weights = all_weights.reshape((self.k_fold, len(self.weights)))
 
         # TODO: ver como devolver el mejor
-
         
 
         return MSEs_array_train, MSEs_array_test, all_weights
