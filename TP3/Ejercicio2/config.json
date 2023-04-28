@@ -1,7 +1,7 @@
 {
     "perceptron_type": "NON_LINEAR_LOG",
     "learning_rate": 0.00001,
-    "epochs": 10000,
+    "epochs": 500000,
     "bias": 1,
     "beta": 1.0,
     "min_error": 0.1,

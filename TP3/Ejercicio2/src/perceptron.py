@@ -78,10 +78,13 @@ class Perceptron:
         
         original_weights = self.weights
 
-        input_data_sets = np.array_split(self.input_data, self.k_fold)
-        expected_data_sets = np.array_split(self.expected_data, self.k_fold)
+        idx = np.random.permutation(self.input_data.shape[0])
 
-        print(input_data_sets)
+        input = self.input_data[idx, :]
+        expected = self.expected_data[idx]
+
+        input_data_sets = np.array_split(input, self.k_fold)
+        expected_data_sets = np.array_split(expected, self.k_fold)
 
         MSEs_array_train = np.empty(self.k_fold)
         MSEs_array_test = np.empty(self.k_fold)
@@ -91,13 +94,16 @@ class Perceptron:
         for k in range(self.k_fold):
             self.weights = original_weights
 
-            # TODO. arreglar 
-            current_train = np.delete(self.input_data, input_data_sets[k], axis=0)
-            current_expected = np.delete(self.expected_data, expected_data_sets[k])
+            current_train = np.concatenate([input_data_sets[i] for i in range(self.k_fold) if i != k])
+            current_expected = np.concatenate([expected_data_sets[i] for i in range(self.k_fold) if i != k])
+
             train_len = len(current_train)
 
             Os = np.empty(train_len)
             mse_errors = np.empty(self.epochs)
+
+            current_epoch = 0
+            finished = False
 
             while current_epoch < self.epochs and not finished:
                 for j in range(train_len):
@@ -107,14 +113,14 @@ class Perceptron:
                     expected = current_expected[j]
                     self.weights += self.calculate_delta_w(x, expected, Os[j])
 
-                mse_errors[current_epoch] = self.__mid_square_error(Os, self.train_expected_data)
+                mse_errors[current_epoch] = self.__mid_square_error(Os, current_expected)
 
                 if (mse_errors[current_epoch] < self.min_error):
                     finished = True
 
                 current_epoch += 1
             
-            MSEs_array_train[k] = mse_errors[current_epoch - 1]
+            self.train_MSE = MSEs_array_train[k] = mse_errors[current_epoch - 1]
         
             print("Finished Training")
 
@@ -124,6 +130,8 @@ class Perceptron:
         all_weights = all_weights.reshape((self.k_fold, len(self.weights)))
 
         # TODO: ver como devolver el mejor
+
+        
 
         return MSEs_array_train, MSEs_array_test, all_weights
     
