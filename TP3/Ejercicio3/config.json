@@ -1,3 +1,31 @@
 {
-    
+    "input_file": "./data/c.txt",
+    "learning_rate": 0.00001,
+    "epochs": 500000,
+    "bias": 1,
+    "training_percentage": 0.8,
+
+    "output_activation": "TANH",
+    "hidden_activation": "TANH",
+    "qty_hidden_layers": [1],
+    "qty_nodes_in_hidden_layers": [2],
+
+    "todo": "Hacer que lo levante desde los datos", 
+    "qty_data_xs": 2,
+    "qty_output_ys": 1,
+
+    "optimizer_method": "ADAM",
+    "momentum_alpha": 0.8,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "epsilon": 1e-8,
+
+    "activation_options": [
+        "TANH", "LOG"
+    ],
+
+    "optimizer_options": [
+        "ADAM", "MOMENTUM"
+    ]
+
 }

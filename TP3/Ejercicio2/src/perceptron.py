@@ -4,7 +4,7 @@ import math
 class Perceptron:
     
     def __init__(self, input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage, k):
-        self.weights = np.random.rand(len(input_data[0]))
+        self.weights = np.random.default_rng().random(len(input_data[0]))
         self.training_percentage = training_percentage
 
         self.input_data = input_data
@@ -129,7 +129,6 @@ class Perceptron:
         all_weights = all_weights.reshape((self.k_fold, len(self.weights)))
 
         # TODO: ver como devolver el mejor
-        
 
         return MSEs_array_train, MSEs_array_test, all_weights
     

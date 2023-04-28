@@ -2,7 +2,7 @@ import numpy as np
 
 class Perceptron:
     def __init__(self, num_inputs, lr, epochs):
-        self.weights = np.random.rand(num_inputs)
+        self.weights = np.random.default_rng().random(num_inputs)
         self.num_inputs = num_inputs
         self.lr = lr
         self.epochs = epochs
