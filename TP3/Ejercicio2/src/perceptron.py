@@ -67,9 +67,10 @@ class Perceptron:
 
         print("Finished Training")
 
-        self.test(test_input, test_expected_data)
+        test_MSE = self.test(test_input, test_expected_data)
 
-        return self.weights, mse_errors
+        print(f'Weights: {self.weights}. MSE_train: {self.train_MSE}. MSE_test: {test_MSE}')
+        return self.weights, mse_errors, test_MSE
     
     def train_k_fold(self):
         if self.k_fold == -1 or self.k_fold > len(self.input_data) :
@@ -87,6 +88,8 @@ class Perceptron:
 
         MSEs_array_train = np.empty(self.k_fold)
         MSEs_array_test = np.empty(self.k_fold)
+
+        all_errors = np.array([])
 
         all_weights = np.array([])
 
@@ -118,7 +121,8 @@ class Perceptron:
                     finished = True
 
                 current_epoch += 1
-            
+
+            all_errors = np.append(all_errors, mse_errors)
             self.train_MSE = MSEs_array_train[k] = mse_errors[current_epoch - 1]
         
             print("Finished Training")
@@ -128,10 +132,28 @@ class Perceptron:
 
         all_weights = all_weights.reshape((self.k_fold, len(self.weights)))
 
-        # TODO: ver como devolver el mejor
+        idx = self.__choose_k_fold(MSEs_array_train, MSEs_array_test)
 
-        return MSEs_array_train, MSEs_array_test, all_weights
+        self.weights = all_weights[idx]
+        self.train_MSE = MSEs_array_train[idx]
+
+        print(f'Weights: {self.weights}. MSE_train: {MSEs_array_train[idx]}. MSE_test: {MSEs_array_test[idx]}')
+
+        return self.weights, all_errors[idx], MSEs_array_test[idx]
     
+    # Utiliza el promedio ponderado de los MSE de train y test para elegir lo mejor
+    def __choose_k_fold(self, MSEs_train, MSEs_test):
+        weighted_errors = np.zeros(self.k_fold)
+
+        train_weight = (self.k_fold - 1) / self.k_fold
+        test_weight = 1 / self.k_fold
+
+        for i in range(self.k_fold):
+            weighted_errors[i] += MSEs_train[i] * train_weight
+            weighted_errors[i] += MSEs_test[i] * test_weight
+
+        return np.argmin(weighted_errors)
+
     def test(self, test_input, test_expected_data):
         test_len = len(test_input)
         Os = np.empty(test_len)
