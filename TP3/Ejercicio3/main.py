@@ -1,4 +1,4 @@
-from src.utils import destructure_data, get_data
+from src.utils import destructure_data
 from src.multilayer_perceptron import MultilayerPerceptron
 import json
 

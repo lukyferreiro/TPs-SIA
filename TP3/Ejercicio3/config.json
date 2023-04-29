@@ -1,5 +1,5 @@
 {
-    "input_file": "./data/c.txt",
+    "input_file": "./data/Ej3A-XOR.txt",
     "learning_rate": 0.00001,
     "epochs": 500000,
     "bias": 1,
@@ -7,7 +7,8 @@
 
     "output_activation": "TANH",
     "hidden_activation": "TANH",
-    "qty_hidden_layers": [1],
+    "check": "No se si es necesario que esto sea un arreglo",
+    "qty_hidden_layers": 1,
     "qty_nodes_in_hidden_layers": [2],
 
     "todo": "Hacer que lo levante desde los datos", 

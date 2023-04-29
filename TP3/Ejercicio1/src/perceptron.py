@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Perceptron:
     def __init__(self, num_inputs, lr, epochs):
@@ -47,3 +48,19 @@ class Perceptron:
     
     def __repr__(self) -> str:
         return self.__str__()
+    
+    def plot(self, input_data):
+        outputs = [self.predict(x) for x in input_data]
+
+        # asigna un color a cada punto dependiendo de la salida de la función
+        colors = ['red' if o == 1 else 'blue' for o in outputs]
+
+        # grafica los puntos
+        plt.scatter([p[1] for p in input_data], [p[2] for p in input_data], c=colors)
+
+        # grafica la recta
+        x = y = range(-2, 2)
+        plt.plot(x, (-self.weights[1]*x - self.weights[0])/self.weights[2], color='green')
+
+        # muestra el gráfico
+        plt.show()
