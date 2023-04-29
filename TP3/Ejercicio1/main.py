@@ -11,13 +11,13 @@ def main():
     operation, learning_rate, epochs, bias = destructure_data(data)
     input_data, expected_data = operation_data(operation, bias)
 
-    perceptron = Perceptron(len(input_data[0]), learning_rate, epochs)
+    perceptron = Perceptron(len(input_data[0]), learning_rate, epochs, operation)
     perceptron.train(input_data, expected_data)
     print(perceptron)
     for i in range(len(input_data)):
         print(f"Predicted: {input_data[i][1]} {operation} {input_data[i][2]} = {perceptron.predict(input_data[i])}. Expected: {expected_data[i]}")
 
-    perceptron.plot(input_data)
+    perceptron.plot(input_data,expected_data)
 
 if __name__ == "__main__":
     main()
