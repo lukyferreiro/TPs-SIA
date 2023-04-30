@@ -275,7 +275,7 @@ class MultilayerPerceptron:
 
         return switcher.get(self.output_activation, "Tipo de activacion de salida")
 
-    def __denormalize_log_image(self, values):
+    def __denormalize_tanh_image(self, values):
         return ((values + 1) * (self.max - self.min) * 0.5) + self.min
     def __denormalize_log_image(self, values):
         return values * (self.max - self.min) + self.min
