@@ -24,5 +24,5 @@ para lograr el color que más se asemeje al color deseado.
 
 ## TP3 - [Neural Networks](https://github.com/lukyferreiro/TPs-SIA/tree/main/TP3)
 
-En este TP se realizan diferentes programas en Python para resolver distintos tipos de problemas usando varias
-estrategias de redes neuronales, haciendo uso de perceptrones simples (escalon, lineal y no lineal) y multicapas.
+En este TP se realizan diferentes programas en Python donde se implementas perceptrones simples (escalon, lineal y no lineal)
+y multicapas para resolver distintas problematicas.

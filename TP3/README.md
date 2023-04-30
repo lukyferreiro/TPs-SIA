@@ -139,7 +139,7 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci√
 | min_error           | Numero real entre [0,1] que representa la candicion de corte de error minimo             | 
 | output_activation   | String con el tipo de activaccion de la capa de salida. Debe ser alguno de los valores de activation_options         | 
 | hidden_activation   | String con el tipo de activacion de la capa oculta. Debe ser alguno de los valores de activation_options             | 
-| beta                | Numero flotante que representa el valor de beta para el perceptron no lineal             |   
+| beta                | Numero flotante que representa el valor de beta usado en los metodos de activacion       |   
 | qty_hidden_layers   | Numero natural que representa la cantidad de capas ocultas del perceptron multicapa      | 
 | qty_nodes_in_hidden_layers   | Arreglo de numeros naturales con la cantidad de nodos de cada capa oculta       | 
 | optimizer_method    | String con el tipo de optimizacion. Debe ser alguno de los valores de optimizer_options  | 

@@ -35,9 +35,6 @@ class Perceptron:
 
     # Función de entrenamiento por porcentajes
     def train(self):
-        if self.training_percentage < 0 or self.training_percentage > 1:
-            raise("No puede entrenarse con training_percentage. Parámetro p inválido")
-
         current_epoch = 0
         finished = False
         
@@ -73,8 +70,8 @@ class Perceptron:
         return self.weights, mse_errors, test_MSE
     
     def train_k_fold(self):
-        if self.k_fold == -1 or self.k_fold > len(self.input_data) :
-            raise("No puede entrenarse con k_fold. Parámetro k inválido")
+        if self.k_fold > len(self.input_data) :
+            raise("No puede entrenarse con validacion k-cruzada porque supera la cantidad de datos.")
         
         original_weights = self.weights
 
@@ -190,7 +187,7 @@ class Perceptron:
     def __activate_non_linear_tanh(self, h):
         return math.tanh(self.beta * h)
     def __activate_non_linear_log(self, h):
-        return 1 / (1 + math.pow(math.e, self.beta * h))
+        return 1 / (1 + math.pow(math.e, -2 * self.beta * h))
     
     # Funcion de Δw 
     def calculate_delta_w(self, x, expected, O):
@@ -213,7 +210,7 @@ class Perceptron:
     def __calculate_theta_diff_non_linear_tanh(self, O):
         return self.beta * (1 - O**2)
     def __calculate_theta_diff_non_linear_log(self, O):
-        return self.beta * O * (1 - O)
+        return 2 * self.beta * O * (1 - O)
 
     # Función de error MSE para finalizar entrenamiento
     def __mid_square_error(self, Os, expected):
