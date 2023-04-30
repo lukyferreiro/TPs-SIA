@@ -1,4 +1,4 @@
-from src.utils import destructure_data
+from src.utils import DataConfig
 from src.multilayer_perceptron import MultilayerPerceptron
 import json
 
@@ -7,9 +7,14 @@ def main():
         data = json.load(f)
         f.close()
 
-    input_data, expected_data, learning_rate, epochs, training_percentage, qty_hidden_layers, qty_nodes_in_hidden_layers, output_activation, hidden_activation = destructure_data(data)
+    config = DataConfig(data)
 
-    perceptron = MultilayerPerceptron(input_data, expected_data, learning_rate, epochs, training_percentage, qty_hidden_layers, qty_nodes_in_hidden_layers, output_activation, hidden_activation)
+    perceptron = MultilayerPerceptron(config.input_data, config.expected_data, config.learning_rate,
+                                      config.epochs, config.training_percentage, config.min_error,
+                                      config.qty_hidden_layers, config.qty_nodes_in_hidden_layers,
+                                      config.output_activation, config.hidden_activation, config.beta,
+                                      config.optimizer_method, config.alpha, config.beta1, config.beta2,
+                                      config.epsilon)
     perceptron.train()
     print(perceptron)
 

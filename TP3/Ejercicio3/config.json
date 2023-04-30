@@ -4,19 +4,16 @@
     "epochs": 500000,
     "bias": 1,
     "training_percentage": 0.8,
+    "min_error": 0.1,
 
     "output_activation": "TANH",
     "hidden_activation": "TANH",
-    "check": "No se si es necesario que esto sea un arreglo",
+    "beta": 1.0,
     "qty_hidden_layers": 1,
     "qty_nodes_in_hidden_layers": [2],
 
-    "todo": "Hacer que lo levante desde los datos", 
-    "qty_data_xs": 2,
-    "qty_output_ys": 1,
-
     "optimizer_method": "ADAM",
-    "momentum_alpha": 0.8,
+    "alpha": 0.8,
     "beta1": 0.9,
     "beta2": 0.999,
     "epsilon": 1e-8,
@@ -28,5 +25,4 @@
     "optimizer_options": [
         "ADAM", "MOMENTUM"
     ]
-
 }
