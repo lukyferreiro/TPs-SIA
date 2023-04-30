@@ -41,7 +41,8 @@ class MultilayerPerceptron:
         print(weights)
         return weights
 
-    def __calculate_min_and_max(self, expected_data):
+    @staticmethod
+    def __calculate_min_and_max(expected_data):
         return np.min(expected_data), np.max(expected_data)
 
     def __calculate_error(self, O):
