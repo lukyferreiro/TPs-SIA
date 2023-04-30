@@ -4,13 +4,13 @@ import math
 
 class MultilayerPerceptron:
 
-    def __init__(self, input_data, expected_data, learning_rate, epochs, training_percentage, min_error,
-                 qty_hidden_layers, qty_nodes_in_hidden_layers, output_activation, hidden_activation, beta,
+    def __init__(self, input_data, expected_data, learning_rate, bias, epochs, training_percentage, min_error,
+                 qty_hidden_layers, qty_nodes_in_hidden_layers, layer_dims, output_activation, hidden_activation, beta,
                  optimization_method, alpha, beta1, beta2, epsilon):
 
         self.min, self.max = self.__calculate_min_and_max(expected_data)
-        self.input_data = input_data
-        self.expected_data = self.__normalize_image(expected_data)
+        self.bias = bias
+        self.input_data = input_data.T
         self.learning_rate = learning_rate
         self.epochs = epochs
         self.training_percentage = training_percentage
@@ -18,9 +18,13 @@ class MultilayerPerceptron:
 
         self.qty_hidden_layers = qty_hidden_layers
         self.qty_nodes_in_hidden_layer = qty_nodes_in_hidden_layers
+        self.layer_dims = layer_dims
+
         self.output_activation = output_activation
         self.hidden_activation = hidden_activation
         self.beta = beta
+
+        self.expected_data = self.__normalize_image(expected_data).T
 
         self.optimization_method = optimization_method
         self.alpha = alpha
@@ -32,13 +36,17 @@ class MultilayerPerceptron:
 
     def __init_weights(self):
         weights = {}
-        num_layers = self.qty_hidden_layers
-        for l in range(num_layers):
-            weights['W' + str(l)] = 2 * np.random.default_rng().random(self.qty_nodes_in_hidden_layer[l],
-                                                                       self.qty_nodes_in_hidden_layer[l - 1]) - 1
-            weights['b' + str(l)] = np.zeros((self.qty_nodes_in_hidden_layer[l], 1))
+        num_layers = len(self.layer_dims)
+
+        print(self.layer_dims)
+
+        for l in range(1, num_layers):
+            weights['W'+str(l)] = 2 * np.random.rand(self.layer_dims[l], self.layer_dims[l-1]) - 1
+            if(self.bias):
+                weights['b'+str(l)] = np.zeros((self.layer_dims[l], 1))
 
         print(weights)
+
         return weights
 
     def __calculate_min_and_max(self, expected_data):
@@ -92,30 +100,34 @@ class MultilayerPerceptron:
         return O, _
 
     # -----------------------FORWARD PROPAGATION-----------------------
-
     def __forward_propagation(self):
         V = self.input_data
         caches = []
-        L = len(self.weights) // 2  # includes weights and biases
 
-        # Activate hidden layers
-        for l in range(1, L):  # l=0 is the input
+        if (self.bias):
+            L = len(self.weights) // 2
+        else:
+            L = len(self.weights)
+
+        for l in range(1, L): 
             V_prev = V
-            b = self.weights['b' + str(l)]
-            V, cache = self.__activation_forward(V_prev, self.weights['W' + str(l)],
-                                                 b, self.hidden_activation)
+            if (self.bias):
+                b = self.weights['b'+str(l)]
+            else:
+                b = 0
+        
+            V, cache = self.__activation_forward(V_prev, self.weights['W'+str(l)], b, self.hidden_activation)
             caches.append(cache)
 
         # Activate output layer
-        O, cache = self.__activation_forward(V, self.weights['W' + str(L)],
-                                             self.weights['b' + str(L)],
-                                             self.output_activation)
+        O, cache = self.__activation_forward(V, self.weights['W' + str(L)], b, self.output_activation)
         caches.append(cache)
         return O, caches
 
     def __activation_forward(self, V_prev, W, b, activation):
-        H = np.dot(W, V_prev) + b  # hyperplane with bias
-        excitation_cache = (V_prev, W, b)
+        # Excitation 
+        H = np.dot(W, V_prev) + b
+        excitation_cache = (V_prev, W)
 
         switcher = {
             "TANH": self.__activate_forward_tanh(H),
@@ -127,12 +139,14 @@ class MultilayerPerceptron:
         return V, cache
 
     def __activate_forward_tanh(self, H):
-        V = math.tanh(self.beta * H)
+        print(H)
+        H_beta = H * self.beta
+        V = (np.exp(H_beta) - np.exp(-H_beta)) / (np.exp(H_beta) + np.exp(-H_beta))
         cache = H
         return V, cache
 
     def __activate_forward_log(self, H):
-        V = 1 / (1 + math.pow(math.e, -2 * self.beta * H))
+        V = 1/(1 + np.exp(-2 * self.beta * H))
         cache = H
         return V, cache
 

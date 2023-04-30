@@ -35,15 +35,19 @@ class DataConfig:
     def __init__(self, data):
 
       self.bias = check_positivity(data['bias'], "bias")
-      data_without_bias, self.expected_data = read_data(data['input_file'])
-      
-      self.input_data = np.insert(data_without_bias, 0, self.bias, axis=1)
 
+      # Data 
+      self.input_data, self.expected_data = read_data(data['input_file'])
+
+      print(self.input_data)
+
+      # Training params
       self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
       self.epochs = check_positivity(data['epochs'], "epocas")
       self.training_percentage = check_prob(data['training_percentage'], "porcentaje de entrenamiento")
       self.min_error = check_prob(data['min_error'], "cota de error")
 
+      # Layer params
       self.output_activation = check_type(data['output_activation'], data['activation_options'], "funcion de activacion de capa de salida")
       self.hidden_activation = check_type(data['hidden_activation'], data['activation_options'], "funcion de activacion de capas ocultas")
       self.beta = check_num(data['beta'], "beta")
@@ -54,6 +58,12 @@ class DataConfig:
       if(self.qty_hidden_layers != len(self.qty_nodes_in_hidden_layers)):
          raise ValueError("qty_hidden_layers y qty_nodes_in_hidden_layers no se corresponden entre si")
       
+      num_features = len(self.input_data[0]) 
+      num_outputs = len(self.expected_data[0]) if isinstance(self.expected_data[0], list) else 1
+
+      self.layer_dims = [num_features] + self.qty_nodes_in_hidden_layers + [num_outputs]
+
+      # Optimizer values
       self.optimizer_method = check_type(data['optimizer_method'], data['optimizer_options'], "metodo de optimizacion")
       self.alpha = check_prob(data['alpha'], "alpha")
       self.beta1 = check_prob(data['beta1'], "beta 1")
@@ -64,7 +74,7 @@ class DataConfig:
 def read_data(path):
 
    with open(path, 'r') as f:
-       first_line = f.readline().strip() 
+      first_line = f.readline().strip() 
 
    x = 0
    y = 0
