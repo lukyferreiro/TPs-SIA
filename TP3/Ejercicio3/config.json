@@ -1,7 +1,7 @@
 {
     "input_file": "./data/Ej3A-XOR.txt",
-    "learning_rate": 0.00001,
-    "epochs": 500000,
+    "learning_rate": 0.0001,
+    "epochs": 50000,
     "bias": 1,
     "training_percentage": 0.8,
     "min_error": 0.1,

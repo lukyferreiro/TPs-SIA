@@ -39,8 +39,6 @@ class DataConfig:
       # Data 
       self.input_data, self.expected_data = read_data(data['input_file'])
 
-      print(self.input_data)
-
       # Training params
       self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
       self.epochs = check_positivity(data['epochs'], "epocas")

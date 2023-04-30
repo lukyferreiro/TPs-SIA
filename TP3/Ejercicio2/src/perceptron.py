@@ -190,7 +190,7 @@ class Perceptron:
     def __activate_non_linear_tanh(self, h):
         return math.tanh(self.beta * h)
     def __activate_non_linear_log(self, h):
-        return 1 / (1 + math.pow(math.e, -2 * self.beta * h))
+        return 1 / (1 + math.pow(math.e, self.beta * h))
     
     # Funcion de Δw 
     def calculate_delta_w(self, x, expected, O):
@@ -213,7 +213,7 @@ class Perceptron:
     def __calculate_theta_diff_non_linear_tanh(self, O):
         return self.beta * (1 - O**2)
     def __calculate_theta_diff_non_linear_log(self, O):
-        return 2 * self.beta * O * (1 - O)
+        return self.beta * O * (1 - O)
 
     # Función de error MSE para finalizar entrenamiento
     def __mid_square_error(self, Os, expected):
