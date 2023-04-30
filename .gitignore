@@ -136,3 +136,5 @@ dmypy.json
 /.idea/TPs-SIA.iml
 /.idea/vcs.xml
 /.idea/other.xml
+
+*.ini
