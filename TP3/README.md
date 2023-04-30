@@ -81,6 +81,7 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci√
     "perceptron_options": [
         "LINEAR", "NON_LINEAR_TANH", "NON_LINEAR_LOG"
     ]
+}
 ```
 
 | Variables           | Descripci√≥n                                                          
@@ -92,12 +93,60 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci√
 | beta                | Numero flotante que representa el valor de beta para el perceptron no lineal             |   
 | min_error           | Numero real entre [0,1] que representa la candicion de corte de error minimo             | 
 | training_percentage | Numero real entre [0,1] que representa el porcentaje de los datos tomandos para entrenar | 
-| k_fold              | Numero natural para entrenar al perceptron con validacion k-cruzada       | 
+| k_fold              | Numero natural para entrenar al perceptron con validacion k-cruzada                      | 
 | perceptron_options  | Arreglo de strings con los tipos de perceptrones validos (NO MODIFICAR)                  |
 
 ### Ejercicio 3
 
 ``` json
 {
-   
+    "input_file": "./data/Ej3A-XOR.txt",
+    "learning_rate": 0.00001,
+    "epochs": 500000,
+    "bias": 1,
+    "training_percentage": 0.8,
+    "min_error": 0.1,
+
+    "output_activation": "TANH",
+    "hidden_activation": "TANH",
+    "beta": 1.0,
+    "qty_hidden_layers": 1,
+    "qty_nodes_in_hidden_layers": [2],
+
+    "optimizer_method": "ADAM",
+    "alpha": 0.8,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "epsilon": 1e-8,
+
+    "activation_options": [
+        "TANH", "LOG"
+    ],
+
+    "optimizer_options": [
+        "ADAM", "MOMENTUM"
+    ]
 }
+```
+
+| Variables           | Descripci√≥n                                                          
+|---------------------|------------------------------------------------------------------------------------------|
+| input_file          | String con el path al archivo donde se encuentran los datos                              |
+| learning_rate       | Numero real entre [0,1] que representa la tasa de aprendizaje                            | 
+| epochs              | Numero natural que representa la cantidad de epocas                                      | 
+| bias                | Numero natural que representa el umbral/bias.                                            | 
+| training_percentage | Numero real entre [0,1] que representa el porcentaje de los datos tomandos para entrenar | 
+| min_error           | Numero real entre [0,1] que representa la candicion de corte de error minimo             | 
+| output_activation   | String con el tipo de activaccion de la capa de salida. Debe ser alguno de los valores de activation_options         | 
+| hidden_activation   | String con el tipo de activacion de la capa oculta. Debe ser alguno de los valores de activation_options             | 
+| beta                | Numero flotante que representa el valor de beta para el perceptron no lineal             |   
+| qty_hidden_layers   | Numero natural que representa la cantidad de capas ocultas del perceptron multicapa      | 
+| qty_nodes_in_hidden_layers   | Arreglo de numeros naturales con la cantidad de nodos de cada capa oculta       | 
+| optimizer_method    | String con el tipo de optimizacion. Debe ser alguno de los valores de optimizer_options  | 
+| alpha               | Numero real entre [0,1] usado en el metodo de optimizacion MOMENTUM                      | 
+| beta1               | Numero real entre [0,1] usado en el metodo de optimizacion ADAM                          | 
+| beta2               | Numero real entre [0,1] usado en el metodo de optimizacion ADAM                          | 
+| epsilon             | Numero real entre [0,1] usado en el metodo de optimizacion ADAM                          | 
+| activation_options  | Arreglo de strings con los tipos de activacion validos (NO MODIFICAR)                    |
+| optimizer_options   | Arreglo de strings con los tipos de optimizacion validos (NO MODIFICAR)                  |
+ 
