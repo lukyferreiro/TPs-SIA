@@ -222,7 +222,8 @@ class MultilayerPerceptron:
         vel = {}
         for l in range(1, self.qty_hidden_layers):
             vel['dW' + str(l)] = np.zeros(self.weights['W' + str(l)].shape)
-            vel['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
+            if(self.bias):
+                vel['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
         return vel
 
     # Use gradient descent with momentum to update the parameters
@@ -231,8 +232,9 @@ class MultilayerPerceptron:
         for l in range(1, self.qty_hidden_layers):
             vel['dW' + str(l)] = self.alpha * vel['dW' + str(l)] + (1 - self.alpha) * gradients['dW' + str(l)]
             weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * vel['dW' + str(l)]
-            vel['db' + str(l)] = self.alpha * vel['db' + str(l)] + (1 - self.alpha) * gradients['db' + str(l)]
-            weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * vel['db' + str(l)]
+            if(self.bias):
+                vel['db' + str(l)] = self.alpha * vel['db' + str(l)] + (1 - self.alpha) * gradients['db' + str(l)]
+                weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * vel['db' + str(l)]
 
         self.weights = weights
         return vel
@@ -243,8 +245,9 @@ class MultilayerPerceptron:
         for l in range(1, self.qty_hidden_layers):
             M['dW' + str(l)] = np.zeros(self.weights['W' + str(l)].shape)
             V['dW' + str(l)] = np.zeros(self.weights['W' + str(l)].shape)
-            M['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
-            V['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
+            if(self.bias):
+                M['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
+                V['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
         return M, V
 
     def __update_weights_adam(self, gradients, M, V, t):
@@ -252,26 +255,17 @@ class MultilayerPerceptron:
         M_hat = {}
         V_hat = {}
         for l in range(1, self.qty_hidden_layers):
-            M['dW' + str(l)] = self.beta1 * M['dW' + str(l)] + (1 - self.beta1) * gradients[
-                'dW' + str(l)]  # 1st moment estimate
-            V['dW' + str(l)] = self.beta2 * V['dW' + str(l)] + (1 - self.beta2) * np.power(gradients['dW' + str(l)],
-                                                                                           2)  # 2nd moment estimate
-            M_hat['dW' + str(l)] = M['dW' + str(l)] / (
-                        1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
-            V_hat['dW' + str(l)] = V['dW' + str(l)] / (
-                        1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
-            weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * M_hat['dW' + str(l)] / (
-                    np.sqrt(V_hat['dW' + str(l)]) + self.epsilon)  # update parameters
-            M['db' + str(l)] = self.beta1 * M['db' + str(l)] + (1 - self.beta1) * gradients[
-                'db' + str(l)]  # 1st moment estimate
-            V['db' + str(l)] = self.beta2 * V['db' + str(l)] + (1 - self.beta2) * np.power(gradients['db' + str(l)],
-                                                                                           2)  # 2nd moment estimate
-            M_hat['db' + str(l)] = M['db' + str(l)] / (
-                        1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
-            V_hat['db' + str(l)] = V['db' + str(l)] / (
-                        1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
-            weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * M_hat['db' + str(l)] / (
-                    np.sqrt(V_hat['db' + str(l)]) + self.epsilon)  # update parameters
+            M['dW' + str(l)] = self.beta1 * M['dW' + str(l)] + (1 - self.beta1) * gradients[ 'dW' + str(l)]  # 1st moment estimate
+            V['dW' + str(l)] = self.beta2 * V['dW' + str(l)] + (1 - self.beta2) * np.power(gradients['dW' + str(l)], 2)  # 2nd moment estimate
+            M_hat['dW' + str(l)] = M['dW' + str(l)] / (1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
+            V_hat['dW' + str(l)] = V['dW' + str(l)] / (1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
+            weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * M_hat['dW' + str(l)] / (np.sqrt(V_hat['dW' + str(l)]) + self.epsilon)  # update parameters
+            if(self.bias):
+                M['db' + str(l)] = self.beta1 * M['db' + str(l)] + (1 - self.beta1) * gradients['db' + str(l)]  # 1st moment estimate
+                V['db' + str(l)] = self.beta2 * V['db' + str(l)] + (1 - self.beta2) * np.power(gradients['db' + str(l)], 2)  # 2nd moment estimate
+                M_hat['db' + str(l)] = M['db' + str(l)] / (1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
+                V_hat['db' + str(l)] = V['db' + str(l)] / (1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
+                weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * M_hat['db' + str(l)] / (np.sqrt(V_hat['db' + str(l)]) + self.epsilon)  # update parameters
 
         self.weights = weights
         return M, V
@@ -280,7 +274,8 @@ class MultilayerPerceptron:
         weights = self.weights.copy()
         for l in range(1, self.qty_hidden_layers):
             weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * gradients['dW' + str(l)]
-            weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * gradients['db' + str(l)]
+            if(self.bias):
+                weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * gradients['db' + str(l)]
 
         self.weights = weights
 
@@ -292,15 +287,12 @@ class MultilayerPerceptron:
             "LOG": self.__normalize_log_image(values),
         }
 
-        return switcher.get(self.output_activation, "Tipo de activacion de salida")
+        return switcher.get(self.output_activation, "Tipo de activacion de salida invalido")
 
     # Normalizacion para [a,b] es: X'=((X-Xmin)/(Xmax-Xmin))(b-a)+a
     def __normalize_tanh_image(self, values):
-        # Image = (-1,1)
         return (2 * (values - self.min) / (self.max - self.min)) - 1
-
     def __normalize_log_image(self, values):
-        # Image = (0,1)
         return (values - self.min) / (self.max - self.min)
 
     def __denormalize_image(self, values):
@@ -309,10 +301,9 @@ class MultilayerPerceptron:
             "LOG": self.__denormalize_log_image(values),
         }
 
-        return switcher.get(self.output_activation, "Tipo de activacion de salida")
+        return switcher.get(self.output_activation, "Tipo de activacion de salida invalido")
 
     def __denormalize_tanh_image(self, values):
         return ((values + 1) * (self.max - self.min) * 0.5) + self.min
-
     def __denormalize_log_image(self, values):
         return values * (self.max - self.min) + self.min
