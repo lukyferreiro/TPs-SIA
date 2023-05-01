@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 
 class MultilayerPerceptron:
@@ -39,9 +38,9 @@ class MultilayerPerceptron:
         num_layers = len(self.layer_dims)
 
         for l in range(1, num_layers):
-            weights['W'+str(l)] = 2 * np.random.rand(self.layer_dims[l], self.layer_dims[l-1]) - 1
-            if(self.bias):
-                weights['b'+str(l)] = np.zeros((self.layer_dims[l], 1))
+            weights['W' + str(l)] = 2 * np.random.rand(self.layer_dims[l], self.layer_dims[l - 1]) - 1
+            if (self.bias):
+                weights['b' + str(l)] = np.zeros((self.layer_dims[l], 1))
 
         return weights
 
@@ -67,7 +66,7 @@ class MultilayerPerceptron:
         finished = False
 
         while current_epoch < self.epochs and not finished:
-            if(current_epoch % 1000 == 0):
+            if (current_epoch % 1000 == 0):
                 print(current_epoch)
 
             total_error = []
@@ -99,9 +98,22 @@ class MultilayerPerceptron:
 
         return self.weights, errors
 
-    def predict(self, input_data):
-        O, _ = self.__forward_propagation(input_data)
-        return O, _
+    # -----------------------PREDICTION-----------------------
+    def logistic_prediction(self):
+        O, _ = self.__forward_propagation(self.input_data)
+        P = 1 * (O > 0.5)
+        return O, P
+
+    def tanh_prediction(self):
+        O, _ = self.__forward_propagation(self.input_data)
+        P = 2 * (O > 0.5) - 1
+        return O, P
+
+    def predict(self):
+        if self.output_activation == 'TANH':
+            return self.tanh_prediction()
+
+        return self.logistic_prediction()
 
     # -----------------------FORWARD PROPAGATION-----------------------
     def __forward_propagation(self, input_data):
@@ -113,20 +125,21 @@ class MultilayerPerceptron:
         else:
             L = len(self.weights)
 
-        for l in range(1, L): 
+        for l in range(1, L):
             V_prev = V
             if (self.bias):
-                b = self.weights['b'+str(l)]
+                b = self.weights['b' + str(l)]
             else:
                 b = 0
-        
-            V, cache = self.__activation_forward(V_prev, self.weights['W'+str(l)], b, self.hidden_activation)
+
+            V, cache = self.__activation_forward(V_prev, self.weights['W' + str(l)], b, self.hidden_activation)
             caches.append(cache)
 
         if (self.bias):
-            O, cache = self.__activation_forward(V, self.weights['W' + str(L)],  self.weights['b'+str(L)], self.output_activation)
+            O, cache = self.__activation_forward(V, self.weights['W' + str(L)], self.weights['b' + str(L)],
+                                                 self.output_activation)
         else:
-            O, cache = self.__activation_forward(V, self.weights['W' + str(L)],  0, self.output_activation)
+            O, cache = self.__activation_forward(V, self.weights['W' + str(L)], 0, self.output_activation)
 
         caches.append(cache)
         return O, caches
@@ -152,7 +165,7 @@ class MultilayerPerceptron:
         return V, cache
 
     def __activate_forward_log(self, H):
-        V = 1/(1 + np.exp(-2 * self.beta * H))
+        V = 1 / (1 + np.exp(-2 * self.beta * H))
         cache = H
         return V, cache
 
@@ -167,16 +180,21 @@ class MultilayerPerceptron:
         current_cache = caches[L - 1]
 
         if (self.bias):
-            gradients['dV' + str(L-1)], gradients['dW' + str(L)], gradients['db' + str(L)] = self.__activation_backward(dO, current_cache, self.output_activation)
+            gradients['dV' + str(L - 1)], gradients['dW' + str(L)], gradients[
+                'db' + str(L)] = self.__activation_backward(dO, current_cache, self.output_activation)
         else:
-            gradients['dV'+str(L-1)], gradients['dW'+str(L)], _ = self.__activation_backward(dO, current_cache, self.output_activation)
+            gradients['dV' + str(L - 1)], gradients['dW' + str(L)], _ = self.__activation_backward(dO, current_cache,
+                                                                                                   self.output_activation)
 
         for l in reversed(range(L - 1)):
             current_cache = caches[l]
             if (self.bias):
-                gradients['dV' + str(L-1)], gradients['dW' + str(L)], gradients['db' + str(L)] = self.__activation_backward(dO, current_cache, self.output_activation)
+                gradients['dV' + str(L - 1)], gradients['dW' + str(L)], gradients[
+                    'db' + str(L)] = self.__activation_backward(dO, current_cache, self.output_activation)
             else:
-                gradients['dV'+str(L-1)], gradients['dW'+str(L)], _ = self.__activation_backward(dO, current_cache, self.output_activation)
+                gradients['dV' + str(L - 1)], gradients['dW' + str(L)], _ = self.__activation_backward(dO,
+                                                                                                       current_cache,
+                                                                                                       self.output_activation)
 
         return gradients
 
@@ -201,7 +219,7 @@ class MultilayerPerceptron:
 
     def __activate_backward_log(self, dV, cache):
         H = cache
-        log = 1/(1 + np.exp(-2 * self.beta * H))
+        log = 1 / (1 + np.exp(-2 * self.beta * H))
         dH = dV * 2 * self.beta * log * (1 - log)
         return dH
 
@@ -211,9 +229,9 @@ class MultilayerPerceptron:
         num_examples = V_prev.shape[1]
         dW = (1 / num_examples) * np.dot(dH, V_prev.T)  # dW = delta_H/delta_W
         if (self.bias):
-            db = (1/num_examples) * np.sum(dH, axis=1, keepdims=True)  # db = delta_H/delta_b
+            db = (1 / num_examples) * np.sum(dH, axis=1, keepdims=True)  # db = delta_H/delta_b
         else:
-            db = 0        
+            db = 0
         return dV_prev, dW, db
 
     # -----------------------OPTIMIZATION-----------------------
@@ -222,7 +240,7 @@ class MultilayerPerceptron:
         vel = {}
         for l in range(1, self.qty_hidden_layers):
             vel['dW' + str(l)] = np.zeros(self.weights['W' + str(l)].shape)
-            if(self.bias):
+            if (self.bias):
                 vel['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
         return vel
 
@@ -232,7 +250,7 @@ class MultilayerPerceptron:
         for l in range(1, self.qty_hidden_layers):
             vel['dW' + str(l)] = self.alpha * vel['dW' + str(l)] + (1 - self.alpha) * gradients['dW' + str(l)]
             weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * vel['dW' + str(l)]
-            if(self.bias):
+            if (self.bias):
                 vel['db' + str(l)] = self.alpha * vel['db' + str(l)] + (1 - self.alpha) * gradients['db' + str(l)]
                 weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * vel['db' + str(l)]
 
@@ -245,7 +263,7 @@ class MultilayerPerceptron:
         for l in range(1, self.qty_hidden_layers):
             M['dW' + str(l)] = np.zeros(self.weights['W' + str(l)].shape)
             V['dW' + str(l)] = np.zeros(self.weights['W' + str(l)].shape)
-            if(self.bias):
+            if (self.bias):
                 M['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
                 V['db' + str(l)] = np.zeros(self.weights['b' + str(l)].shape)
         return M, V
@@ -255,17 +273,27 @@ class MultilayerPerceptron:
         M_hat = {}
         V_hat = {}
         for l in range(1, self.qty_hidden_layers):
-            M['dW' + str(l)] = self.beta1 * M['dW' + str(l)] + (1 - self.beta1) * gradients[ 'dW' + str(l)]  # 1st moment estimate
-            V['dW' + str(l)] = self.beta2 * V['dW' + str(l)] + (1 - self.beta2) * np.power(gradients['dW' + str(l)], 2)  # 2nd moment estimate
-            M_hat['dW' + str(l)] = M['dW' + str(l)] / (1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
-            V_hat['dW' + str(l)] = V['dW' + str(l)] / (1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
-            weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * M_hat['dW' + str(l)] / (np.sqrt(V_hat['dW' + str(l)]) + self.epsilon)  # update parameters
-            if(self.bias):
-                M['db' + str(l)] = self.beta1 * M['db' + str(l)] + (1 - self.beta1) * gradients['db' + str(l)]  # 1st moment estimate
-                V['db' + str(l)] = self.beta2 * V['db' + str(l)] + (1 - self.beta2) * np.power(gradients['db' + str(l)], 2)  # 2nd moment estimate
-                M_hat['db' + str(l)] = M['db' + str(l)] / (1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
-                V_hat['db' + str(l)] = V['db' + str(l)] / (1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
-                weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * M_hat['db' + str(l)] / (np.sqrt(V_hat['db' + str(l)]) + self.epsilon)  # update parameters
+            M['dW' + str(l)] = self.beta1 * M['dW' + str(l)] + (1 - self.beta1) * gradients[
+                'dW' + str(l)]  # 1st moment estimate
+            V['dW' + str(l)] = self.beta2 * V['dW' + str(l)] + (1 - self.beta2) * np.power(gradients['dW' + str(l)],
+                                                                                           2)  # 2nd moment estimate
+            M_hat['dW' + str(l)] = M['dW' + str(l)] / (
+                    1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
+            V_hat['dW' + str(l)] = V['dW' + str(l)] / (
+                    1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
+            weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * M_hat['dW' + str(l)] / (
+                    np.sqrt(V_hat['dW' + str(l)]) + self.epsilon)  # update parameters
+            if (self.bias):
+                M['db' + str(l)] = self.beta1 * M['db' + str(l)] + (1 - self.beta1) * gradients[
+                    'db' + str(l)]  # 1st moment estimate
+                V['db' + str(l)] = self.beta2 * V['db' + str(l)] + (1 - self.beta2) * np.power(gradients['db' + str(l)],
+                                                                                               2)  # 2nd moment estimate
+                M_hat['db' + str(l)] = M['db' + str(l)] / (
+                        1 - np.power(self.beta1, t))  # bias-corrected 1st moment estimate
+                V_hat['db' + str(l)] = V['db' + str(l)] / (
+                        1 - np.power(self.beta2, t))  # bias-corrected 2nd moment estimate
+                weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * M_hat['db' + str(l)] / (
+                        np.sqrt(V_hat['db' + str(l)]) + self.epsilon)  # update parameters
 
         self.weights = weights
         return M, V
@@ -274,7 +302,7 @@ class MultilayerPerceptron:
         weights = self.weights.copy()
         for l in range(1, self.qty_hidden_layers):
             weights['W' + str(l)] = weights['W' + str(l)] - self.learning_rate * gradients['dW' + str(l)]
-            if(self.bias):
+            if (self.bias):
                 weights['b' + str(l)] = weights['b' + str(l)] - self.learning_rate * gradients['db' + str(l)]
 
         self.weights = weights
@@ -292,6 +320,7 @@ class MultilayerPerceptron:
     # Normalizacion para [a,b] es: X'=((X-Xmin)/(Xmax-Xmin))(b-a)+a
     def __normalize_tanh_image(self, values):
         return (2 * (values - self.min) / (self.max - self.min)) - 1
+
     def __normalize_log_image(self, values):
         return (values - self.min) / (self.max - self.min)
 
@@ -305,5 +334,6 @@ class MultilayerPerceptron:
 
     def __denormalize_tanh_image(self, values):
         return ((values + 1) * (self.max - self.min) * 0.5) + self.min
+
     def __denormalize_log_image(self, values):
         return values * (self.max - self.min) + self.min
