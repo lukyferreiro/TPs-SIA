@@ -198,7 +198,7 @@ class Perceptron:
     def __activate_non_linear_tanh(self, h):
         return math.tanh(self.beta * h)
     def __activate_non_linear_log(self, h):
-        return 1 / (1 + math.pow(math.e, -2 * self.beta * h))
+        return 1 / (1 + math.pow(math.e, self.beta * h))
     
     # Funcion de Δw 
     def calculate_delta_w(self, x, expected, O):
@@ -221,7 +221,7 @@ class Perceptron:
     def __calculate_theta_diff_non_linear_tanh(self, O):
         return self.beta * (1 - O**2)
     def __calculate_theta_diff_non_linear_log(self, O):
-        return 2 * self.beta * O * (1 - O)
+        return self.beta * O * (1 - O)
 
     # Función de error MSE para finalizar entrenamiento
     def __mid_square_error(self, Os, expected):
@@ -281,7 +281,7 @@ class Perceptron:
         #TODO graficar con varios porcentage
         #TODO graficar variando el learning rate
 
-        plt.plot(range(epochs), mse_errors, color='blue')
+        plt.plot(range(epochs), mse_errors)
         plt.xlabel('Generación')
         plt.ylabel('Error (MSE)')
         plt.title(f'Perceptron simple {perceptron_type_str(self.perceptron_type, self.beta)} y η={self.learning_rate} \n con {get_train_type(self.training_type, self.training_percentage, self.k_fold)}')

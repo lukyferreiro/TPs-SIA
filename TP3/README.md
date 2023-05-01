@@ -70,16 +70,20 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci√
 
 ``` json
 {
-    "perceptron_type": "NON_LINEAR_LOG",
-    "learning_rate": 0.0001,
-    "epochs": 500000,
+    "perceptron_type": "LINEAR",
+    "learning_rate": 0.001,
+    "epochs": 50000,
     "bias": 1,
     "beta": 1.0,
     "min_error": 0.1,
+    "training_type": "PERCENTAGE",
     "training_percentage": 0.8, 
     "k_fold": 4,
     "perceptron_options": [
         "LINEAR", "NON_LINEAR_TANH", "NON_LINEAR_LOG"
+    ],
+    "training_options": [
+        "PERCENTAGE", "K-FOLD"
     ]
 }
 ```
@@ -92,9 +96,11 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci√
 | bias                | Numero natural que representa el umbral/bias.                                            | 
 | beta                | Numero flotante que representa el valor de beta para el perceptron no lineal             |   
 | min_error           | Numero real entre [0,1] que representa la candicion de corte de error minimo             | 
+| training_type       | String con el tipo de entrenamiento. Debe ser alguno de los valores de training_options  |
 | training_percentage | Numero real entre [0,1] que representa el porcentaje de los datos tomandos para entrenar | 
 | k_fold              | Numero natural para entrenar al perceptron con validacion k-cruzada                      | 
 | perceptron_options  | Arreglo de strings con los tipos de perceptrones validos (NO MODIFICAR)                  |
+| training_options    | Arreglo de strings con los tipos de entrenamiento validos (NO MODIFICAR)                 |
 
 ### Ejercicio 3
 

@@ -17,7 +17,7 @@ def main():
     for i in range(len(input_data)):
         print(f"Predicted: {input_data[i][1]} {operation} {input_data[i][2]} = {perceptron.predict(input_data[i])}. Expected: {expected_data[i]}")
 
-    perceptron.plot(input_data,expected_data)
+    perceptron.plot(input_data, expected_data)
 
 if __name__ == "__main__":
     main()
