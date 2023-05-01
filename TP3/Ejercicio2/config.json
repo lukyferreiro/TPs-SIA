@@ -1,13 +1,17 @@
 {
-    "perceptron_type": "NON_LINEAR_LOG",
-    "learning_rate": 0.00001,
+    "perceptron_type": "LINEAR",
+    "learning_rate": 0.001,
     "epochs": 10000,
     "bias": 1,
-    "beta": 1.0,
+    "beta": 0.5,
     "min_error": 0.1,
-    "training_percentage": 1.0, 
+    "training_type": "PERCENTAGE",
+    "training_percentage": 0.5, 
     "k_fold": 4,
     "perceptron_options": [
         "LINEAR", "NON_LINEAR_TANH", "NON_LINEAR_LOG"
+    ],
+    "training_options": [
+        "PERCENTAGE", "K-FOLD"
     ]
 }

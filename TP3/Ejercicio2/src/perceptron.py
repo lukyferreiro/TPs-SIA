@@ -1,21 +1,22 @@
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+from src.utils import perceptron_type_str, get_train_type
 
 class Perceptron:
     
-    def __init__(self, input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_percentage, k):
+    def __init__(self, input_data, expected_data, perceptron_type, learning_rate, epochs, beta, min_error, training_type, training_percentage, k):
         self.weights = np.random.default_rng().random(len(input_data[0]))
-        self.training_percentage = training_percentage
-
         self.input_data = input_data
         self.expected_data = expected_data
-
         self.perceptron_type = perceptron_type
+        self.training_type = training_type
         self.learning_rate = learning_rate
         self.epochs = epochs
         self.beta = beta
         self.min_error = min_error
         self.train_MSE = -1
+        self.training_percentage = training_percentage
         self.k_fold = k
         self.min, self.max = self.__calculate_min_and_max(expected_data)
 
@@ -33,16 +34,26 @@ class Perceptron:
 
         return t1, e1, t2, e2
 
-    # Función de entrenamiento por porcentajes
     def train(self):
-        current_epoch = 0
-        finished = False
+        switcher = {
+            "PERCENTAGE": self.__train_percentage(),
+            "K-FOLD": self.__train_k_fold(),
+        }
+
+        return switcher.get(self.training_type, "Tipo de entrenamiento invalido")
+
+
+    # Función de entrenamiento por porcentajes
+    def __train_percentage(self):
         
         train_input, train_expected_data, test_input, test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
         
         train_len = len(train_input)
         Os = np.empty(train_len)
         mse_errors = np.empty(self.epochs)
+
+        current_epoch = 0
+        finished = False
 
         while current_epoch < self.epochs and not finished:
             for j in range(train_len):
@@ -67,9 +78,9 @@ class Perceptron:
         test_MSE = self.test(test_input, test_expected_data)
 
         print(f'Weights: {self.weights}. MSE_train: {self.train_MSE}. MSE_test: {test_MSE}')
-        return self.weights, mse_errors, test_MSE
+        return self.weights, mse_errors, test_MSE, current_epoch
     
-    def train_k_fold(self):
+    def __train_k_fold(self):
         if self.k_fold > len(self.input_data) :
             raise("No puede entrenarse con validacion k-cruzada porque supera la cantidad de datos.")
         
@@ -136,7 +147,7 @@ class Perceptron:
 
         print(f'Weights: {self.weights}. MSE_train: {MSEs_array_train[idx]}. MSE_test: {MSEs_array_test[idx]}')
 
-        return self.weights, all_errors[idx], MSEs_array_test[idx]
+        return self.weights, all_errors[idx], MSEs_array_test[idx], current_epoch
     
     # Utiliza el promedio ponderado de los MSE de train y test para elegir lo mejor
     def __choose_k_fold(self, MSEs_train, MSEs_test):
@@ -261,3 +272,18 @@ class Perceptron:
     
     def __repr__(self) -> str:
         return self.__str__()
+    
+    def plot(self, mse_errors, epochs):
+
+        #TODO ver como se grafica bien si es k-fold
+        #TODO graficar variando el beta
+        #TODO graficar variando el valor de k para k fold
+        #TODO graficar con varios porcentage
+        #TODO graficar variando el learning rate
+
+        plt.plot(range(epochs), mse_errors, color='blue')
+        plt.xlabel('Generación')
+        plt.ylabel('Error (MSE)')
+        plt.title(f'Perceptron simple {perceptron_type_str(self.perceptron_type, self.beta)} y η={self.learning_rate} \n con {get_train_type(self.training_type, self.training_percentage, self.k_fold)}')
+        
+        plt.show()
