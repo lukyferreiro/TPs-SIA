@@ -1,5 +1,5 @@
 from src.utils import DataConfig
-from src.multilayer_perceptron import MultilayerPerceptron
+from src.perceptron import MultilayerPerceptron
 import json
 
 import matplotlib.pyplot as plt
@@ -9,7 +9,7 @@ def main():
         data = json.load(f)
         f.close()
 
-    config = DataConfig(data)
+    config = DataConfig(data, 1)
 
     perceptron = MultilayerPerceptron(config.input_data, config.expected_data, config.learning_rate, config.bias,
                                       config.epochs, config.training_percentage, config.min_error,
@@ -18,11 +18,14 @@ def main():
                                       config.optimizer_method, config.alpha, config.beta1, config.beta2,
                                       config.epsilon)
     
-    weights, errors = perceptron.train()
+    perceptron.train()
     print(perceptron)
 
-    for i in range(len(config.input_data)):
-        print(f"Predicted: {config.input_data[i][0]} XOR {config.input_data[i][1]} = {perceptron.predict(config.input_data[i])}. Expected: {config.exp[i]}")
+    print("Achieved error in XOR: ", perceptron.eval_error(config.input_data, config.expected_data))
+    print("Achived accuracy in XOR: ", perceptron.accuracy(config.input_data, config.expected_data, [-1,1]))
+
+    #for i in range(len(config.input_data)):
+     #   print(f"Predicted: {config.input_data[i][0]} XOR {config.input_data[i][1]} = {perceptron.predict(config.input_data[i])}. Expected: {config.exp[i]}")
 
 if __name__ == "__main__":
     main()

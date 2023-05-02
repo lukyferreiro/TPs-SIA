@@ -19,11 +19,6 @@ class MultilayerPerceptron:
         self.training_percentage = training_percentage
         self.min_error = min_error
 
-        # Arquitectura de la red neuronal
-        self.qty_hidden_layers = qty_hidden_layers
-        self.qty_nodes_in_hidden_layer = qty_nodes_in_hidden_layers
-        self.layers = self.__init_layers()  # Inicialización de las capas
-
         # Metodos de activacion
         self.output_activation = output_activation
         self.hidden_activation = hidden_activation
@@ -36,13 +31,19 @@ class MultilayerPerceptron:
         self.beta2 = beta2
         self.epsilon = epsilon
 
+        # Arquitectura de la red neuronal
+        self.qty_hidden_layers = qty_hidden_layers
+        self.qty_nodes_in_hidden_layer = qty_nodes_in_hidden_layers
+        self.layers = self.__init_layers()  # Inicialización de las capas
     
     def __init_layers(self):
         layers = []
         current_layer = 0
 
         # Numero de neuronas definido en config.json, numero de entradas dependiente de input_data
-        layer_0 = Layer(self.qty_nodes_in_hidden_layer[current_layer], len(self.input_data[0]))
+        layer_0 = Layer(self.qty_nodes_in_hidden_layer[current_layer],
+                        len(self.input_data[0]),
+                        self.hidden_activation, self.beta)
         layers.append(layer_0)
 
         current_layer += 1
@@ -50,14 +51,19 @@ class MultilayerPerceptron:
         # Inicializamos capas intermedia (si solo tenemos una nunca entramos acá)
         # Cantidad de neuronas definido en config.json, numero de entradas dependiente de capa anterior
         while current_layer < self.qty_hidden_layers:
-            layer = Layer(self.qty_nodes_in_hidden_layer[current_layer], self.qty_nodes_in_hidden_layer[current_layer-1].neuron_count)
+            layer = Layer(self.qty_nodes_in_hidden_layer[current_layer],
+                          self.qty_nodes_in_hidden_layer[current_layer-1].neuron_count,
+                          self.hidden_activation, self.beta)
             layers.append(layer)
             current_layer += 1  
 
         # Inicializamos capa de salida, cantidad de neuronas dependiente de expected_data
-        final_layer = Layer(len(self.expected_data[0]), layers[current_layer - 1].neuron_count)
-        layers.append(final_layer)
-            
+
+        num_outputs = len(self.expected_data[0]) if isinstance(self.expected_data[0], list) else 1
+        output_layer = Layer(num_outputs,
+                             layers[current_layer - 1].neuron_count,
+                             self.output_activation, self.beta) 
+        layers.append(output_layer)
         return layers
 
     def __calculate_min_and_max(self, expected_data):
@@ -71,28 +77,65 @@ class MultilayerPerceptron:
             for i in range(train_len):
                 # Forward activation
                 activations = self.activate(self.input_data[i])
+                O = activations[-1]
 
                 # Calculate error
-                self.layers[-1].calc_error_d(self.expected_data[i] - activations[-1], self.output_activation, activations[-1])
+                self.layers[-1].calc_error_d(self.expected_data[i] - O, O)
                 
                 # Backward propagation
                 for i in range(len(self.layers) - 2, -1, -1):
                     inherit_layer = self.layers[i + 1]
-                    self.layers[i].calc_error_d(inherit_layer.weights.dot(inherit_layer.error_d), self.output_activation, activations[i + 1])
+                    self.layers[i].calc_error_d(np.dot(inherit_layer.weights,inherit_layer.error_d), activations[i + 1])
 
                 for i in range(len(self.layers)):
-                    self.layers[i].apply_delta(activations[i], self.learn_rate)
+                    self.layers[i].apply_delta(activations[i], self.learning_rate)
 
             current_epoch += 1
 
     def activate(self, init_input):
         activations = [init_input]
         for i in range(len(self.layers)):
-            activations.append(self.layers[i].activate(activations[-1], self.output_activation))
+            activations.append(self.layers[i].activate(activations[-1]))
         return activations
 
-     
+    def predict(self, input):
+        pass 
+    
+    def __str__(self) -> str:
+        str = "Perceptron multicapa\n"
+        for i in range(len(self.layers)):
+            str += f"Capa {i}:\n. {self.layers[i]}\n"
+        return str
+    
+    def __repr__(self) -> str:
+        return self.__str__()
 
+    def eval_error(self,test_set,expected_out):
+        error = 0
+        for i in range(test_set.shape[0]):
+            activations = self.activate(test_set[i])
+            error += (expected_out[i] - activations[-1]) ** 2
+        return np.sum(error) / test_set.shape[0]
+
+    def accuracy(self,test_set,expected_out,out_classes):
+        matches = 0
+        for case_idx in range(len(test_set)):
+            activations = self.activate(test_set[case_idx])
+            guess = self.__denormalize_image(activations[-1][0], self.output_activation)
+
+            print(guess)
+
+            closest_idx = (np.abs(out_classes-guess)).argmin()
+            matches += 1 if out_classes[closest_idx] == expected_out[case_idx] else 0
+        return matches/len(test_set)
+
+    def accuracy_by_node(self,test_set,expected_out):
+        matches = 0
+        for case_idx in range(len(test_set)):
+            guess = self.activate(test_set[case_idx])[-1]
+            max_idx = guess.argmax()
+            matches += 1 if expected_out[case_idx][max_idx] == 1 else 0
+        return matches/len(test_set)
 
     # -----------------------NORMALIZATION-----------------------
     def __normalize_image(self, values, output_activation):
