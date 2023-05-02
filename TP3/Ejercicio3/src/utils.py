@@ -56,11 +56,6 @@ class DataConfig:
       if(self.qty_hidden_layers != len(self.qty_nodes_in_hidden_layers)):
          raise ValueError("qty_hidden_layers y qty_nodes_in_hidden_layers no se corresponden entre si")
       
-      num_features = len(self.input_data[0]) 
-      num_outputs = len(self.expected_data[0]) if isinstance(self.expected_data[0], list) else 1
-
-      self.layer_dims = [num_features] + self.qty_nodes_in_hidden_layers + [num_outputs]
-
       # Optimizer values
       self.optimizer_method = check_type(data['optimizer_method'], data['optimizer_options'], "metodo de optimizacion")
       self.alpha = check_prob(data['alpha'], "alpha")

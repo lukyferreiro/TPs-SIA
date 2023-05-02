@@ -10,7 +10,7 @@
     "hidden_activation": "TANH",
     "beta": 1.0,
     "qty_hidden_layers": 1,
-    "qty_nodes_in_hidden_layers": [2],
+    "qty_nodes_in_hidden_layers": [4],
 
     "optimizer_method": "ADAM",
     "alpha": 0.8,
