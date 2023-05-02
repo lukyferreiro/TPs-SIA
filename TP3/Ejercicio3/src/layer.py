@@ -18,8 +18,8 @@ class Layer():
         # ADAM
         self.m = 0 
         self.v = 0
-        self.m_bias = 0
-        self.v_bias = 0
+        self.m_bias = np.zeros(self.bias.shape)
+        self.v_bias = np.zeros(self.bias.shape)
 
     def apply_delta(self, last_activation, learn_rate, t, optimization_method, alpha, beta1, beta2, epsilon):
         act_mat = np.matrix(last_activation)
@@ -45,16 +45,18 @@ class Layer():
             m_mean = self.m / (1 - np.power(beta1, t)) 
             v_mean = self.v / (1 - np.power(beta2, t))
 
-            self.weights -= learn_rate * m_mean / (np.sqrt(v_mean) + epsilon)
+            self.weights += learn_rate * m_mean / (np.sqrt(v_mean) + epsilon)
 
             # Actualización de bias
-            self.m_bias = beta1 * self.m_bias + (1 - beta1) * self.error_d
-            self.v_bias = beta2 * self.v_bias + (1 - beta2) * np.power(self.error_d, 2)
+            gt_bias = self.error_d
+
+            self.m_bias = beta1 * self.m_bias + (1 - beta1) * gt_bias
+            self.v_bias = beta2 * self.v_bias + (1 - beta2) * np.power(gt_bias, 2)
 
             m_bias_mean = self.m_bias / (1 - np.power(beta1, t))
             v_bias_mean = self.v_bias / (1 - np.power(beta2, t))
 
-            self.bias -= learn_rate * m_bias_mean / (np.sqrt(v_bias_mean) + epsilon)
+            self.bias += learn_rate * m_bias_mean / (np.sqrt(v_bias_mean) + epsilon)
        
         else:
             self.weights += learn_rate * np.dot(act_mat.T, err_mat)
