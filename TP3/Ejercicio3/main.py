@@ -22,7 +22,7 @@ def main():
     print(perceptron)
 
     print("Achieved error in XOR: ", perceptron.eval_error(config.input_data, config.expected_data))
-    print("Achived accuracy in XOR: ", perceptron.accuracy(config.input_data, config.expected_data, [-1,1]))
+    print("Achieved accuracy in XOR: ", perceptron.accuracy(config.input_data, config.expected_data, [-1,1]))
 
     #for i in range(len(config.input_data)):
      #   print(f"Predicted: {config.input_data[i][0]} XOR {config.input_data[i][1]} = {perceptron.predict(config.input_data[i])}. Expected: {config.exp[i]}")

@@ -52,7 +52,7 @@ class MultilayerPerceptron:
         # Cantidad de neuronas definido en config.json, numero de entradas dependiente de capa anterior
         while current_layer < self.qty_hidden_layers:
             layer = Layer(self.qty_nodes_in_hidden_layer[current_layer],
-                          self.qty_nodes_in_hidden_layer[current_layer-1].neuron_count,
+                          self.qty_nodes_in_hidden_layer[current_layer-1],
                           self.hidden_activation, self.beta)
             layers.append(layer)
             current_layer += 1  
@@ -68,7 +68,6 @@ class MultilayerPerceptron:
 
     def __calculate_min_and_max(self, expected_data):
         return np.min(expected_data), np.max(expected_data)
-
 
     def train(self):
         current_epoch = 0
@@ -88,7 +87,7 @@ class MultilayerPerceptron:
                     self.layers[i].calc_error_d(np.dot(inherit_layer.weights,inherit_layer.error_d), activations[i + 1])
 
                 for i in range(len(self.layers)):
-                    self.layers[i].apply_delta(activations[i], self.learning_rate)
+                    self.layers[i].apply_delta(activations[i], self.learning_rate, current_epoch, self.optimization_method, self.alpha, self.beta1, self.beta2, self.epsilon)
 
             current_epoch += 1
 
@@ -98,9 +97,6 @@ class MultilayerPerceptron:
             activations.append(self.layers[i].activate(activations[-1]))
         return activations
 
-    def predict(self, input):
-        pass 
-    
     def __str__(self) -> str:
         str = "Perceptron multicapa\n"
         for i in range(len(self.layers)):

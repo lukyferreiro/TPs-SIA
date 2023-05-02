@@ -1,7 +1,8 @@
 import numpy as np
+import pandas as pd
 
 def check_positivity(num, str):
-   if not type(num) == int or num <= 0:
+   if not type(num) == int or num < 0:
       raise ValueError(f"Valor de '{str}' invalido")
    
    return num
@@ -32,12 +33,15 @@ def check_arr(arr, str):
 
 class DataConfig:
 
-    def __init__(self, data):
+    def __init__(self, data, ej):
 
       self.bias = check_positivity(data['bias'], "bias")
 
       # Data 
-      self.input_data, self.expected_data = read_data(data['input_file'])
+      if(ej == 1):
+         self.input_data, self.expected_data = read_data(data['input_file'])
+      elif(ej == 2 or ej == 3):
+         self.input_data, self.expected_data = parse_nums(data['input_file'], 7, ej)
 
       # Training params
       self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
@@ -84,3 +88,50 @@ def read_data(path):
 
    return input_data, expected_data
    
+def parse_nums(file_name, height, ej):
+   df = pd.read_csv(file_name, sep=' +', engine='python', header=None)
+   arrayed = df.to_numpy()
+   chunked = []
+   base = 0
+   while base < len(arrayed) - height + 1:
+      grouped = np.array([], dtype=int)
+      for i in range(height):
+         grouped = np.append(grouped, arrayed[base + i])
+      chunked.append(np.copy(grouped))
+      base += height
+
+   if(ej == 2):
+      y = np.array([-1,1,-1,1,-1,1,-1,1,-1,1])
+   else:
+      y = [[1,0,0,0,0,0,0,0,0,0], #0
+           [0,1,0,0,0,0,0,0,0,0], #1
+           [0,0,1,0,0,0,0,0,0,0], #2
+           [0,0,0,1,0,0,0,0,0,0], #3
+           [0,0,0,0,1,0,0,0,0,0], #4
+           [0,0,0,0,0,1,0,0,0,0], #5
+           [0,0,0,0,0,0,1,0,0,0], #6
+           [0,0,0,0,0,0,0,1,0,0], #7
+           [0,0,0,0,0,0,0,0,1,0], #8
+           [0,0,0,0,0,0,0,0,0,1]] #9
+
+   return np.array(chunked), y
+
+
+def k_splitting(raw_in, raw_out, k):
+   if k > raw_in.shape[0]:
+      raise Exception
+   split_size = raw_in.shape[0] // k
+   indexes = np.arange(0, raw_in.shape[0], dtype=int)
+   np.random.shuffle(indexes)
+   train_sets_idx = []
+   test_sets_idx = []
+   for i in range(k):
+      test = indexes[i * split_size:(i + 1) * split_size]
+      before = indexes[0:i * split_size]
+      after = indexes[(i + 1) * split_size :]
+      train = np.concatenate((before,after))
+      train_sets_idx.append(train)
+      test_sets_idx.append(test)
+   # Train sets X,Y  then test sets, X and Y
+   return np.take(raw_in,train_sets_idx, axis=0),np.take(raw_out,train_sets_idx, axis=0), \
+         np.take(raw_in,test_sets_idx, axis=0),np.take(raw_out,test_sets_idx, axis=0)
