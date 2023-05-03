@@ -69,7 +69,7 @@ class DataConfig:
 
 
 def read_data(path):
-
+   
    with open(path, 'r') as f:
       first_line = f.readline().strip() 
 

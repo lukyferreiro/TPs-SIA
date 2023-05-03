@@ -1,5 +1,6 @@
 import numpy as np
 from src.layer import Layer
+import matplotlib.pyplot as plt
 
 class MultilayerPerceptron:
 
@@ -12,7 +13,8 @@ class MultilayerPerceptron:
         self.bias = bias
         self.input_data = input_data
         self.expected_data = self.__normalize_image(expected_data, output_activation)
-        
+        self.train_MSE = -1
+
         # Global para la red neuronal
         self.learning_rate = learning_rate
         self.epochs = epochs
@@ -72,14 +74,19 @@ class MultilayerPerceptron:
     def train(self):
         current_epoch = 0
         train_len = len(self.input_data)
-        while current_epoch < self.epochs:
+        mse_errors = []
+
+        finished = False
+        while current_epoch < self.epochs and not finished:
+            Os = []
+
             for i in range(train_len):
                 # Forward activation
                 activations = self.activate(self.input_data[i])
-                O = activations[-1]
+                Os.append(activations[-1])
 
-                # Calculate error
-                self.layers[-1].calc_error_d(self.expected_data[i] - O, O)
+                # Calculate error of output layer
+                self.layers[-1].calc_error_d(self.expected_data[i] - Os[i], Os[i])
                 
                 # Backward propagation
                 for i in range(len(self.layers) - 2, -1, -1):
@@ -89,7 +96,19 @@ class MultilayerPerceptron:
                 for i in range(len(self.layers)):
                     self.layers[i].apply_delta(activations[i], self.learning_rate, current_epoch, self.optimization_method, self.alpha, self.beta1, self.beta2, self.epsilon)
 
+            mse_errors.append(self.mid_square_error(Os, self.expected_data))
+
+            if (mse_errors[current_epoch] < self.min_error):
+                finished = True
+
             current_epoch += 1
+
+        # Guardo el MSE error al finalizar el entrenamiento
+        self.train_MSE = mse_errors[current_epoch - 1]
+
+        print(f"Finished Training. \n MSE: {self.train_MSE}")
+
+        return mse_errors, current_epoch
 
     def activate(self, init_input):
         activations = [init_input]
@@ -106,18 +125,21 @@ class MultilayerPerceptron:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def eval_error(self,test_set,expected_out):
+    def mid_square_error(self, Os, expected):
+        #print(Os)
+        #return np.sum((expected - self.__denormalize_image(Os)) ** 2) / len(expected)
         error = 0
-        for i in range(test_set.shape[0]):
-            activations = self.activate(test_set[i])
-            error += (expected_out[i] - activations[-1]) ** 2
-        return np.sum(error) / test_set.shape[0]
+        size = len(Os)
+        for i in range(size):
+            error += (expected[i] - self.__denormalize_image(Os[i])) ** 2
+        return np.sum(error) / size
+        
 
     def accuracy(self,test_set,expected_out,out_classes):
         matches = 0
         for case_idx in range(len(test_set)):
             activations = self.activate(test_set[case_idx])
-            guess = self.__denormalize_image(activations[-1][0], self.output_activation)
+            guess = self.__denormalize_image(activations[-1][0])
 
             print(guess)
 
@@ -148,15 +170,24 @@ class MultilayerPerceptron:
     def __normalize_log_image(self, values):
         return (values - self.min) / (self.max - self.min)
 
-    def __denormalize_image(self, values, output_activation):
+    def __denormalize_image(self, values):
         switcher = {
             "TANH": self.__denormalize_tanh_image(values),
             "LOG": self.__denormalize_log_image(values),
         }
 
-        return switcher.get(output_activation, "Tipo de activacion de salida invalido")
+        return switcher.get(self.output_activation, "Tipo de activacion de salida invalido")
 
     def __denormalize_tanh_image(self, values):
         return ((values + 1) * (self.max - self.min) * 0.5) + self.min
     def __denormalize_log_image(self, values):
         return values * (self.max - self.min) + self.min
+
+    def plot(self, mse_errors, epochs):
+
+        plt.plot(range(epochs), mse_errors)
+        plt.xlabel('Generación')
+        plt.ylabel('Error (MSE)')
+        plt.title(f'Perceptron Multicapa \n η={self.learning_rate} \n')
+        
+        plt.show()
