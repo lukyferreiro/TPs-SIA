@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 class MultilayerPerceptron:
 
-    def __init__(self, input_data, expected_data, learning_rate, bias, epochs, training_percentage, min_error,
+    def __init__(self, input_data, expected_data, learning_rate, bias, epochs, training_type, training_percentage, k_fold, min_error,
                  qty_hidden_layers, qty_nodes_in_hidden_layers, output_activation, hidden_activation, beta,
-                 optimization_method, alpha, beta1, beta2, epsilon):
+                 optimization_method, alpha, beta1, beta2, epsilon, out_array):
 
         # Info del set de entrenamiento 
         self.min, self.max = self.__calculate_min_and_max(expected_data)
@@ -18,8 +18,17 @@ class MultilayerPerceptron:
         # Global para la red neuronal
         self.learning_rate = learning_rate
         self.epochs = epochs
+        self.training_type = training_type
         self.training_percentage = training_percentage
+        self.k_fold = k_fold
+
+        self.train_input_data = self.train_expected_data = self.test_input_data = self.test_expected_data = None
+
+        if training_percentage != 1:
+            self.train_input_data, self.train_expected_data, self.test_input_data, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
+
         self.min_error = min_error
+        self.out_array = out_array
 
         # Metodos de activacion
         self.output_activation = output_activation
@@ -38,6 +47,20 @@ class MultilayerPerceptron:
         self.qty_nodes_in_hidden_layer = qty_nodes_in_hidden_layers
         self.layers = self.__init_layers()  # Inicialización de las capas
     
+    # Inicializar conjuntos de training y testing
+    def __divide_data_by_percentage(self, input, expected, p):
+        num_rows = int(p * input.shape[0])
+
+        idx = np.random.permutation(input.shape[0])
+
+        t1 = input[idx[:num_rows], :]
+        e1 = expected[idx[:num_rows]]
+
+        t2 = input[idx[num_rows:], :]
+        e2 = expected[idx[num_rows:]]
+
+        return t1, e1, t2, e2
+
     def __init_layers(self):
         layers = []
         current_layer = 0
@@ -72,8 +95,26 @@ class MultilayerPerceptron:
         return np.min(expected_data), np.max(expected_data)
 
     def train(self):
+        if(self.training_type == "PERCENTAGE"):
+            return self.__train_percentage()
+        else:
+            return self.__train_k_fold()
+
+    def __train_percentage(self):
         current_epoch = 0
-        train_len = len(self.input_data)
+
+        train_len = 0
+        input = expected = None
+
+        if self.training_percentage == 1:
+            train_len = len(self.input_data) 
+            input = self.input_data
+            expected = self.expected_data
+        else:
+            train_len = len(self.train_input_data)
+            input = self.train_input_data
+            expected = self.train_expected_data
+
         mse_errors = []
 
         finished = False
@@ -82,11 +123,11 @@ class MultilayerPerceptron:
 
             for i in range(train_len):
                 # Forward activation
-                activations = self.activate(self.input_data[i])
+                activations = self.activate(input[i])
                 Os.append(activations[-1])
 
                 # Calculate error of output layer
-                self.layers[-1].calc_error_d(self.expected_data[i] - Os[i], Os[i])
+                self.layers[-1].calc_error_d(expected[i] - Os[i], Os[i])
                 
                 # Backward propagation
                 for i in range(len(self.layers) - 2, -1, -1):
@@ -96,7 +137,7 @@ class MultilayerPerceptron:
                 for i in range(len(self.layers)):
                     self.layers[i].apply_delta(activations[i], self.learning_rate, current_epoch, self.optimization_method, self.alpha, self.beta1, self.beta2, self.epsilon)
 
-            mse_errors.append(self.mid_square_error(Os, self.expected_data))
+            mse_errors.append(self.mid_square_error(Os, expected))
 
             if (mse_errors[current_epoch] < self.min_error):
                 finished = True
@@ -108,7 +149,83 @@ class MultilayerPerceptron:
 
         print(f"Finished Training. \n MSE: {self.train_MSE}")
 
+        if self.training_percentage < 1:
+            self.__test(self.test_input_data, self.test_expected_data)
+        else:
+            self.__test(self.input_data, self.expected_data)
+
         return mse_errors, current_epoch
+
+    def __train_k_fold(self):
+        if self.k_fold > len(self.input_data) :
+            raise("No puede entrenarse con validacion k-cruzada porque supera la cantidad de datos.")
+        
+        original_layers = self.layers
+
+        idx = np.random.permutation(self.input_data.shape[0])
+
+        input = self.input_data[idx, :]
+        expected = self.expected_data[idx]
+
+        input_data_sets = np.array_split(input, self.k_fold)
+        expected_data_sets = np.array_split(expected, self.k_fold)
+
+        MSEs_array_train = np.empty(self.k_fold)
+
+        all_layers = []
+
+        for k in range(self.k_fold):
+            self.layers = original_layers
+
+            current_train = np.concatenate([input_data_sets[i] for i in range(self.k_fold) if i != k])
+            current_expected = np.concatenate([expected_data_sets[i] for i in range(self.k_fold) if i != k])
+
+            train_len = len(current_train)
+
+            Os = np.empty(train_len)
+            mse_errors = np.empty(self.epochs)
+
+            current_epoch = 0
+            finished = False
+
+            while current_epoch < self.epochs and not finished:
+                Os = []
+
+                for i in range(train_len):
+                    # Forward activation
+                    activations = self.activate(current_train[i])
+                    Os.append(activations[-1])
+
+                    # Calculate error of output layer
+                    self.layers[-1].calc_error_d(current_expected[i] - Os[i], Os[i])
+                    
+                    # Backward propagation
+                    for i in range(len(self.layers) - 2, -1, -1):
+                        inherit_layer = self.layers[i + 1]
+                        self.layers[i].calc_error_d(np.dot(inherit_layer.weights,inherit_layer.error_d), activations[i + 1])
+
+                    for i in range(len(self.layers)):
+                        self.layers[i].apply_delta(activations[i], self.learning_rate, current_epoch, self.optimization_method, self.alpha, self.beta1, self.beta2, self.epsilon)
+
+                mse_errors.append(self.mid_square_error(Os, current_expected))
+
+                if (mse_errors[current_epoch] < self.min_error):
+                    finished = True
+
+                current_epoch += 1
+
+            self.train_MSE = MSEs_array_train[k] = mse_errors[current_epoch - 1]
+        
+            print("Finished Training")
+
+            self.accuracy(input_data_sets[k], expected_data_sets[k])
+            all_layers = np.append(all_layers, self.layers)
+
+        all_layers = all_layers.reshape((self.k_fold, len(self.layers)))
+
+        #idx = self.__choose_k_fold(MSEs_array_train, MSEs_array_test)
+
+        return [], current_epoch
 
     def activate(self, init_input):
         activations = [init_input]
@@ -154,6 +271,12 @@ class MultilayerPerceptron:
             max_idx = guess.argmax()
             matches += 1 if expected_out[case_idx][max_idx] == 1 else 0
         return matches/len(test_set)
+
+    def __test(self, input, expected):
+        percent = self.accuracy(input, expected, self.out_array)
+        print(input)
+        print(expected)
+        print(f"Accuracy of test: {percent}")
 
     # -----------------------NORMALIZATION-----------------------
     def __normalize_image(self, values, output_activation):

@@ -47,6 +47,8 @@ class DataConfig:
       self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
       self.epochs = check_positivity(data['epochs'], "epocas")
       self.training_percentage = check_prob(data['training_percentage'], "porcentaje de entrenamiento")
+      self.training_type = check_type(data['training_type'], data['training_options'], "tipo de entrenamiento")
+      self.k_fold = check_positivity(data['k_fold'], "k fold")
       self.min_error = check_prob(data['min_error'], "cota de error")
 
       # Layer params
