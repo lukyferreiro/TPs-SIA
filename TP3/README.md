@@ -107,19 +107,19 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci√
 ``` json
 {
     "input_file": "./data/Ej3A-XOR.txt",
-    "learning_rate": 0.00001,
-    "epochs": 500000,
+    "learning_rate": 0.001,
+    "epochs": 10000,
     "bias": 1,
     "training_percentage": 0.8,
-    "min_error": 0.1,
+    "min_error": 0.01,
 
-    "output_activation": "TANH",
+    "output_activation": "LOG",
     "hidden_activation": "TANH",
     "beta": 1.0,
     "qty_hidden_layers": 1,
-    "qty_nodes_in_hidden_layers": [2],
+    "qty_nodes_in_hidden_layers": [6],
 
-    "optimizer_method": "ADAM",
+    "optimizer_method": "MOMENTUM",
     "alpha": 0.8,
     "beta1": 0.9,
     "beta2": 0.999,
@@ -130,7 +130,7 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci√
     ],
 
     "optimizer_options": [
-        "ADAM", "MOMENTUM"
+        "ADAM", "MOMENTUM", "NONE"
     ]
 }
 ```
