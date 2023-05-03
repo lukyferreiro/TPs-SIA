@@ -229,14 +229,14 @@ class MultilayerPerceptron:
         
             print("Finished Training")
 
-            self.__test(input_data_sets[k], expected_data_sets[k])
+            acurracy, test_mse = self.__test(input_data_sets[k], expected_data_sets[k])
             all_layers = np.append(all_layers, self.layers)
 
         all_layers = all_layers.reshape((self.k_fold, len(self.layers)))
 
         #idx = self.__choose_k_fold(MSEs_array_train, MSEs_array_test)
 
-        return [], current_epoch
+        return [], current_epoch, acurracy, test_mse
 
     def activate(self, init_input):
         activations = [init_input]
