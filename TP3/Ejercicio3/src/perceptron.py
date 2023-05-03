@@ -161,8 +161,10 @@ class MultilayerPerceptron:
         print(f"Finished Training. \n MSE: {self.train_MSE}")
 
         if self.training_percentage < 1:
+            print("Aca")
             test_acurracy, test_mse = self.test(self.test_input_data, self.test_expected_data)
         else:
+            print("100%")
             test_acurracy, test_mse = self.test(self.input_data, self.expected_data)
 
         return mse_errors, current_epoch, test_acurracy, test_mse
