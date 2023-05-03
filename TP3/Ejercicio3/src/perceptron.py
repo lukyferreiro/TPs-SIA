@@ -161,11 +161,11 @@ class MultilayerPerceptron:
         print(f"Finished Training. \n MSE: {self.train_MSE}")
 
         if self.training_percentage < 1:
-            acurracy, test_mse = self.__test(self.test_input_data, self.test_expected_data)
+            test_acurracy, test_mse = self.test(self.test_input_data, self.test_expected_data)
         else:
-            acurracy, test_mse = self.__test(self.input_data, self.expected_data)
+            test_acurracy, test_mse = self.test(self.input_data, self.expected_data)
 
-        return mse_errors, current_epoch, acurracy, test_mse
+        return mse_errors, current_epoch, test_acurracy, test_mse
 
     def __train_k_fold(self):
         if self.k_fold > len(self.input_data) :
@@ -229,14 +229,14 @@ class MultilayerPerceptron:
         
             print("Finished Training")
 
-            acurracy, test_mse = self.__test(input_data_sets[k], expected_data_sets[k])
+            test_acurracy, test_mse = self.test(input_data_sets[k], expected_data_sets[k])
             all_layers = np.append(all_layers, self.layers)
 
         all_layers = all_layers.reshape((self.k_fold, len(self.layers)))
 
         #idx = self.__choose_k_fold(MSEs_array_train, MSEs_array_test)
 
-        return [], current_epoch, acurracy, test_mse
+        return [], current_epoch, test_acurracy, test_mse
 
     def activate(self, init_input):
         activations = [init_input]
@@ -281,8 +281,8 @@ class MultilayerPerceptron:
             matches += 1 if expected_out[case_idx][max_idx] == 1 else 0
         return matches/len(test_set)
 
-    def __test(self, input, expected):
-        acurracy = self.accuracy(input, expected, self.out_array)
+    def test(self, input, expected):
+        test_acurracy = self.accuracy(input, expected, self.out_array)
 
         Os = []
         for i in range(len(input)):
@@ -290,10 +290,9 @@ class MultilayerPerceptron:
             Os.append(activations[-1])
         test_mse = self.mid_square_error(Os, expected)
 
-        
-        print(f"Accuracy of test: {acurracy}")
+        print(f"Test Acurracy: {test_acurracy}")
         print(f"Test MSE = {test_mse}")
-        return acurracy, test_mse
+        return test_acurracy, test_mse
 
     # -----------------------NORMALIZATION-----------------------
     def __normalize_image(self, values, output_activation):
