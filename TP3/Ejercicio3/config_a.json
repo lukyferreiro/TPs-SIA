@@ -3,7 +3,9 @@
     "learning_rate": 0.001,
     "epochs": 10000,
     "bias": 1,
-    "training_percentage": 0.8,
+    "training_percentage": 1.0,
+    "training_type": "PERCENTAGE",
+    "k_fold": 4,
     "min_error": 0.01,
 
     "output_activation": "LOG",
@@ -21,8 +23,10 @@
     "activation_options": [
         "TANH", "LOG"
     ],
-
     "optimizer_options": [
         "ADAM", "MOMENTUM", "NONE"
+    ],
+    "training_options": [
+        "PERCENTAGE", "K-FOLD"
     ]
 }

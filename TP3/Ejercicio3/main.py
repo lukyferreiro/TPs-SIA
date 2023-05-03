@@ -5,18 +5,18 @@ import json
 import matplotlib.pyplot as plt
 
 def main(): 
-    with open('./config.json', 'r') as f:
+    with open('./config_a.json', 'r') as f:
         data = json.load(f)
         f.close()
 
     config = DataConfig(data, 1)
 
     perceptron = MultilayerPerceptron(config.input_data, config.expected_data, config.learning_rate, config.bias,
-                                      config.epochs, config.training_percentage, config.min_error,
-                                      config.qty_hidden_layers, config.qty_nodes_in_hidden_layers, 
-                                      config.output_activation, config.hidden_activation, config.beta,
-                                      config.optimizer_method, config.alpha, config.beta1, config.beta2,
-                                      config.epsilon)
+                                    config.epochs, config.training_type, config.training_percentage, config.k_fold, config.min_error,
+                                    config.qty_hidden_layers, config.qty_nodes_in_hidden_layers, 
+                                    config.output_activation, config.hidden_activation, config.beta,
+                                    config.optimizer_method, config.alpha, config.beta1, config.beta2,
+                                      config.epsilon, [-1,1])
     
     mse_errors, current_epoch = perceptron.train()
     print(perceptron)
