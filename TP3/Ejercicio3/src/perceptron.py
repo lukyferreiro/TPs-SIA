@@ -161,11 +161,11 @@ class MultilayerPerceptron:
         print(f"Finished Training. \n MSE: {self.train_MSE}")
 
         if self.training_percentage < 1:
-            self.__test(self.test_input_data, self.test_expected_data)
+            acurracy, test_mse = self.__test(self.test_input_data, self.test_expected_data)
         else:
-            self.__test(self.input_data, self.expected_data)
+            acurracy, test_mse = self.__test(self.input_data, self.expected_data)
 
-        return mse_errors, current_epoch
+        return mse_errors, current_epoch, acurracy, test_mse
 
     def __train_k_fold(self):
         if self.k_fold > len(self.input_data) :
@@ -254,8 +254,6 @@ class MultilayerPerceptron:
         return self.__str__()
 
     def mid_square_error(self, Os, expected):
-        #print(Os)
-        #return np.sum((expected - self.__denormalize_image(Os)) ** 2) / len(expected)
         error = 0
         size = len(Os)
         for i in range(size):
@@ -284,10 +282,18 @@ class MultilayerPerceptron:
         return matches/len(test_set)
 
     def __test(self, input, expected):
-        percent = self.accuracy(input, expected, self.out_array)
-        print(input)
-        print(expected)
-        print(f"Accuracy of test: {percent}")
+        acurracy = self.accuracy(input, expected, self.out_array)
+
+        Os = []
+        for i in range(len(input)):
+            activations = self.activate(input[i])
+            Os.append(activations[-1])
+        test_mse = self.mid_square_error(Os, expected)
+
+        
+        print(f"Accuracy of test: {acurracy}")
+        print(f"Test MSE = {test_mse}")
+        return acurracy, test_mse
 
     # -----------------------NORMALIZATION-----------------------
     def __normalize_image(self, values, output_activation):

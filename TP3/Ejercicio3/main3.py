@@ -16,7 +16,8 @@ def main():
                                             config.output_activation, config.hidden_activation, config.beta,
                                             config.optimizer_method, config.alpha, config.beta1, config.beta2,
                                             config.epsilon, config.expected_data)
-    neural_network.train()
+    
+    mse_errors, current_epoch, acurracy, test_mse = neural_network.train()
 
 if __name__ == "__main__":
     main()

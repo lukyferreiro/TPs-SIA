@@ -16,7 +16,7 @@ def main():
                                     config.optimizer_method, config.alpha, config.beta1, config.beta2,
                                       config.epsilon, [-1,1])
     
-    mse_errors, current_epoch = perceptron.train()
+    mse_errors, current_epoch, acurracy, test_mse = perceptron.train()
     print(perceptron)
 
     print("Achieved accuracy in XOR: ", perceptron.accuracy(config.input_data, config.expected_data, [-1,1]))

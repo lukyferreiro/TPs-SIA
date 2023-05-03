@@ -16,7 +16,8 @@ def main():
                                             config.output_activation, config.hidden_activation, config.beta,
                                             config.optimizer_method, config.alpha, config.beta1, config.beta2,
                                             config.epsilon, [-1, 1])
-    neural_network.train()
+    
+    mse_errors, current_epoch, acurracy, test_mse = neural_network.train()
 
     # print("Achieved accuracy in parity: ", neural_network.accuracy(XTestSet[i], YTestSet[i], [-1, 1]))
 

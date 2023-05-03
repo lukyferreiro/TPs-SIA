@@ -1,7 +1,7 @@
 {
     "input_file": "./data/Ej3B-digitos.txt",
     "learning_rate": 0.01,
-    "epochs": 100000,
+    "epochs": 10000,
     "bias": 1,
     "training_percentage": 0.9,
     "training_type": "PERCENTAGE",
