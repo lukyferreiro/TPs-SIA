@@ -1,4 +1,4 @@
-from src.utils import DataConfig, k_splitting
+from src.utils import DataConfig
 from src.perceptron import MultilayerPerceptron
 import json
 

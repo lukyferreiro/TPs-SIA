@@ -161,13 +161,11 @@ class MultilayerPerceptron:
         print(f"Finished Training. \n MSE: {self.train_MSE}")
 
         if self.training_percentage < 1:
-            print("Aca")
-            test_acurracy, test_mse = self.test(self.test_input_data, self.test_expected_data)
+            test_accuracy, test_mse = self.test(self.test_input_data, self.test_expected_data)
         else:
-            print("100%")
-            test_acurracy, test_mse = self.test(self.input_data, self.expected_data)
+            test_accuracy, test_mse = self.test(self.input_data, self.expected_data)
 
-        return mse_errors, current_epoch, test_acurracy, test_mse
+        return mse_errors, current_epoch, test_accuracy, test_mse
 
     def __train_k_fold(self):
         if self.k_fold > len(self.input_data) :
@@ -231,14 +229,14 @@ class MultilayerPerceptron:
         
             print("Finished Training")
 
-            test_acurracy, test_mse = self.test(input_data_sets[k], expected_data_sets[k])
+            test_accuracy, test_mse = self.test(input_data_sets[k], expected_data_sets[k])
             all_layers = np.append(all_layers, self.layers)
 
         all_layers = all_layers.reshape((self.k_fold, len(self.layers)))
 
         #idx = self.__choose_k_fold(MSEs_array_train, MSEs_array_test)
 
-        return [], current_epoch, test_acurracy, test_mse
+        return [], current_epoch, test_accuracy, test_mse
 
     def activate(self, init_input):
         activations = [init_input]
@@ -262,29 +260,37 @@ class MultilayerPerceptron:
             error += (expected[i] - self.__denormalize_image(Os[i])) ** 2
         return np.sum(error) / size
         
-
     def accuracy(self,test_set,expected_out,out_classes):
         matches = 0
         for case_idx in range(len(test_set)):
             activations = self.activate(test_set[case_idx])
             guess = self.__denormalize_image(activations[-1][0])
+            closest_idx = (np.abs(out_classes-guess)).argmin()
 
             print(guess)
 
-            closest_idx = (np.abs(out_classes-guess)).argmin()
             matches += 1 if out_classes[closest_idx] == expected_out[case_idx] else 0
         return matches/len(test_set)
 
-    def accuracy_by_node(self,test_set,expected_out):
+    def accuracy_multiple(self,test_set,expected_out):
         matches = 0
         for case_idx in range(len(test_set)):
-            guess = self.activate(test_set[case_idx])[-1]
+            activations = self.activate(test_set[case_idx])
+            guess = self.__denormalize_image(activations[-1])
             max_idx = guess.argmax()
             matches += 1 if expected_out[case_idx][max_idx] == 1 else 0
+
+            print(f"Expected {expected_out[case_idx].argmax()}")
+            print(f"Guess {max_idx}")
+
         return matches/len(test_set)
 
     def test(self, input, expected):
-        test_acurracy = self.accuracy(input, expected, self.out_array)
+        test_accuracy = -1
+        if (self.__get_num_outputs() > 1):
+            test_accuracy = self.accuracy_multiple(input, expected)
+        else:
+            test_accuracy = self.accuracy(input, expected, self.out_array)
 
         Os = []
         for i in range(len(input)):
@@ -292,9 +298,9 @@ class MultilayerPerceptron:
             Os.append(activations[-1])
         test_mse = self.mid_square_error(Os, expected)
 
-        print(f"Test Acurracy: {test_acurracy}")
+        print(f"Test Accuracy: {test_accuracy}")
         print(f"Test MSE = {test_mse}")
-        return test_acurracy, test_mse
+        return test_accuracy, test_mse
 
     # -----------------------NORMALIZATION-----------------------
     def __normalize_image(self, values, output_activation):

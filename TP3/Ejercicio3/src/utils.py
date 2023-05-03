@@ -43,8 +43,6 @@ class DataConfig:
       elif(ej == 2 or ej == 3):
          self.input_data, self.expected_data = parse_nums(data['input_file'], 7, ej)
 
-      print(self.expected_data)
-
       # Training params
       self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
       self.epochs = check_positivity(data['epochs'], "epocas")
@@ -73,7 +71,6 @@ class DataConfig:
 
 
 def read_data(path):
-   
    with open(path, 'r') as f:
       first_line = f.readline().strip() 
 
@@ -119,23 +116,3 @@ def parse_nums(file_name, height, ej):
            [0,0,0,0,0,0,0,0,0,1]] #9
 
    return np.array(chunked), y
-
-
-def k_splitting(raw_in, raw_out, k):
-   if k > raw_in.shape[0]:
-      raise Exception
-   split_size = raw_in.shape[0] // k
-   indexes = np.arange(0, raw_in.shape[0], dtype=int)
-   np.random.shuffle(indexes)
-   train_sets_idx = []
-   test_sets_idx = []
-   for i in range(k):
-      test = indexes[i * split_size:(i + 1) * split_size]
-      before = indexes[0:i * split_size]
-      after = indexes[(i + 1) * split_size :]
-      train = np.concatenate((before,after))
-      train_sets_idx.append(train)
-      test_sets_idx.append(test)
-   # Train sets X,Y  then test sets, X and Y
-   return np.take(raw_in,train_sets_idx, axis=0),np.take(raw_out,train_sets_idx, axis=0), \
-         np.take(raw_in,test_sets_idx, axis=0),np.take(raw_out,test_sets_idx, axis=0)
