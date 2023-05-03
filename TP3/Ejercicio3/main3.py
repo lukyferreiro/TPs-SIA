@@ -1,7 +1,13 @@
 from src.utils import DataConfig
 from src.perceptron import MultilayerPerceptron
 import json
+import numpy as np
 
+def alter_data(set: np.ndarray, mutation_p: float):
+    for elem in set:
+        for i in range(len(elem)):
+            if np.random.random() < mutation_p:
+                elem[i] = (elem[i] + 1) % 2
 
 def main(): 
     with open('./config_3.json', 'r') as f:
@@ -18,6 +24,11 @@ def main():
                                             config.epsilon, config.expected_data)
     
     mse_errors, current_epoch, acurracy, test_mse = neural_network.train()
+
+    alter_data(config.input_data, 0.2)
+    print(config.input_data)
+
+    neural_network.accuracy_multiple(config.input_data , config.expected_data)
 
 if __name__ == "__main__":
     main()

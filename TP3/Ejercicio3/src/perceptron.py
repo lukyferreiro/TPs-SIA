@@ -25,7 +25,7 @@ class MultilayerPerceptron:
 
         self.train_input_data = self.train_expected_data = self.test_input_data = self.test_expected_data = None
 
-        if training_percentage != 1:
+        if training_percentage < 1:
             self.train_input_data, self.train_expected_data, self.test_input_data, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
 
         self.min_error = min_error
