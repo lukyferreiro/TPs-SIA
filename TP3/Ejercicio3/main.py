@@ -2,10 +2,8 @@ from src.utils import DataConfig
 from src.perceptron import MultilayerPerceptron
 import json
 
-import matplotlib.pyplot as plt
-
 def main(): 
-    with open('./config_a.json', 'r') as f:
+    with open('./config_1.json', 'r') as f:
         data = json.load(f)
         f.close()
 

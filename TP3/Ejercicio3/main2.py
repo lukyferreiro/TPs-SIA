@@ -1,10 +1,9 @@
-from src.utils import DataConfig, k_splitting
+from src.utils import DataConfig
 from src.perceptron import MultilayerPerceptron
 import json
-import numpy as np
 
 def main(): 
-    with open('./config_b.json', 'r') as f:
+    with open('./config_2.json', 'r') as f:
         data = json.load(f)
         f.close()
 

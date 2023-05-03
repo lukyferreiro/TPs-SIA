@@ -1,6 +1,7 @@
 import numpy as np
 from src.layer import Layer
 import matplotlib.pyplot as plt
+import copy
 
 class MultilayerPerceptron:
 
@@ -83,13 +84,21 @@ class MultilayerPerceptron:
             current_layer += 1  
 
         # Inicializamos capa de salida, cantidad de neuronas dependiente de expected_data
-
-        num_outputs = len(self.expected_data[0]) if isinstance(self.expected_data[0], list) else 1
+        num_outputs = self.__get_num_outputs()
         output_layer = Layer(num_outputs,
                              layers[current_layer - 1].neuron_count,
                              self.output_activation, self.beta) 
         layers.append(output_layer)
         return layers
+    
+    def __get_num_outputs(self):
+        if isinstance(self.expected_data, np.ndarray) and self.expected_data.ndim == 1:
+            return 1
+        # Comprobar si expected es una matriz
+        elif isinstance(self.expected_data, np.ndarray) and self.expected_data.ndim == 2:
+            return self.expected_data.shape[1]
+        else:
+            raise ValueError("Expected debe ser un array o una matriz")
 
     def __calculate_min_and_max(self, expected_data):
         return np.min(expected_data), np.max(expected_data)
@@ -120,6 +129,8 @@ class MultilayerPerceptron:
         finished = False
         while current_epoch < self.epochs and not finished:
             Os = []
+            if current_epoch%1000 == 0:
+                print(current_epoch) 
 
             for i in range(train_len):
                 # Forward activation
@@ -160,7 +171,7 @@ class MultilayerPerceptron:
         if self.k_fold > len(self.input_data) :
             raise("No puede entrenarse con validacion k-cruzada porque supera la cantidad de datos.")
         
-        original_layers = self.layers
+        original_layers = copy.deepcopy(self.layers)
 
         idx = np.random.permutation(self.input_data.shape[0])
 
@@ -175,7 +186,7 @@ class MultilayerPerceptron:
         all_layers = []
 
         for k in range(self.k_fold):
-            self.layers = original_layers
+            self.layers = copy.deepcopy(original_layers)
 
             current_train = np.concatenate([input_data_sets[i] for i in range(self.k_fold) if i != k])
             current_expected = np.concatenate([expected_data_sets[i] for i in range(self.k_fold) if i != k])
@@ -207,7 +218,7 @@ class MultilayerPerceptron:
                     for i in range(len(self.layers)):
                         self.layers[i].apply_delta(activations[i], self.learning_rate, current_epoch, self.optimization_method, self.alpha, self.beta1, self.beta2, self.epsilon)
 
-                mse_errors.append(self.mid_square_error(Os, current_expected))
+                mse_errors[current_epoch] = self.mid_square_error(Os, current_expected)
 
                 if (mse_errors[current_epoch] < self.min_error):
                     finished = True
@@ -218,7 +229,7 @@ class MultilayerPerceptron:
         
             print("Finished Training")
 
-            self.accuracy(input_data_sets[k], expected_data_sets[k])
+            self.__test(input_data_sets[k], expected_data_sets[k])
             all_layers = np.append(all_layers, self.layers)
 
         all_layers = all_layers.reshape((self.k_fold, len(self.layers)))

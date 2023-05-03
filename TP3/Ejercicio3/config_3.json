@@ -1,0 +1,32 @@
+{
+    "input_file": "./data/Ej3B-digitos.txt",
+    "learning_rate": 0.01,
+    "epochs": 100000,
+    "bias": 1,
+    "training_percentage": 0.9,
+    "training_type": "PERCENTAGE",
+    "k_fold": 4,
+    "min_error": 0.001,
+
+    "output_activation": "TANH",
+    "hidden_activation": "LOG",
+    "beta": 1.0,
+    "qty_hidden_layers": 3,
+    "qty_nodes_in_hidden_layers": [20, 16, 8],
+
+    "optimizer_method": "ADAM",
+    "alpha": 0.8,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "epsilon": 1e-8,
+
+    "activation_options": [
+        "TANH", "LOG"
+    ],
+    "optimizer_options": [
+        "ADAM", "MOMENTUM", "NONE"
+    ],
+    "training_options": [
+        "PERCENTAGE", "K-FOLD"
+    ]
+}

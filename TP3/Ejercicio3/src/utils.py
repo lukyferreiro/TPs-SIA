@@ -43,6 +43,8 @@ class DataConfig:
       elif(ej == 2 or ej == 3):
          self.input_data, self.expected_data = parse_nums(data['input_file'], 7, ej)
 
+      print(self.expected_data)
+
       # Training params
       self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
       self.epochs = check_positivity(data['epochs'], "epocas")
