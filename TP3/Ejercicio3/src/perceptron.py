@@ -13,7 +13,7 @@ class MultilayerPerceptron:
         self.min, self.max = self.__calculate_min_and_max(expected_data)
         self.bias = bias
         self.input_data = input_data
-        self.expected_data = self.__normalize_image(expected_data, output_activation)
+        self.expected_data = self.normalize_image(expected_data, output_activation)
         self.train_MSE = -1
 
         # Global para la red neuronal
@@ -280,8 +280,7 @@ class MultilayerPerceptron:
             max_idx = guess.argmax()
             matches += 1 if expected_out[case_idx][max_idx] == 1 else 0
 
-            print(f"Expected {expected_out[case_idx].argmax()}")
-            print(f"Guess {max_idx}")
+            print(f"Expected {expected_out[case_idx].argmax()}.  Guess {max_idx}")
 
         return matches/len(test_set)
 
@@ -303,7 +302,7 @@ class MultilayerPerceptron:
         return test_accuracy, test_mse
 
     # -----------------------NORMALIZATION-----------------------
-    def __normalize_image(self, values, output_activation):
+    def normalize_image(self, values, output_activation):
         switcher = {
             "TANH": self.__normalize_tanh_image(values),
             "LOG": self.__normalize_log_image(values),
