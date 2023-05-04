@@ -5,11 +5,11 @@
 
 El siguiente TP consta de varios ejercicios: 
 
-1. Implementa un algoritmo de perceptron simple escalon para aprender los problemas logicos AND y XOR.
-2. Implementa un algoritmo de perceptrón simple lineal y no lineal para aprender a clasificar los datos del archivo “Ej2-conjunto.csv”
-3. Implementa un algoritmo de perceptrón multicapa para aprender los siguientes problemas:
+1. Implementa un algoritmo de perceptron simple escalon para intentar aprender los problemas logicos AND y XOR.
+2. Implementa un algoritmo de perceptrón simple lineal y no lineal para intentar aprender a clasificar los datos del archivo “Ej2-conjunto.csv”
+3. Implementa un algoritmo de perceptrón multicapa para intentar aprender los siguientes problemas:
     - XOR (analogo al 1.).
-    - Discriminar si un número es “par”, con entradas dadas por el conjunto de números decimales del 0 al 9 del archivo “Ej3B-digitos.txt”.
+    - Discriminar si un número es “par”, con entradas dadas por el conjunto de "imagenes" de números decimales del 0 al 9 del archivo “Ej3B-digitos.txt”.
     - Determinar qué dígito se corresponde con la entrada a la red. Una vez que la red haya aprendido, utilizar patrones correspondientes a los dígitos del conjunto de datos, con sus píxeles afectados por ruido.
 
 
@@ -38,6 +38,8 @@ Entonces, posicionado en la carpeta del ejercicio a correr, ejecutar:
 pipenv shell
 python main.py
 ```
+
+Nota: el ejercicio 3 cuenta con tres main.py distintos correspondientes a cada inciso.
 
 ## Configuración
 
@@ -104,20 +106,25 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci�
 
 ### Ejercicio 3
 
+Este ejercicio cuenta con un archivo config.json correspondiente a cada inciso.
+De todas formas, el formato general del archivo es el siguiente:
+
 ``` json
 {
-    "input_file": "./data/Ej3A-XOR.txt",
-    "learning_rate": 0.001,
-    "epochs": 10000,
+    "input_file": "./data/Ej3B-digitos.txt",
+    "learning_rate": 0.01,
+    "epochs": 20000,
     "bias": 1,
-    "training_percentage": 0.8,
-    "min_error": 0.01,
+    "training_percentage": 0.9,
+    "training_type": "PERCENTAGE",
+    "k_fold": 4,
+    "min_error": 0.001,
 
-    "output_activation": "LOG",
+    "output_activation": "TANH",
     "hidden_activation": "TANH",
     "beta": 1.0,
-    "qty_hidden_layers": 1,
-    "qty_nodes_in_hidden_layers": [6],
+    "qty_hidden_layers": 2,
+    "qty_nodes_in_hidden_layers": [25, 15],
 
     "optimizer_method": "MOMENTUM",
     "alpha": 0.8,
@@ -128,9 +135,11 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci�
     "activation_options": [
         "TANH", "LOG"
     ],
-
     "optimizer_options": [
         "ADAM", "MOMENTUM", "NONE"
+    ],
+    "training_options": [
+        "PERCENTAGE", "K-FOLD"
     ]
 }
 ```
@@ -142,6 +151,8 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci�
 | epochs              | Numero natural que representa la cantidad de epocas                                      | 
 | bias                | Numero natural que representa el umbral/bias.                                            | 
 | training_percentage | Numero real entre [0,1] que representa el porcentaje de los datos tomandos para entrenar | 
+| training_type       | String con el tipo de entrenamiento. Debe ser alguno de los valores de training_options  | 
+| k_fold              | Numero natural para entrenar al perceptron con validacion k-cruzada                      | 
 | min_error           | Numero real entre [0,1] que representa la candicion de corte de error minimo             | 
 | output_activation   | String con el tipo de activaccion de la capa de salida. Debe ser alguno de los valores de activation_options         | 
 | hidden_activation   | String con el tipo de activacion de la capa oculta. Debe ser alguno de los valores de activation_options             | 
@@ -155,4 +166,5 @@ Cada ejercicio consta de su propia carpeta con su propio archivo de configuraci�
 | epsilon             | Numero real entre [0,1] usado en el metodo de optimizacion ADAM                          | 
 | activation_options  | Arreglo de strings con los tipos de activacion validos (NO MODIFICAR)                    |
 | optimizer_options   | Arreglo de strings con los tipos de optimizacion validos (NO MODIFICAR)                  |
+| training_options    | Arreglo de strings con los tipos de entrenamiento validos (NO MODIFICAR)                 |
  
