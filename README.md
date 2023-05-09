@@ -27,3 +27,8 @@ para lograr el color que más se asemeje al color deseado.
 En este TP se realizan diferentes programas en Python donde se implementan perceptrones simples
 (escalon, lineal y no lineal) y multicapas para resolver distintas problematicas (AND, XOR, paridad
 de imagenes de digitos y reconocimiento de imagenes de digitos).
+
+## TP4 - [Unsupervised Learning](https://github.com/lukyferreiro/TPs-SIA/tree/main/TP4)
+
+En este TP se realizan diferentes programas en Python donde se implementan diferentes modelos de redes 
+neuronales de aprendizaje no supervisado: modelo de Kohonen, regla de Oja y modelo de Hopfield.
