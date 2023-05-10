@@ -24,9 +24,7 @@ class Kohonen:
 
     def train(self):
         current_epoch = 0
-        converged = False
-        while current_epoch < self.epochs and not converged:
-            # Seleccionar un registro de entrada Xp
+        while current_epoch < self.epochs:
             random_idx = np.random.randint(len(self.data))
             Xp = self.data[random_idx]
             winner = self.__find_winner_neuron(Xp)
@@ -50,28 +48,6 @@ class Kohonen:
     def __update_weights(self, Xp, winner):
         for i in range(self.k):
             for j in range(self.k):
+                # Actualizamos solamente si pertenecen al vecindario
                 if np.linalg.norm(np.array([i, j]) - winner) <= self.radius:
                     self.weights[i][j] += self.learning_rate * (Xp - self.weights[i][j])
-        
-
-
-    def update_weights(self, Xp, winner):
-        neighbours = self.get_neighbours(winner)
-        for (i, j) in neighbours:
-            self.weights[i, j] += self.learn_rate * (Xp - self.weights[i, j])
-
-    def get_neighbours(self, winner):
-        winner_i, winner_j = winner
-        neighbours = []
-        for i in range(int(winner_i - self.radius), int(winner_i + self.radius + 1)):
-            for j in range(int(winner_j - self.radius), int(winner_j + self.radius + 1)):
-                aux = (i - winner_i) ** 2 + (j - winner_j) ** 2
-                if aux <= self.radius ** 2 and self.is_coord_valid(i, j):
-                    neighbours.append((i, j))
-
-        return neighbours
-    
-    def is_coord_valid(self, i, j):
-        return (0 <= i < self.k) and (0 <= j < self.k)
-
-    
