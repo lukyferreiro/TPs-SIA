@@ -1,6 +1,4 @@
 import numpy as np
-import copy
-
 class Kohonen:
 
     def __init__(self, data, k, learning_rate, radius, epochs) -> None:
@@ -11,22 +9,22 @@ class Kohonen:
         self.epochs = epochs
         self.weights = self.__init_weights()
 
+    # Inicializamos los pesos con muestras aleatorias de los datos de entrada
     def __init_weights(self):
         self.weights = np.zeros((self.k, self.k, len(self.data[0])))
-        #Iinicializamos los pesos con muestras aleatorias de los datos de entrada
         for i in range(self.k):
             for j in range(self.k):
-                random_idx = np.random.default_rng().choice(np.arange(len(self.data)))
+                random_idx = np.random.randint(len(self.data))
                 self.weights[i, j, :] = self.data[random_idx]
-        print("---------------------------------------")
-        print(self.weights)
+    
+        return self.weights
 
     def train(self):
         current_epoch = 0
         converged = False
         while current_epoch < self.epochs and not converged:
             # Seleccionar un registro de entrada Xp
-            random_idx = np.random.default_rng().choice(np.arange(len(self.data)))
+            random_idx = np.random.randint(len(self.data))
             Xp = self.data[random_idx]
             # Encontrar la neurona ganadora que tenga el vector de pesos mas cercano a Xp
             winner = self.__find_winner_neuron(Xp)
@@ -40,7 +38,9 @@ class Kohonen:
 
     # Encontrar la neurona ganadora que tenga el vector de pesos mas cercano a Xp
     def __find_winner_neuron(self, Xp):
-        pass
+        # Calculo la norma euclidiana entre Xp y cada vector de pesos
+        norms = np.linalg.norm(self.weights - Xp, axis=2)
+        return np.array(np.unravel_index(np.argmin(norms, axis=None), norms.shape))
     
     def __update_weights(self, Xp, winner):
         pass
