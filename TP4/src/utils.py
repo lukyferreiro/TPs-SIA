@@ -10,6 +10,12 @@ def check_prob(num, str):
    
    return num
 
+def check_type(type, array, str):
+   if type not in array:
+      raise ValueError(f"Valor de '{str}' invalido")
+   
+   return type
+
 class DataConfig:
 
     def __init__(self, data) -> None:
@@ -17,3 +23,4 @@ class DataConfig:
         self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
         self.radius = check_positivity(data['radius'], "radio")
         self.epochs = check_positivity(data['epochs'], "epocas")
+        self.similitud = check_type(data['similitud'], data['similitud_options'], "metodo de similitud")
