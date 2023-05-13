@@ -19,9 +19,6 @@ def main():
     print("---------------------------------------")
     print(labels)
 
-    k = config.k
-    
-
     kohonen = Kohonen(data_standarized, config.k, config.learning_rate,
                       config.radius, config.epochs, config.similitud)
     kohonen.train()

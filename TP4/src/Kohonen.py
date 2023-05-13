@@ -1,5 +1,6 @@
 import numpy as np
 import math
+
 class Kohonen:
 
     def __init__(self, data, k, learning_rate, radius, epochs, similitud) -> None:
@@ -11,7 +12,7 @@ class Kohonen:
         self.init_radius = radius
         self.epochs = epochs
         self.similitud = similitud
-        self.weights = self.__init_weights()
+        self.__init_weights()
 
     # Inicializamos los pesos con muestras aleatorias de los datos de entrada
     def __init_weights(self):
@@ -20,8 +21,6 @@ class Kohonen:
             for j in range(self.k):
                 random_idx = np.random.randint(len(self.data))
                 self.weights[i, j, :] = self.data[random_idx]
-
-        return self.weights
 
     def train(self):
         current_epoch = 0
