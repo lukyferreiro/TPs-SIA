@@ -6,9 +6,9 @@ from src.plots import *
 
 def main(): 
     with open('./config.json', 'r') as f:
-        data = json.load(f)
+        data_config = json.load(f)
 
-    config = DataConfig(data)
+    config = DataConfig(data_config)
     data, data_standarized, countries, labels = get_csv_data("europe.csv")
 
     print(data)
@@ -20,14 +20,15 @@ def main():
     print(labels)
 
     kohonen = Kohonen(data_standarized, config.k, config.learning_rate,
-                      config.radius, config.epochs, config.similitud)
+                      config.radius, config.epochs, config.likeness)
     kohonen.train()
 
-    plot_boxplot(data, "Box plot not standarized", labels)
-    plot_boxplot(data_standarized, "Box plot standarized", labels)
+    #plot_boxplot(data, "Box plot not standarized", labels)
+    #plot_boxplot(data_standarized, "Box plot standarized", labels)
     plot_heatmap(data_standarized, countries, kohonen, config.k, config.learning_rate, config.radius)
-    for i, label in enumerate(labels): 
-        plot_single_variable(i, config.k, data_standarized, kohonen, f"{label} values for each group")
+
+    #for i, label in enumerate(labels): 
+    #   plot_single_variable(i, config.k, data_standarized, kohonen, f"{label} values for each group")
 
 if __name__ == "__main__":
     main()

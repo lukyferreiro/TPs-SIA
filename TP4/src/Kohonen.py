@@ -3,7 +3,7 @@ import math
 
 class Kohonen:
 
-    def __init__(self, data, k, learning_rate, radius, epochs, similitud) -> None:
+    def __init__(self, data, k, learning_rate, radius, epochs, likeness) -> None:
         self.data = data
         self.k = k
         self.learning_rate = learning_rate
@@ -11,7 +11,7 @@ class Kohonen:
         self.radius = radius
         self.init_radius = radius
         self.epochs = epochs
-        self.similitud = similitud
+        self.likeness = likeness
         self.__init_weights()
 
     # Inicializamos los pesos con muestras aleatorias de los datos de entrada
@@ -41,9 +41,9 @@ class Kohonen:
 
     # Encontrar la neurona ganadora que tenga el vector de pesos mas cercano a Xp
     def find_winner_neuron(self, Xp):
-        if self.similitud == "EUCLIDEA":
+        if self.likeness == "EUCLIDEAN":
             norms = np.linalg.norm(Xp - self.weights, axis=2)
-        elif self.similitud == "EXPONENCIAL":
+        elif self.likeness == "EXPONENTIAL":
             norms = np.exp(-1 * (np.linalg.norm(Xp - self.weights, axis=2)) ** 2)
         return np.unravel_index(np.argmin(norms, axis=None), norms.shape)
     

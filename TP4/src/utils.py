@@ -23,4 +23,4 @@ class DataConfig:
         self.learning_rate = check_prob(data['learning_rate'], "tasa de aprendizaje")
         self.radius = check_positivity(data['radius'], "radio")
         self.epochs = check_positivity(data['epochs'], "epocas")
-        self.similitud = check_type(data['similitud'], data['similitud_options'], "metodo de similitud")
+        self.likeness = check_type(data['likeness'], data['likeness_options'], "metodo de likeness")

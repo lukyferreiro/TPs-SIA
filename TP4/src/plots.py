@@ -40,3 +40,59 @@ def plot_single_variable(var, k, data_standarized, solver, descr):
     plt.suptitle(descr)
     sn.heatmap(matrix, cmap='YlGnBu', annot=True)
     plt.show()
+
+def plot_biplot(data, data_standarized, countries, labels):
+    # 3. Calcular la matriz de correlaciones Sx
+    Sx = np.corrcoef(data_standarized, rowvar=False)
+
+    # 4. Calcular autovalores y autovectores de la matriz de covarianzas
+    eigenvalues, eigenvectors = np.linalg.eig(Sx)
+
+    print(eigenvalues)
+    print(eigenvectors)
+
+    # 5. Ordenar los autovalores de mayor a menor
+    idx = np.argsort(eigenvalues)[::-1]
+    eigenvalues_sorted = eigenvalues[idx]
+    eigenvectors_sorted = eigenvectors[:, idx]
+
+    # 6. Construir la matriz R tomando los autovectores correspondientes a los mayores autovalores
+    k = 2  # Número de componentes principales deseados
+    R = eigenvectors_sorted[:, :k]
+
+    # 7. Calcular las nuevas variables Y como combinación lineal de las originales
+    Y = np.dot(data_standarized, R)
+
+    fig, ax = plt.subplots()
+    ax.scatter(Y[:, 0], Y[:, 1])
+
+    for i in range(len(data[0])):
+        ax.arrow(0, 0, R[i, 0], R[i, 1], head_width=0.05, head_length=0.05, fc='red', ec='red')
+        ax.text(R[i, 0]*1.2, R[i, 1]*1.2, f'{labels[i]}', color='red')
+
+    for i in range(len(Y)):
+        ax.text(Y[i, 0]*1, Y[i, 1]*1, f'{countries[i]}', color='blue')
+
+    ax.axhline(0, color='black', linestyle='--')
+    ax.axvline(0, color='black', linestyle='--')
+    ax.set_xlabel('Componente Principal 1')
+    ax.set_ylabel('Componente Principal 2')
+    ax.set_title('Biplot')
+
+    '''
+    zoom_factor = 0.34
+    x_center = Y[:, 0].mean() 
+    y_center = Y[:, 1].mean() 
+    x_range = Y[:, 0].max() - Y[:, 0].min()  
+    y_range = Y[:, 1].max() - Y[:, 1].min()  
+
+    ax.set_xlim(x_center - zoom_factor * x_range, x_center + zoom_factor * x_range)
+    ax.set_ylim(y_center - zoom_factor * y_range, y_center + zoom_factor * y_range)
+    '''
+    
+    print("Autovalores:", eigenvalues_sorted)
+    print("Autovectores:\n", eigenvectors_sorted)
+    print("Matriz R:\n", R)
+    print("Nuevas variables Y:\n", Y)
+
+    plt.show()
