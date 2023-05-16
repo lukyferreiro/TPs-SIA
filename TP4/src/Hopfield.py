@@ -7,10 +7,41 @@ class Hopfield:
         self.epochs = epochs
         self.__init_weights()
 
+    # Matriz de pesos simetrica con la diagonal 0's
     def __init_weights(self):
-        self.weights = (1 / len(self.saved_patterns)) * np.matmul(self.saved_patterns.T, self.saved_patterns)
+        count, N = self.saved_patterns.shape
+        K = np.zeros((count, N))
+        self.weights = (1 / N) * np.matmul(self.saved_patterns.T, self.saved_patterns)
         np.fill_diagonal(self.weights, 0)
 
-
     def train(self, pattern):
-        pass
+        s1 = pattern
+        s2 = None
+
+        arr_patterns = []
+        arr_energy = []
+        arr_patterns.append(s1)
+        arr_energy.append(self._calculate_energy(s1))
+
+        iteration = 0
+        stable = False
+        print("----------TRAIN---------")
+        print(self.weights)
+        print(s1)
+        while not stable and iteration < self.epochs:
+            s2 = np.sign(np.matmul(s1, self.weights))
+            s1 = s2
+
+            print(s1)
+            arr_patterns.append(s1)
+            arr_energy.append(self._calculate_energy(s1))
+
+            if np.array_equal(s1, s2):
+                stable = True
+
+            iteration += 1
+
+        return arr_patterns, arr_energy
+    
+    def _calculate_energy(self, s1):
+        return -np.dot(s1.T, np.dot(np.triu(self.weights), s1))

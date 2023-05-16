@@ -1,7 +1,8 @@
 import json
-from src.utils import DataConfig
+from src.utils import DataConfig, mutate
 from src.parser_files import get_letters
 from src.Hopfield import Hopfield
+import numpy as np
 
 def main(): 
     with open('./config.json', 'r') as f:
@@ -13,12 +14,23 @@ def main():
     print(len(letters))
     print(letters)
 
-    # TODO Elegir aleatoriamente 4 letras de letters_matrix y enviarlas
-    # como patrones almacenados a Hopfield
-    # Luego en train entrenar con solo uno de los elegidos 
+    COUNT_LETTERS = 4
+    letters_to_train = []
+    for _ in range(COUNT_LETTERS):
+        random_idx = np.random.randint(len(letters))
+        letters_to_train.append(letters[random_idx])
+    letters_to_train = np.array(list(letters_to_train))
 
-    hopfield = Hopfield(letters, config.epochs)
-    hopfield.train(letters[1])
+    print("LETRAS QUE SE GUARDAN")
+    print(letters_to_train)
+    hopfield = Hopfield(letters_to_train, config.epochs)
+    
+    random_letter_to_mutate = np.random.randint(len(letters_to_train))
+    letter_mutated = mutate(letters_to_train[random_letter_to_mutate], config.mutate_prob)
+    
+    arr_patterns, arr_energy = hopfield.train(letter_mutated)
+
+    print(arr_energy)
 
 if __name__ == "__main__":
     main()

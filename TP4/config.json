@@ -2,9 +2,10 @@
     "k": 4,
     "learning_rate": 0.1,
     "radius": 1,
-    "epochs": 10000,
-    "likeness": "EXPONENTIAL",
+    "epochs": 100,
+    "likeness": "EUCLIDEAN",
     "likeness_options": [
         "EUCLIDEAN", "EXPONENTIAL"
-    ]
+    ],
+    "mutate_prob": 1.0
 }

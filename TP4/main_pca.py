@@ -1,13 +1,12 @@
-import json
-from src.utils import DataConfig
 from src.parser_files import get_csv_data
-from src.Kohonen import Kohonen
+from src.utils import standarize_data
 from src.plots import *
 
 def main(): 
     # 1. Tomar un conjunto de datos X y poner las variables en columnas.
+    data, countries, labels = get_csv_data("europe.csv")
     # 2. Estandarizar las variables X
-    data, data_standarized, countries, labels = get_csv_data("europe.csv")
+    data_standarized = standarize_data(data)
 
     plot_biplot(data, data_standarized, countries, labels)
 
