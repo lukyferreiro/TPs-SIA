@@ -21,10 +21,8 @@ def main():
         letters_to_train.append(letters[random_idx])
     letters_to_train = np.array(list(letters_to_train))
 
-    print("LETRAS QUE SE GUARDAN")
-    print(letters_to_train)
     hopfield = Hopfield(letters_to_train, config.epochs)
-    
+
     random_letter_to_mutate = np.random.randint(len(letters_to_train))
     letter_mutated = mutate(letters_to_train[random_letter_to_mutate], config.mutate_prob)
     

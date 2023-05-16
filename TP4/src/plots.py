@@ -19,26 +19,29 @@ def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
 
     results = [solver.find_winner_neuron(i) for i in inputs]
     matrix = np.zeros((k, k))
+    countries_matrix_aux = [["" for _ in range(k)] for _ in range(k)]
 
-    result_to_country = {}
     for i in range(len(results)):
-        if results[i] not in result_to_country.keys():
-            result_to_country.update({results[i]: []})
-        result_to_country[results[i]].append(countries[i])
         matrix[results[i]] += 1
+        countries_matrix_aux[results[i][0]][results[i][1]] += f"{countries[i]}\n"
+
+    countries_matrix = np.array(countries_matrix_aux)
 
     plt.title(f"Heatmap with η={str(learn_rate)} and radius={str(radius)}")
-    sn.heatmap(matrix, cmap='YlGnBu', annot=True)
-    print(result_to_country)
+    sn.heatmap(matrix, cmap='Reds', annot=countries_matrix, fmt="")
     plt.show()
 
-def plot_single_variable(var, k, data_standarized, solver, descr):
+def plot_single_variable(var, k, data_standarized, countries, solver, descr):
     matrix = np.zeros((k, k))
+    countries_matrix_aux = [["" for _ in range(k)] for _ in range(k)]
     for k in range(len(data_standarized)):
         i,j = solver.find_winner_neuron(data_standarized[k])
         matrix[i][j] += data_standarized[k][var]
+        countries_matrix_aux[i][j] += f"{countries[i]}\n"   #TODO check esto
+
+    countries_matrix = np.array(countries_matrix_aux)
     plt.suptitle(descr)
-    sn.heatmap(matrix, cmap='YlGnBu', annot=True)
+    sn.heatmap(matrix, cmap='Blues', annot=countries_matrix)
     plt.show()
 
 def plot_biplot(data, data_standarized, countries, labels):

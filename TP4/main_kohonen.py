@@ -29,7 +29,7 @@ def main():
     plot_heatmap(data_standarized, countries, kohonen, config.k, config.learning_rate, config.radius)
 
     #for i, label in enumerate(labels): 
-    #   plot_single_variable(i, config.k, data_standarized, kohonen, f"{label} values for each group")
+    #   plot_single_variable(i, config.k, data_standarized, countries, kohonen, f"{label} values for each group")
 
 if __name__ == "__main__":
     main()
