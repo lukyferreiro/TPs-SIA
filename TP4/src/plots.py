@@ -1,6 +1,8 @@
 import seaborn as sn
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.decomposition import PCA
+import plotly.express as px
 
 def plot_boxplot(data, box_plot_title, labels):
     data_arr = np.array(data)
@@ -98,4 +100,47 @@ def plot_biplot(data, data_standarized, countries, labels):
     print("Matriz R:\n", R)
     print("Nuevas variables Y:\n", Y)
 
+    plt.show()
+
+def plot_biplot2(data_standarized, countries, labels):
+    pca = PCA()
+    principal_components = pca.fit_transform(data_standarized)
+
+    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+
+    fig = px.scatter(principal_components, x=0, y=1, text=countries, color=countries)
+    fig.update_traces(textposition='top center')
+
+    for i, label in enumerate(np.array(list(labels))):
+        fig.add_shape(type='line', x0=0, y0=0, x1=loadings[i,0], y1=loadings[i,1])
+        fig.add_annotation(x=loadings[i,0], y=loadings[i,1], ax=0, ay=0,
+                           xanchor="center", yanchor="bottom", text=label)
+
+    fig.update_xaxes(dict(title=f'PCA 1 - variance {pca.explained_variance_ratio_[0] * 100:.2f}%',))
+    fig.update_yaxes(dict(title=f'PCA 2 - variance {pca.explained_variance_ratio_[1] * 100:.2f}%' ))
+    fig.show()
+
+def plot_pca(vec, labels, descr):
+    x = list(labels)
+    y = list(vec)
+    plt.rc('font',size=15)
+
+    fig, ax = plt.subplots(figsize=(15, 10))
+    width = 0.5 
+    ind = np.arange(len(y))  
+
+    cc = ['colors'] * len(y)
+    for n, val in enumerate(y):
+        if val < 0:
+            cc[n] = 'orange'
+        elif val >= 0:
+            cc[n] = 'teal'
+
+    ax.barh(ind, y, width, color=cc)
+
+    ax.set_yticks(ind + width / 4)
+    ax.set_yticklabels(x, minor=False)
+
+    plt.title(descr)
+    plt.xlabel('Cargas')
     plt.show()
