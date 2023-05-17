@@ -4,8 +4,8 @@
     "radius": 1,
     "epochs": 100,
     "likeness": "EUCLIDEAN",
+    "mutate_prob": 1.0,
     "likeness_options": [
         "EUCLIDEAN", "EXPONENTIAL"
-    ],
-    "mutate_prob": 1.0
+    ]
 }

@@ -1,7 +1,7 @@
 import json
 from src.utils import DataConfig, standarize_data
 from src.parser_files import get_csv_data
-from src.Oja import Oja
+from src.networks.Oja import Oja
 from src.plots import *
 from sklearn.decomposition import PCA
 
@@ -10,7 +10,7 @@ def main():
         data_config = json.load(f)
 
     config = DataConfig(data_config)
-    data, countries, labels = get_csv_data("europe.csv")
+    data, countries, labels = get_csv_data("data/europe.csv")
     data_standarized = standarize_data(data)
 
     oja = Oja(data_standarized, config.learning_rate, config.epochs)

@@ -1,7 +1,7 @@
 import json
 from src.utils import DataConfig, mutate
 from src.parser_files import get_letters
-from src.Hopfield import Hopfield
+from src.networks.Hopfield import Hopfield
 import numpy as np
 
 def main(): 
@@ -9,7 +9,7 @@ def main():
         data = json.load(f)
 
     config = DataConfig(data)
-    letters = get_letters("letters.txt")
+    letters = get_letters("data/letters.txt")
 
     print(len(letters))
     print(letters)

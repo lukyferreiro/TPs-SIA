@@ -3,7 +3,7 @@ from src.utils import standarize_data
 from src.plots import *
 
 def main(): 
-    data, countries, labels = get_csv_data("europe.csv")
+    data, countries, labels = get_csv_data("data/europe.csv")
     data_standarized = standarize_data(data)
 
     #plot_boxplot(data, "Boxplot con datos no estandarizados", labels)

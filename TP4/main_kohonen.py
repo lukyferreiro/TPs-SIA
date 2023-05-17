@@ -1,7 +1,7 @@
 import json
 from src.utils import DataConfig, standarize_data
 from src.parser_files import get_csv_data
-from src.Kohonen import Kohonen
+from src.networks.Kohonen import Kohonen
 from src.plots import *
 
 def main(): 
@@ -9,7 +9,7 @@ def main():
         data_config = json.load(f)
 
     config = DataConfig(data_config)
-    data, countries, labels = get_csv_data("europe.csv")
+    data, countries, labels = get_csv_data("data/europe.csv")
     data_standarized = standarize_data(data)
 
     print(data)
