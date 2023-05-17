@@ -18,7 +18,6 @@ def plot_boxplot(data, box_plot_title, labels):
     plt.show()
     
 def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
-
     results = [solver.find_winner_neuron(i) for i in inputs]
     matrix = np.zeros((k, k))
     countries_matrix_aux = [["" for _ in range(k)] for _ in range(k)]
@@ -29,44 +28,46 @@ def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
 
     countries_matrix = np.array(countries_matrix_aux)
 
-    plt.title(f"Heatmap with η={str(learn_rate)} and radius={str(radius)}")
+    plt.title(f"Heatmap {k}x{k} con η={str(learn_rate)} y radio={str(radius)}")
     sn.heatmap(matrix, cmap='Reds', annot=countries_matrix, fmt="")
     plt.show()
 
-def plot_single_variable(var, k, data_standarized, countries, solver, descr):
+def plot_heatmap_single_variable(var, k, data_standarized, countries, solver, descr):
     matrix = np.zeros((k, k))
     countries_matrix_aux = [["" for _ in range(k)] for _ in range(k)]
+
     for k in range(len(data_standarized)):
         i,j = solver.find_winner_neuron(data_standarized[k])
         matrix[i][j] += data_standarized[k][var]
-        countries_matrix_aux[i][j] += f"{countries[i]}\n"   #TODO check esto
+        countries_matrix_aux[i][j] += f"{countries[k]}\n" 
 
     countries_matrix = np.array(countries_matrix_aux)
+
     plt.suptitle(descr)
-    sn.heatmap(matrix, cmap='Blues', annot=countries_matrix)
+    sn.heatmap(matrix, cmap='Blues', annot=countries_matrix, fmt="")
     plt.show()
 
+#TODO hacer la matriz U
+def plot_matrix_u():
+    pass
+
 def plot_biplot(data, data_standarized, countries, labels):
-    # 3. Calcular la matriz de correlaciones Sx
+    # Calcular la matriz de correlaciones Sx
     Sx = np.corrcoef(data_standarized, rowvar=False)
-
-    # 4. Calcular autovalores y autovectores de la matriz de covarianzas
+    # Calcular autovalores y autovectores de la matriz de correlaciones
     eigenvalues, eigenvectors = np.linalg.eig(Sx)
-
-    print(eigenvalues)
-    print(eigenvectors)
-
-    # 5. Ordenar los autovalores de mayor a menor
+    # Ordenar los autovalores de mayor a menor
     idx = np.argsort(eigenvalues)[::-1]
     eigenvalues_sorted = eigenvalues[idx]
     eigenvectors_sorted = eigenvectors[:, idx]
-
-    # 6. Construir la matriz R tomando los autovectores correspondientes a los mayores autovalores
-    k = 2  # Número de componentes principales deseados
-    R = eigenvectors_sorted[:, :k]
-
-    # 7. Calcular las nuevas variables Y como combinación lineal de las originales
+    R = eigenvectors_sorted[:, :2] # 2 es el número de componentes principales deseados
+    # Calcular las nuevas variables Y como combinación lineal de las originales
     Y = np.dot(data_standarized, R)
+
+    print("Autovalores:", eigenvalues_sorted)
+    print("Autovectores:\n", eigenvectors_sorted)
+    print("Matriz R:\n", R)
+    print("Nuevas variables Y:\n", Y)
 
     fig, ax = plt.subplots()
     ax.scatter(Y[:, 0], Y[:, 1])
@@ -80,9 +81,9 @@ def plot_biplot(data, data_standarized, countries, labels):
 
     ax.axhline(0, color='black', linestyle='--')
     ax.axvline(0, color='black', linestyle='--')
-    ax.set_xlabel('Componente Principal 1')
-    ax.set_ylabel('Componente Principal 2')
-    ax.set_title('Biplot')
+    ax.set_xlabel('PCA 1')
+    ax.set_ylabel('PCA 2')
+    ax.set_title('Biplot con valores de componentes principales 1 y 2')
 
     '''
     zoom_factor = 0.34
@@ -94,11 +95,6 @@ def plot_biplot(data, data_standarized, countries, labels):
     ax.set_xlim(x_center - zoom_factor * x_range, x_center + zoom_factor * x_range)
     ax.set_ylim(y_center - zoom_factor * y_range, y_center + zoom_factor * y_range)
     '''
-    
-    print("Autovalores:", eigenvalues_sorted)
-    print("Autovectores:\n", eigenvectors_sorted)
-    print("Matriz R:\n", R)
-    print("Nuevas variables Y:\n", Y)
 
     plt.show()
 
@@ -123,7 +119,7 @@ def plot_biplot2(data_standarized, countries, labels):
 def plot_pca(vec, labels, descr):
     x = list(labels)
     y = list(vec)
-    plt.rc('font',size=15)
+    plt.rc('font', size=15)
 
     fig, ax = plt.subplots(figsize=(15, 10))
     width = 0.5 

@@ -6,8 +6,8 @@ def main():
     data, countries, labels = get_csv_data("europe.csv")
     data_standarized = standarize_data(data)
 
-    #plot_boxplot(data, "Box plot not standarized", labels)
-    #plot_boxplot(data_standarized, "Box plot standarized", labels)
+    #plot_boxplot(data, "Boxplot con datos no estandarizados", labels)
+    #plot_boxplot(data_standarized, "Boxplot con datos estandarizados", labels)
     #plot_biplot(data, data_standarized, countries, labels)
     plot_biplot2(data_standarized, countries, labels)
 
