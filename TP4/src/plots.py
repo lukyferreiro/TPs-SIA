@@ -98,16 +98,11 @@ def plot_biplot(data, data_standarized, countries, labels):
 
     plt.show()
 
-def plot_biplot2(data, data_standarized, countries, labels):
-    pca = PCA()
-    principal_components = pca.fit_transform(data_standarized)
-
-    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
-
+def plot_biplot2(pca, principal_components, loadings, countries, labels):
     fig, ax = plt.subplots()
     ax.scatter(principal_components[:, 0], principal_components[:, 1])
     
-    for i in range(len(data[0])):
+    for i in range(len(principal_components[0])):
         ax.arrow(0, 0, loadings[i, 0], loadings[i, 1], head_width=0.05, head_length=0.05, fc='red', ec='red')
         ax.text(loadings[i, 0]*1.2, loadings[i, 1]*1.2, f'{labels[i]}', color='red')
 
@@ -134,12 +129,7 @@ def plot_biplot2(data, data_standarized, countries, labels):
     plt.show()
 
 
-def plot_biplot3(data_standarized, countries, labels):
-    pca = PCA()
-    principal_components = pca.fit_transform(data_standarized)
-
-    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
-
+def plot_biplot3(pca, principal_components, loadings, countries, labels):
     fig = px.scatter(principal_components, x=0, y=1, text=countries, color=countries)
     fig.update_traces(textposition='top center')
 
@@ -152,30 +142,25 @@ def plot_biplot3(data_standarized, countries, labels):
     fig.update_yaxes(dict(title=f'PCA 2 - variance {pca.explained_variance_ratio_[1] * 100:.2f}%' ))
     fig.show()
 
-#TODO
-#Hacer grafico de barras con la 1ra componente principal
-
 def plot_pca(vec, labels, descr):
     x = list(labels)
     y = list(vec)
     plt.rc('font', size=15)
 
-    fig, ax = plt.subplots(figsize=(15, 10))
-    width = 0.5 
+    fig, ax = plt.subplots(figsize=(10, 8))
+    width = 0.5
     ind = np.arange(len(y))  
 
     cc = ['colors'] * len(y)
     for n, val in enumerate(y):
         if val < 0:
-            cc[n] = 'orange'
+            cc[n] = 'red'
         elif val >= 0:
-            cc[n] = 'teal'
+            cc[n] = 'blue'
 
-    ax.barh(ind, y, width, color=cc)
-
-    ax.set_yticks(ind + width / 4)
-    ax.set_yticklabels(x, minor=False)
-
+    ax.bar(ind, y, width, color=cc)
+    ax.set_xticks(ind + width / 100)
+    ax.set_xticklabels(x, minor=False)
+    ax.set_ylabel('Cargas')
     plt.title(descr)
-    plt.xlabel('Cargas')
     plt.show()
