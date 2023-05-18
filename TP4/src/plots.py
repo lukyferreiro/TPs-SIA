@@ -98,7 +98,43 @@ def plot_biplot(data, data_standarized, countries, labels):
 
     plt.show()
 
-def plot_biplot2(data_standarized, countries, labels):
+def plot_biplot2(data, data_standarized, countries, labels):
+    pca = PCA()
+    principal_components = pca.fit_transform(data_standarized)
+
+    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+
+    fig, ax = plt.subplots()
+    ax.scatter(principal_components[:, 0], principal_components[:, 1])
+    
+    for i in range(len(data[0])):
+        ax.arrow(0, 0, loadings[i, 0], loadings[i, 1], head_width=0.05, head_length=0.05, fc='red', ec='red')
+        ax.text(loadings[i, 0]*1.2, loadings[i, 1]*1.2, f'{labels[i]}', color='red')
+
+    for i in range(len(principal_components)):
+        ax.text(principal_components[i, 0], principal_components[i, 1], f'{countries[i]}', color='blue')
+    
+
+    ax.axhline(0, color='black', linestyle='--')
+    ax.axvline(0, color='black', linestyle='--')
+    ax.set_xlabel(f'PCA 1 - variance {pca.explained_variance_ratio_[0] * 100:.2f}%')
+    ax.set_ylabel(f'PCA 2 - variance {pca.explained_variance_ratio_[1] * 100:.2f}%')
+    ax.set_title('Biplot con valores de componentes principales 1 y 2')
+
+    '''
+    zoom_factor = 0.34
+    x_center = principal_components[:, 0].mean() 
+    y_center = principal_components[:, 1].mean() 
+    x_range = principal_components[:, 0].max() - principal_components[:, 0].min()  
+    y_range = principal_components[:, 1].max() - principal_components[:, 1].min()  
+
+    ax.set_xlim(x_center - zoom_factor * x_range, x_center + zoom_factor * x_range)
+    ax.set_ylim(y_center - zoom_factor * y_range, y_center + zoom_factor * y_range)
+    '''
+    plt.show()
+
+
+def plot_biplot3(data_standarized, countries, labels):
     pca = PCA()
     principal_components = pca.fit_transform(data_standarized)
 
@@ -115,6 +151,9 @@ def plot_biplot2(data_standarized, countries, labels):
     fig.update_xaxes(dict(title=f'PCA 1 - variance {pca.explained_variance_ratio_[0] * 100:.2f}%',))
     fig.update_yaxes(dict(title=f'PCA 2 - variance {pca.explained_variance_ratio_[1] * 100:.2f}%' ))
     fig.show()
+
+#TODO
+#Hacer grafico de barras con la 1ra componente principal
 
 def plot_pca(vec, labels, descr):
     x = list(labels)

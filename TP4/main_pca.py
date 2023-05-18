@@ -8,8 +8,9 @@ def main():
 
     #plot_boxplot(data, "Boxplot con datos no estandarizados", labels)
     #plot_boxplot(data_standarized, "Boxplot con datos estandarizados", labels)
-    #plot_biplot(data, data_standarized, countries, labels)
-    plot_biplot2(data_standarized, countries, labels)
+    plot_biplot(data, data_standarized, countries, labels)
+    plot_biplot2(data, data_standarized, countries, labels)
+    #plot_biplot3(data_standarized, countries, labels)
 
 if __name__ == "__main__":
     main()

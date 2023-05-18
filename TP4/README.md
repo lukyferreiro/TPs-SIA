@@ -61,6 +61,6 @@ python main_kohonen.py
 | learning_rate     | Kohonen y Oja | Numero real entre [0,1] que representa la tasa de aprendizaje                          | 
 | radius            | Kohonen       | Numero natural que representa el valor del radio en la red de Kohonen                  | 
 | epochs            | Todos         | Numero natural que representa la cantidad de epocas                                    | 
-| likeness          | Kohonen       | Numero natural que representa el metodo de similitud en la red de Kohonen.             |
+| likeness          | Kohonen       | String que representa el metodo de similitud en la red de Kohonen.             |
 | mutate_prob       | Hopfield      | Numero real entre [0,1] que representa el porcentaje de mutacion en la red de Hopfield | 
 | likeness_options  | Kohonen       | Arreglo de strings con los metodos de similitud permitidos (NO MODIFICAR)              |
