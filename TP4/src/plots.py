@@ -145,7 +145,7 @@ def plot_biplot3(pca, principal_components, loadings, countries, labels):
 def plot_pca(vec, labels, descr):
     x = list(labels)
     y = list(vec)
-    plt.rc('font', size=15)
+    plt.rc('font', size=10)
 
     fig, ax = plt.subplots(figsize=(10, 8))
     width = 0.5
@@ -161,6 +161,7 @@ def plot_pca(vec, labels, descr):
     ax.bar(ind, y, width, color=cc)
     ax.set_xticks(ind + width / 100)
     ax.set_xticklabels(x, minor=False)
+    plt.xticks(rotation=90)
     ax.set_ylabel('Cargas')
     plt.title(descr)
     plt.show()

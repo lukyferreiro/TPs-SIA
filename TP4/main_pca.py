@@ -21,8 +21,10 @@ def main():
     print(pca.components_.T[:, 0])
     print("PCA 1")
     print(principal_components[:, 0])
+    print(principal_components)
 
-    plot_pca(pca.components_[0], labels, "1ra componente con libreria sklearn")
+    #TODO un poco inchequeable
+    plot_pca(principal_components[:, 0], countries, "PCA1 de paises con Sklearn")
 
 if __name__ == "__main__":
     main()
