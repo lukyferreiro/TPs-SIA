@@ -20,23 +20,19 @@ class Hopfield:
         arr_patterns = []
         arr_energy = []
         arr_patterns.append(s1)
-        arr_energy.append(self._calculate_energy(s1))
+        arr_energy.append(self.__calculate_energy(s1))
 
         iteration = 0
-        stable = False
-        while not stable and iteration < self.epochs:
-            s2 = np.sign(np.matmul(s1, self.weights))
+        while not np.array_equal(s1, s2) and iteration < self.epochs:
+            s2 = np.sign(np.matmul(self.weights, s1)).astype(int)
+            
+            arr_patterns.append(s2)
+            arr_energy.append(self.__calculate_energy(s2))
+
             s1 = s2
-
-            arr_patterns.append(s1)
-            arr_energy.append(self._calculate_energy(s1))
-
-            if np.array_equal(s1, s2):
-                stable = True
-
             iteration += 1
 
-        return arr_patterns, arr_energy
+        return np.array(list(arr_patterns)), arr_energy
     
-    def _calculate_energy(self, s1):
+    def __calculate_energy(self, s1):
         return -np.dot(s1.T, np.dot(np.triu(self.weights), s1))

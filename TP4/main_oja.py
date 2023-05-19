@@ -23,7 +23,7 @@ def main():
     print(pca)
     print(countries)
 
-    plot_pca(weights, labels, "1ra componente con Oja")
+    plot_pca(weights, labels, "PCA1 con Oja")
 
     pca = PCA()
     principal_components = pca.fit_transform(data_standarized)
@@ -33,7 +33,7 @@ def main():
     print("PCA 1")
     print(principal_components[:, 0])
 
-    plot_pca(pca.components_[0], labels, "1ra componente con libreria sklearn")
+    plot_pca(pca.components_[0], labels, "PCA1 con sklearn")
 
     error = 0
     for i in range(len(weights)):
