@@ -12,14 +12,6 @@ def main():
     data, countries, labels = get_csv_data("data/europe.csv")
     data_standarized = standarize_data(data)
 
-    print(data)
-    print("---------------ACA--------------------")
-    print(data_standarized)
-    print("---------------------------------------")
-    print(countries)
-    print("---------------------------------------")
-    print(labels)
-
     kohonen = Kohonen(data_standarized, config.k, config.learning_rate,
                       config.radius, config.epochs, config.likeness)
     kohonen.train()

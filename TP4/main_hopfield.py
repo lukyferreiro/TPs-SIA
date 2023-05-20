@@ -12,8 +12,6 @@ def main():
     config = DataConfig(data)
     letters = get_letters("data/letters.txt")
 
-    #print(len(letters))
-    #print(letters)
     plot_letters(letters)
 
     COUNT_LETTERS = 4
