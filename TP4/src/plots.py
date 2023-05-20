@@ -1,7 +1,6 @@
 import seaborn as sn
 import matplotlib.pyplot as plt
 import numpy as np
-import plotly.express as px
 import math
 
 def plot_boxplot(data, box_plot_title, labels):
@@ -51,54 +50,8 @@ def plot_heatmap_single_variable(var, k, data_standarized, countries, solver, de
 def plot_matrix_u():
     pass
 
-def plot_biplot(data, data_standarized, countries, labels):
-    # Calcular la matriz de correlaciones Sx
-    Sx = np.corrcoef(data_standarized, rowvar=False)
-    # Calcular autovalores y autovectores de la matriz de correlaciones
-    eigenvalues, eigenvectors = np.linalg.eig(Sx)
-    # Ordenar los autovalores de mayor a menor
-    idx = np.argsort(eigenvalues)[::-1]
-    eigenvalues_sorted = eigenvalues[idx]
-    eigenvectors_sorted = eigenvectors[:, idx]
-    R = eigenvectors_sorted[:, :2] # 2 es el número de componentes principales deseados
-    # Calcular las nuevas variables Y como combinación lineal de las originales
-    Y = np.dot(data_standarized, R)
 
-    print("Autovalores:", eigenvalues_sorted)
-    print("Autovectores:\n", eigenvectors_sorted)
-    print("Matriz R:\n", R)
-    print("Nuevas variables Y:\n", Y)
-
-    fig, ax = plt.subplots()
-    ax.scatter(Y[:, 0], Y[:, 1])
-
-    for i in range(len(data[0])):
-        ax.arrow(0, 0, R[i, 0], R[i, 1], head_width=0.05, head_length=0.05, fc='red', ec='red')
-        ax.text(R[i, 0]*1.2, R[i, 1]*1.2, f'{labels[i]}', color='red')
-
-    for i in range(len(Y)):
-        ax.text(Y[i, 0]*1, Y[i, 1]*1, f'{countries[i]}', color='blue')
-
-    ax.axhline(0, color='black', linestyle='--')
-    ax.axvline(0, color='black', linestyle='--')
-    ax.set_xlabel('PCA 1')
-    ax.set_ylabel('PCA 2')
-    ax.set_title('Biplot con valores de componentes principales 1 y 2')
-
-    '''
-    zoom_factor = 0.34
-    x_center = Y[:, 0].mean() 
-    y_center = Y[:, 1].mean() 
-    x_range = Y[:, 0].max() - Y[:, 0].min()  
-    y_range = Y[:, 1].max() - Y[:, 1].min()  
-
-    ax.set_xlim(x_center - zoom_factor * x_range, x_center + zoom_factor * x_range)
-    ax.set_ylim(y_center - zoom_factor * y_range, y_center + zoom_factor * y_range)
-    '''
-
-    plt.show()
-
-def plot_biplot2(pca, principal_components, loadings, countries, labels):
+def plot_biplot(pca, principal_components, loadings, countries, labels):
     fig, ax = plt.subplots()
     ax.scatter(principal_components[:, 0], principal_components[:, 1])
     
@@ -112,8 +65,8 @@ def plot_biplot2(pca, principal_components, loadings, countries, labels):
 
     ax.axhline(0, color='black', linestyle='--')
     ax.axvline(0, color='black', linestyle='--')
-    ax.set_xlabel(f'PCA 1 - variance {pca.explained_variance_ratio_[0] * 100:.2f}%')
-    ax.set_ylabel(f'PCA 2 - variance {pca.explained_variance_ratio_[1] * 100:.2f}%')
+    ax.set_xlabel(f'PCA 1 ({pca.explained_variance_ratio_[0] * 100:.2f}% varianza)')
+    ax.set_ylabel(f'PCA 2 ({pca.explained_variance_ratio_[1] * 100:.2f}% varianza)')
     ax.set_title('Biplot con valores de componentes principales 1 y 2')
 
     '''
@@ -127,20 +80,6 @@ def plot_biplot2(pca, principal_components, loadings, countries, labels):
     ax.set_ylim(y_center - zoom_factor * y_range, y_center + zoom_factor * y_range)
     '''
     plt.show()
-
-
-def plot_biplot3(pca, principal_components, loadings, countries, labels):
-    fig = px.scatter(principal_components, x=0, y=1, text=countries, color=countries)
-    fig.update_traces(textposition='top center')
-
-    for i, label in enumerate(np.array(list(labels))):
-        fig.add_shape(type='line', x0=0, y0=0, x1=loadings[i,0], y1=loadings[i,1])
-        fig.add_annotation(x=loadings[i,0], y=loadings[i,1], ax=0, ay=0,
-                           xanchor="center", yanchor="bottom", text=label)
-
-    fig.update_xaxes(dict(title=f'PCA 1 - variance {pca.explained_variance_ratio_[0] * 100:.2f}%',))
-    fig.update_yaxes(dict(title=f'PCA 2 - variance {pca.explained_variance_ratio_[1] * 100:.2f}%' ))
-    fig.show()
 
 def plot_pca(vec, labels, descr):
     x = list(labels)
@@ -162,8 +101,36 @@ def plot_pca(vec, labels, descr):
     ax.set_xticks(ind + width / 100)
     ax.set_xticklabels(x, minor=False)
     plt.xticks(rotation=90)
-    ax.set_ylabel('Cargas')
+    ax.set_ylabel('PCA1')
+    ax.set_xlabel('Paises')
     plt.title(descr)
+    plt.show()
+
+def plot_variance(pca):
+    variance_ratio = pca.explained_variance_ratio_
+    variance_cumulative = np.cumsum(variance_ratio)
+    print("Varianza de cada componente principal")
+    print(variance_ratio)
+    print("Varianza acumulada")
+    print(variance_cumulative)
+
+    pca_labels = [f'PCA{i+1}' for i in range(len(variance_ratio))]
+    fig, ax1 = plt.subplots()
+    ax2 = ax1.twinx()
+
+    # Gráfico de barras para la varianza
+    ax1.bar(pca_labels, variance_ratio, color='blue', alpha=0.5)
+    ax1.set_ylabel('Varianza')
+    ax1.tick_params(axis='y', labelcolor='blue')
+
+    # Gráfico de línea para la varianza acumulada
+    ax2.plot(pca_labels, variance_cumulative, color='red')
+    ax2.set_ylabel('Varianza Acumulada')
+    ax2.tick_params(axis='y', labelcolor='red')
+
+    plt.title('Varianza y Varianza Acumulada para Componentes PCA')
+    plt.xticks(rotation=45)
+    plt.subplots_adjust(right=0.8)
     plt.show()
 
 
@@ -210,6 +177,4 @@ def create_letter_plot(letter, ax):
             if array[i, j] == 1:
                 ax.add_patch(plt.Rectangle((j-0.5, i-0.5), 1, 1, linewidth=2, edgecolor='black', facecolor='none'))
 
-
     ax.axis('off')
-

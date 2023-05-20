@@ -43,6 +43,6 @@ def standarize_data(data):
 def mutate(letter, prob):
    mutated_letter = np.copy(letter)
    for i in range(len(letter)):
-        if np.random.default_rng().random() < prob:
-            mutated_letter[i] *= -1
+      if np.random.default_rng().random() < prob:
+         mutated_letter[i] *= -1
    return mutated_letter
