@@ -1,8 +1,8 @@
 {
     "k": 4,
-    "learning_rate": 0.1,
+    "learning_rate": 0.01,
     "radius": 1,
-    "epochs": 100,
+    "epochs": 10000,
     "likeness": "EUCLIDEAN",
     "mutate_prob": 0.5,
     "likeness_options": [
