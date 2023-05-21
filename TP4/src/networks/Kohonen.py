@@ -49,8 +49,15 @@ class Kohonen:
     
     # Actualizar los pesos de las neuronas vecinas segun la regla de Kohonen
     def __update_weights(self, Xp, winner):
+        neighbours = self.get_neighbours(winner)
+        for (i,j) in neighbours:
+            # Actualizamos solamente si pertenecen al vecindario
+             self.weights[i][j] += self.learning_rate * (Xp - self.weights[i][j])
+
+    def get_neighbours(self, winner):
+        neighbours = []
         for i in range(self.k):
             for j in range(self.k):
-                # Actualizamos solamente si pertenecen al vecindario
                 if np.linalg.norm(np.array([i, j]) - winner) <= self.radius:
-                    self.weights[i][j] += self.learning_rate * (Xp - self.weights[i][j])
+                    neighbours.append((i, j))
+        return neighbours

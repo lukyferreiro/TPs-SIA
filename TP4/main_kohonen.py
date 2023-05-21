@@ -17,6 +17,7 @@ def main():
     kohonen.train()
 
     plot_heatmap(data_standarized, countries, kohonen, config.k, config.learning_rate, config.radius)
+    plot_matrix_u(kohonen, config.k)
     for i, label in enumerate(labels): 
        plot_heatmap_single_variable(i, config.k, data_standarized, countries, kohonen, f"{label} values for each group")
 

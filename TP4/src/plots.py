@@ -27,28 +27,36 @@ def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
 
     countries_matrix = np.array(countries_matrix_aux)
 
+    plt.figure(figsize=(10, 8))
     plt.title(f"Heatmap {k}x{k} con η={str(learn_rate)} y radio={str(radius)}")
     sn.heatmap(matrix, cmap='Reds', annot=countries_matrix, fmt="")
     plt.show()
 
 def plot_heatmap_single_variable(var, k, data_standarized, countries, solver, descr):
     matrix = np.zeros((k, k))
-    countries_matrix_aux = [["" for _ in range(k)] for _ in range(k)]
 
     for k in range(len(data_standarized)):
         i,j = solver.find_winner_neuron(data_standarized[k])
         matrix[i][j] += data_standarized[k][var]
-        countries_matrix_aux[i][j] += f"{countries[k]}\n" 
-
-    countries_matrix = np.array(countries_matrix_aux)
 
     plt.suptitle(descr)
-    sn.heatmap(matrix, cmap='Blues', annot=countries_matrix, fmt="")
+    sn.heatmap(matrix, cmap='Blues', annot=True)
     plt.show()
 
-#TODO hacer la matriz U
-def plot_matrix_u():
-    pass
+def plot_matrix_u(solver, k):
+    w_mean = np.zeros((k, k))
+    for i in range(len(solver.weights)):
+        for j in range(len(solver.weights[0])):
+            neighbors = solver.get_neighbours([i, j])
+            aux = []
+            for n in neighbors:
+                if i != n[0] or j != n[1]:
+                    aux.append(np.linalg.norm(np.subtract(solver.weights[i][j], solver.weights[n[0]][n[1]])))
+            w_mean[i][j] = np.mean(aux)
+
+    plt.title("Neighbours distance")
+    sn.heatmap(w_mean, cmap='Greys', annot=True)
+    plt.show()
 
 
 def plot_biplot(pca, principal_components, loadings, countries, labels):
