@@ -36,6 +36,7 @@ def main():
     print(arr_patterns)
     print(arr_energy)
     plot_letters(arr_patterns, "Prediccion de Hopfield")
+    plot_energy(arr_energy)
 
 if __name__ == "__main__":
     main()

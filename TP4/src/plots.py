@@ -187,3 +187,10 @@ def create_letter_plot(letter, ax):
                 ax.add_patch(plt.Rectangle((j-0.5, i-0.5), 1, 1, linewidth=2, edgecolor='black', facecolor='none'))
 
     ax.axis('off')
+
+def plot_energy(arr_energy):
+    plt.plot(range(len(arr_energy)), arr_energy, color='red')
+    plt.ylabel('Energia')
+    plt.xlabel("Iteraciones")
+    plt.title('Funcion de energia')
+    plt.show()

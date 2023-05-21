@@ -22,7 +22,7 @@ El siguiente TP consta de varios ejercicios:
 
 ### Instalación
 
-Posicionado en la carpeta del TP5 ejecutar:
+Posicionado en la carpeta del TP4 ejecutar:
 
 ```sh
 pipenv install

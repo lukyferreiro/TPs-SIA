@@ -1,8 +1,6 @@
 import copy
 from statistics import mean, stdev
 import numpy as np
-import itertools
-import pandas as pd
 
 def check_positivity(num, str):
    if not type(num) == int or num <= 0:

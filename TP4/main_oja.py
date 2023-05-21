@@ -21,7 +21,6 @@ def main():
     print("Approximated PCA 1")
     pca = np.matmul(data_standarized, weights)
     print(pca)
-    print(countries)
 
     plot_pca(weights, labels, "Loadings PCA1 con Oja")
     plot_pca(pca, countries, "PCA1 por pais con Oja")

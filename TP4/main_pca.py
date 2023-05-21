@@ -2,7 +2,6 @@ from src.parser_files import get_csv_data
 from src.utils import standarize_data
 from src.plots import *
 from sklearn.decomposition import PCA
-import pandas as pd
 
 def main(): 
     data, countries, labels = get_csv_data("data/europe.csv")

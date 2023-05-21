@@ -37,7 +37,6 @@ class Hopfield:
             s1 = s2
             iteration += 1
 
-
         return np.array(list(arr_patterns)), arr_energy
     
     def __calculate_energy(self, s1):
