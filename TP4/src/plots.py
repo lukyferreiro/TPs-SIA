@@ -32,7 +32,7 @@ def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
     sn.heatmap(matrix, cmap='Reds', annot=countries_matrix, fmt="")
     plt.show()
 
-def plot_heatmap_single_variable(var, k, data_standarized, countries, solver, descr):
+def plot_heatmap_single_variable(var, k, data_standarized, solver, descr):
     matrix = np.zeros((k, k))
 
     for k in range(len(data_standarized)):
@@ -142,7 +142,7 @@ def plot_variance(pca):
     plt.show()
 
 
-def plot_letters(letters):
+def plot_letters(letters, desc):
     num_letters = len(letters)
     num_rows = math.ceil(math.sqrt(num_letters))
     num_cols = math.ceil(num_letters / num_rows)
@@ -166,6 +166,7 @@ def plot_letters(letters):
     for ax in axs.flat[num_letters:]:
         ax.remove()
 
+    fig.suptitle(desc, fontsize=20, fontweight="bold")
     plt.show()
 
 def create_letter_plot(letter, ax):
