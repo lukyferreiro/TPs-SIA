@@ -19,7 +19,7 @@ def main():
     plot_heatmap(data_standarized, countries, kohonen, config.k, config.learning_rate, config.radius)
     plot_matrix_u(kohonen, config.k)
     for i, label in enumerate(labels): 
-       plot_heatmap_single_variable(i, config.k, data_standarized, kohonen, f"{label} values for each group")
+       plot_heatmap_single_variable(i, config.k, data_standarized, kohonen, f"Valores de {label} para cada neurona")
 
 if __name__ == "__main__":
     main()

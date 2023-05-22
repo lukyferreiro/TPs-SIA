@@ -28,7 +28,7 @@ def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
     countries_matrix = np.array(countries_matrix_aux)
 
     plt.figure(figsize=(10, 8))
-    plt.title(f"Heatmap {k}x{k} con η={str(learn_rate)} y radio={str(radius)}")
+    plt.title(f"Heatmap {k}x{k} con η(0)={str(learn_rate)} y R(0)={str(radius)}")
     sn.heatmap(matrix, cmap='Reds', annot=countries_matrix, fmt="")
     plt.show()
 
@@ -54,7 +54,7 @@ def plot_matrix_u(solver, k):
                     aux.append(np.linalg.norm(np.subtract(solver.weights[i][j], solver.weights[n[0]][n[1]])))
             w_mean[i][j] = np.mean(aux)
 
-    plt.title("Neighbours distance")
+    plt.title("Matriz U para la distancia entre vecinos")
     sn.heatmap(w_mean, cmap='Greys', annot=True)
     plt.show()
 
