@@ -11,7 +11,7 @@ jupyter = "*"
 notebook = "*"
 pandas = "*"
 plotly = "*"
-sklearn = "*
+sklearn = "*"
 
 [dev-packages]
 
