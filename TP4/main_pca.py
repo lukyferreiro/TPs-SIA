@@ -17,7 +17,7 @@ def main():
     plot_variance(pca)
     plot_biplot(pca, principal_components, loadings, countries, labels)
 
-    print("Eigenvector - First Component")
+    print("Eigenvector - PCA1")
     print(pca.components_.T[:, 0])
     print("PCA 1")
     print(principal_components[:, 0])

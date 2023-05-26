@@ -16,7 +16,7 @@ def main():
     oja = Oja(data_standarized, config.learning_rate, config.epochs)
     weights = oja.train()
 
-    print("Approximated Eigenvector - First Component")
+    print("Approximated Eigenvector - PCA1")
     print(weights)
     print("Approximated PCA 1")
     pca = np.matmul(data_standarized, weights)
@@ -28,7 +28,7 @@ def main():
     pca = PCA()
     principal_components = pca.fit_transform(data_standarized)
 
-    print("Eigenvector - First Component")
+    print("Eigenvector - PCA1")
     print(pca.components_.T[:, 0])
     print("PCA 1")
     print(principal_components[:, 0])

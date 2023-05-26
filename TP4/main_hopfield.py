@@ -20,14 +20,14 @@ def main():
     for idx in idxs:
         letters_to_train.append(letters[idx])
     letters_to_train = np.array(letters_to_train)
-    orto_value = calculate_ortogonality(letters_to_train)
-    plot_letters(letters_to_train, f"Patrones almacenados con ortogonalidad {orto_value}")
+    avg_dot_product, max_value, max_dot_product = calculate_ortogonality(letters_to_train) 
+    plot_letters(letters_to_train, f"Patrones almacenados con ortogonalidad {avg_dot_product} (max={max_value} | count={max_dot_product})")
 
     hopfield = Hopfield(letters_to_train, config.epochs)
 
     random_idx = np.random.randint(len(letters_to_train))
     letter_to_mutate = letters_to_train[random_idx]
-    plot_letters(letter_to_mutate.reshape((1, len(letter_to_mutate))), "Patron a mutar")
+    plot_letters(letter_to_mutate.reshape((1, len(letter_to_mutate))), f"Patron a mutar con probabilidad {config.mutate_prob}")
 
     letter_mutated = mutate(letter_to_mutate, config.mutate_prob)
     arr_patterns, arr_energy = hopfield.predict(letter_mutated)

@@ -51,4 +51,7 @@ def calculate_ortogonality(letters):
    orto_matrix = letters.dot(letters.T)
    np.fill_diagonal(orto_matrix, 0)
    row, _ = orto_matrix.shape
-   return round(np.abs(orto_matrix).sum() / (orto_matrix.size - row), 3)
+   avg_dot_product = round(np.abs(orto_matrix).sum() / (orto_matrix.size - row), 3)
+   max_value = np.abs(orto_matrix).max()
+   max_dot_product = np.count_nonzero(np.abs(orto_matrix) == max_value) / 2
+   return avg_dot_product, max_value, max_dot_product

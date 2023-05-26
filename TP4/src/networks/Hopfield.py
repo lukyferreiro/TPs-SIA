@@ -26,7 +26,7 @@ class Hopfield:
         stable = False
         while not stable and iteration < self.epochs:
             s2 = np.sign(np.matmul(self.weights, s1))
-            self.__replace_zeros(s1, s2)
+            self.__maintain_zeros(s1, s2)
             
             arr_patterns.append(s2)
             arr_energy.append(self.__calculate_energy(s2))
@@ -42,6 +42,6 @@ class Hopfield:
     def __calculate_energy(self, s1):
         return -np.dot(s1.T, np.dot(np.triu(self.weights), s1))
 
-    def __replace_zeros(self, s1, s2):
+    def __maintain_zeros(self, s1, s2):
         for indexes in np.argwhere(s2 == 0):
-            s2[indexes[0]][indexes[1]] = s1[indexes[0]][indexes[1]]
+            s2[indexes[0]] = s1[indexes[0]]
