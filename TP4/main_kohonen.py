@@ -16,7 +16,7 @@ def main():
                       config.radius, config.epochs, config.likeness)
     kohonen.train()
 
-    plot_heatmap(data_standarized, countries, kohonen, config.k, config.learning_rate, config.radius)
+    plot_heatmap(data_standarized, countries, kohonen, config.k, config.learning_rate, config.radius, config.epochs)
     plot_matrix_u(kohonen, config.k)
     for i, label in enumerate(labels): 
        plot_heatmap_single_variable(i, config.k, data_standarized, kohonen, f"Valores de {label} para cada neurona")

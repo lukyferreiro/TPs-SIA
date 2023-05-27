@@ -16,7 +16,7 @@ def plot_boxplot(data, box_plot_title, labels):
                medianprops=dict(color='red', linewidth=2))
     plt.show()
     
-def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
+def plot_heatmap(inputs, countries, solver, k, learn_rate, radius, epochs):
     results = [solver.find_winner_neuron(i) for i in inputs]
     matrix = np.zeros((k, k))
     countries_matrix_aux = [["" for _ in range(k)] for _ in range(k)]
@@ -28,7 +28,7 @@ def plot_heatmap(inputs, countries, solver, k, learn_rate, radius):
     countries_matrix = np.array(countries_matrix_aux)
 
     plt.figure(figsize=(10, 8))
-    plt.title(f"Heatmap {k}x{k} con η(0)={str(learn_rate)} y R(0)={str(radius)}")
+    plt.title(f"Heatmap {k}x{k} con η(0)={str(learn_rate)}, R(0)={str(radius)} y {epochs} epocas")
     sn.heatmap(matrix, cmap='Reds', annot=countries_matrix, fmt="")
     plt.show()
 
