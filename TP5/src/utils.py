@@ -1,3 +1,6 @@
+import numpy as np
+from data.font import _font_3
+
 def check_positivity(num, str):
    if not type(num) == int or num < 0:
       raise ValueError(f"Valor de '{str}' invalido")
@@ -31,7 +34,7 @@ def check_arr(arr, str):
 class DataConfig:
 
     def __init__(self, data):
-
+      self.input_data = extract_patterns(_font_3)
       self.bias = check_positivity(data['bias'], "bias")
 
       # Training params
@@ -57,3 +60,15 @@ class DataConfig:
       self.beta1 = check_prob(data['beta1'], "beta 1")
       self.beta2 = check_prob(data['beta2'], "beta 2")
       self.epsilon = check_prob(data['epsilon'], "epsilon")
+
+
+def extract_patterns(font):
+    patterns = []
+    for pattern in font:
+        matrix = []
+        for byte in pattern:
+            binary = format(byte, '08b')  # Convierte el byte a una cadena binaria de 8 bits
+            row = [int(bit) for bit in binary]  # Convierte cada bit en la fila en un entero
+            matrix.append(row)
+        patterns.append(matrix)
+    return np.array(patterns) 

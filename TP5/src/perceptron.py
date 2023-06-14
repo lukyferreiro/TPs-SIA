@@ -5,15 +5,17 @@ import copy
 
 class MultilayerPerceptron:
 
-    def __init__(self, input_data, expected_data, learning_rate, bias, epochs, training_percentage, min_error,
+    def __init__(self, input_data, input_data_len, output_data_len, learning_rate, bias, epochs, training_percentage, min_error,
                  qty_hidden_layers, qty_nodes_in_hidden_layers, output_activation, hidden_activation, beta,
-                 optimization_method, alpha, beta1, beta2, epsilon, out_array):
+                 optimization_method, alpha, beta1, beta2, epsilon):
 
         # Info del set de entrenamiento 
-        self.min, self.max = self.__calculate_min_and_max(expected_data)
+        # self.min, self.max = self.__calculate_min_and_max(expected_data)
+        self.input_data_len = input_data_len
+        self.output_data_len = output_data_len
         self.bias = bias
         self.input_data = input_data
-        self.expected_data = self.normalize_image(expected_data, output_activation)
+        # self.expected_data = self.normalize_image(expected_data, output_activation)
         self.train_MSE = -1
 
         # Global para la red neuronal
@@ -21,13 +23,12 @@ class MultilayerPerceptron:
         self.epochs = epochs
         self.training_percentage = training_percentage
 
-        self.train_input_data = self.train_expected_data = self.test_input_data = self.test_expected_data = None
-
-        if training_percentage < 1:
-            self.train_input_data, self.train_expected_data, self.test_input_data, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
+        #self.train_input_data = self.train_expected_data = self.test_input_data = self.test_expected_data = None
+        #if training_percentage < 1:
+        #    self.train_input_data, self.train_expected_data, self.test_input_data, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
 
         self.min_error = min_error
-        self.out_array = out_array
+        # self.out_array = out_array
 
         # Metodos de activacion
         self.output_activation = output_activation
@@ -62,7 +63,7 @@ class MultilayerPerceptron:
 
         # Numero de neuronas definido en config.json, numero de entradas dependiente de input_data
         layer_0 = Layer(self.qty_nodes_in_hidden_layer[current_layer],
-                        len(self.input_data[0]),
+                        self.input_data_len,
                         self.hidden_activation, self.beta)
         layers.append(layer_0)
 
@@ -78,9 +79,8 @@ class MultilayerPerceptron:
             current_layer += 1  
 
         # Inicializamos capa de salida, cantidad de neuronas dependiente de expected_data
-        num_outputs = self.__get_num_outputs()
-        output_layer = Layer(num_outputs,
-                             layers[current_layer - 1].neuron_count,
+        output_layer = Layer(self.output_data_len,
+                             self.qty_nodes_in_hidden_layer[current_layer-1],
                              self.output_activation, self.beta) 
         layers.append(output_layer)
         return layers
