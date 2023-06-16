@@ -30,7 +30,7 @@ def check_arr(arr, str):
       check_positivity(arr[i], str)
    
    return arr
-
+   
 class DataConfig:
 
     def __init__(self, data):
@@ -54,6 +54,8 @@ class DataConfig:
       if(self.qty_hidden_layers != len(self.qty_nodes_in_hidden_layers)):
          raise ValueError("qty_hidden_layers y qty_nodes_in_hidden_layers no se corresponden entre si")
       
+      self.latent_space_size = check_positivity(data['latent_space_size'], "tamaño de espacio latente")
+
       # Optimizer values
       self.optimizer_method = check_type(data['optimizer_method'], data['optimizer_options'], "metodo de optimizacion")
       self.alpha = check_prob(data['alpha'], "alpha")
@@ -61,14 +63,19 @@ class DataConfig:
       self.beta2 = check_prob(data['beta2'], "beta 2")
       self.epsilon = check_prob(data['epsilon'], "epsilon")
 
-
 def extract_patterns(font):
     patterns = []
     for pattern in font:
         matrix = []
         for byte in pattern:
             binary = format(byte, '08b')  # Convierte el byte a una cadena binaria de 8 bits
-            row = [int(bit) for bit in binary]  # Convierte cada bit en la fila en un entero
-            matrix.append(row)
+            row = [int(bit) for bit in binary[-5:]]  # Toma los últimos 5 bits de la cadena binaria
+            matrix.extend(row)
         patterns.append(matrix)
-    return np.array(patterns) 
+    return np.array(patterns)
+
+def print_pattern(pattern):
+    pattern_matrix = np.reshape(pattern, (7, 5))  # Reshape el arreglo a una matriz de 5x7
+    for row in pattern_matrix:
+        row_string = ''.join('.' if bit == 0 else '*' for bit in row)  # Usa '.' si el bit es 0, '*' si el bit es 1
+        print(row_string)

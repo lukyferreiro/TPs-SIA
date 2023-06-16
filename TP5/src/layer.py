@@ -79,6 +79,9 @@ class Layer():
         else:
             return 1 / (1 + np.exp(-2 * self.beta * h))
 
+    def get_weights(self):
+        return self.weights
+
     def __str__(self) -> str:
         return str(self.weights)
 

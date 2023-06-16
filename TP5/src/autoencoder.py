@@ -1,6 +1,7 @@
 import numpy as np
 from src.layer import Layer
 import matplotlib.pyplot as plt
+import copy
 
 class Autoencoder:
     def __init__(self, input_data, input_data_len, latent_space_size, learning_rate, bias, epochs, training_percentage, min_error,
@@ -8,12 +9,11 @@ class Autoencoder:
                  optimization_method, alpha, beta1, beta2, epsilon):
 
         # Info del set de entrenamiento 
-        # self.min, self.max = self.__calculate_min_and_max(expected_data)
         self.input_data_len = input_data_len
-        self.latent_space_size = latent_space_size
         self.bias = bias
         self.input_data = input_data
-        # self.expected_data = self.normalize_image(expected_data, output_activation)
+        self.expected_data = input_data
+        self.min, self.max = self.__calculate_min_and_max(self.expected_data)
         self.train_MSE = -1
 
         # Global para la red neuronal
@@ -43,7 +43,8 @@ class Autoencoder:
         # Arquitectura de la red neuronal
         self.qty_hidden_layers = qty_hidden_layers
         self.qty_nodes_in_hidden_layer = qty_nodes_in_hidden_layers
-        self.layers = self.__init_layers()  # Inicialización de las capas
+        self.latent_space_size = latent_space_size
+        self.layers, self.latent_space_idx = self.__init_layers()  # Inicialización de las capas
     
     # Inicializar conjuntos de training y testing
     def __divide_data_by_percentage(self, input, expected, p):
@@ -57,55 +58,63 @@ class Autoencoder:
 
     def __init_layers(self):
         layers = []
-        current_perceptron_layer = 0
-        current_layer = 0
+        current_encoder_layer = 0
 
         # Inicializamos las capas asociadas al encoder. 
-        # EJ: 10 -> 5 -> 2
-        layer_0 = Layer(self.qty_nodes_in_hidden_layer[current_layer],
+        # EJ: 10 -> 5 
+        encoder_layer_0 = Layer(self.qty_nodes_in_hidden_layer[current_encoder_layer],
                         self.input_data_len,
                         self.hidden_activation, self.beta)
-        layers.append(layer_0)
+        layers.append(encoder_layer_0)
 
-        current_layer += 1
+        current_encoder_layer += 1
 
         # Inicializamos capas intermedia (si solo tenemos una nunca entramos acá)
         # Cantidad de neuronas definido en config.json, numero de entradas dependiente de capa anterior
-        while current_layer < self.qty_hidden_layers:
-            layer = Layer(self.qty_nodes_in_hidden_layer[current_layer],
-                          self.qty_nodes_in_hidden_layer[current_layer-1],
+        while current_encoder_layer < self.qty_hidden_layers:
+            layer = Layer(self.qty_nodes_in_hidden_layer[current_encoder_layer],
+                          self.qty_nodes_in_hidden_layer[current_encoder_layer-1],
                           self.hidden_activation, self.beta)
             layers.append(layer)
-            current_layer += 1  
+            current_encoder_layer += 1  
 
-        # Inicializamos capa latente, cantidad de neuronas dependiente de expected_data
+        latent_space_idx = current_encoder_layer
+
+        # Inicializamos capa conectada a capa latente 
         latent_layer = Layer(self.latent_space_size,
-                             self.qty_nodes_in_hidden_layer[current_layer-1],
+                             self.qty_nodes_in_hidden_layer[current_encoder_layer-1],
                              self.output_activation, self.beta) 
         layers.append(latent_layer)
-        current_layer += 1
 
         # Inicializamos las capas asociadas al encoder. 
         # EJ: 5 -> 10 ya que el espacio latente se comparte
-        inverted_hidden_nodes = self.qty_nodes_in_hidden_layers[::-1]
+        inverted_hidden_nodes = self.qty_nodes_in_hidden_layer[::-1]
+        current_decoder_layer = 0
 
+        decoder_layer_0 = Layer(inverted_hidden_nodes[current_decoder_layer],
+                        self.latent_space_size,
+                        self.hidden_activation, self.beta)
+        layers.append(decoder_layer_0)
+        current_decoder_layer += 1
 
         # Inicializamos capas intermedia (si solo tenemos una nunca entramos acá)
         # Cantidad de neuronas definido en config.json, numero de entradas dependiente de capa anterior
-        for num in inverted_hidden_nodes:
-            layer = Layer(self.qty_nodes_in_hidden_layer[current_layer],
-                          self.qty_nodes_in_hidden_layer[current_layer-1],
+        while current_decoder_layer < self.qty_hidden_layers:
+            layer = Layer(inverted_hidden_nodes[current_decoder_layer],
+                          inverted_hidden_nodes[current_decoder_layer-1],
                           self.hidden_activation, self.beta)
             layers.append(layer)
-            current_layer += 1  
+            current_decoder_layer += 1
 
-        # Inicializamos capa de salida, cantidad de neuronas dependiente de expected_data
+        # Inicializamos capa de salida
         output_layer = Layer(self.input_data_len,
-                             self.qty_nodes_in_hidden_layer[current_layer-1],
+                             inverted_hidden_nodes[current_decoder_layer-1],
                              self.output_activation, self.beta) 
         layers.append(output_layer)
 
-        return layers
+        print(latent_space_idx)
+
+        return layers, latent_space_idx
     
     def __get_num_outputs(self):
         if isinstance(self.expected_data, np.ndarray) and self.expected_data.ndim == 1:
@@ -118,7 +127,6 @@ class Autoencoder:
 
     def __calculate_min_and_max(self, expected_data):
         return np.min(expected_data), np.max(expected_data)
-
 
     def train(self):
         current_epoch = 0
@@ -170,23 +178,31 @@ class Autoencoder:
 
         print(f"Finished Training. \n MSE: {self.train_MSE}")
 
-        if self.training_percentage < 1:
-            test_accuracy, test_mse = self.test(self.test_input_data, self.test_expected_data)
-        else:
-            test_accuracy, test_mse = self.test(self.input_data, self.expected_data)
+        # if self.training_percentage < 1:
+        #    test_accuracy, test_mse = self.test(self.test_input_data, self.test_expected_data)
+        #else:
+        #    test_accuracy, test_mse = self.test(self.input_data, self.expected_data)
 
-        return mse_errors, current_epoch, test_accuracy, test_mse
+        return mse_errors, current_epoch
     
     def activate(self, init_input):
         activations = [init_input]
         for i in range(len(self.layers)):
             activations.append(self.layers[i].activate(activations[-1]))
         return activations
+        
+    def predict(self, init_input):
+        activations = self.activate(init_input)
+        return activations[-1]
+
+    def latent_space(self, init_input):
+        activations = self.activate(init_input)
+        return activations[self.latent_space_idx + 1]
 
     def __str__(self) -> str:
-        str = "Perceptron multicapa\n"
+        str = "Autoencoder\n"
         for i in range(len(self.layers)):
-            str += f"Capa {i}:\n. {self.layers[i]}\n"
+            str += f"Capa {i}: {self.layers[i].get_weights().shape} \n {self.layers[i]}\n"
         return str
     
     def __repr__(self) -> str:
