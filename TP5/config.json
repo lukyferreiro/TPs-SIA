@@ -1,6 +1,6 @@
 {
-    "learning_rate": 0.1,
-    "epochs": 5000,
+    "learning_rate": 0.01,
+    "epochs": 10000,
     "bias": 1,
     "training_percentage": 1.0,
     "min_error": 0.001,
@@ -9,8 +9,8 @@
     "hidden_activation": "TANH",
     "beta": 1.0,
 
-    "qty_hidden_layers": 1,
-    "qty_nodes_in_hidden_layers": [10],
+    "qty_hidden_layers": 2,
+    "qty_nodes_in_hidden_layers": [15, 5],
     "latent_space_size": 2,
 
     "optimizer_method": "ADAM",

@@ -73,9 +73,3 @@ def extract_patterns(font):
             matrix.extend(row)
         patterns.append(matrix)
     return np.array(patterns)
-
-def print_pattern(pattern):
-    pattern_matrix = np.reshape(pattern, (7, 5))  # Reshape el arreglo a una matriz de 5x7
-    for row in pattern_matrix:
-        row_string = ''.join('.' if bit == 0 else '*' for bit in row)  # Usa '.' si el bit es 0, '*' si el bit es 1
-        print(row_string)

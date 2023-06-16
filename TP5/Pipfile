@@ -12,6 +12,8 @@ notebook = "*"
 pandas = "*"
 plotly = "*"
 sklearn = "*"
+tensorflow = "*"
+keras = "*"
 
 [dev-packages]
 
