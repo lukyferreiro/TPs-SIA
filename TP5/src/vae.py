@@ -8,24 +8,23 @@ from tensorflow.python.framework.ops import disable_eager_execution
 
 disable_eager_execution()
 
-def flatten_set(training_set):
-    return np.array(training_set).reshape((len(training_set), np.prod(np.array(training_set).shape[1:])))
-
-
+# https://colab.research.google.com/drive/1Hobi6plfrrUQ9DCiFPZ6vaztOu5Q05ND?usp=sharing
 class VAE:
-    def __init__(self, x, y, config):
-        self.latent_neurons = config.latent_layer
+    def __init__(self, x, epochs, latent_space_size, qty_nodes_in_hidden_layers):
         self.dim = len(x[0])
-        self.intermediate_layers = config.intermediate_layers
+        self.latent_neurons = latent_space_size
+        self.intermediate_layers = qty_nodes_in_hidden_layers
+        self.epochs = epochs
         self.set_vae()
 
-    def train(self, training_set, epochs, batch_size):
+    def train(self, training_set, batch_size):
         print(training_set.shape)
-        self.model.fit(training_set, training_set, epochs=epochs, batch_size=batch_size,
+        self.model.fit(training_set, training_set, epochs=self.epochs,
+                       batch_size=batch_size,
                        validation_data=(training_set, training_set))
 
     def set_vae(self):
-        # input to our encoder (es el tensor, shape es una tupla de integers que indica la dimension de los vectores)
+        # input to our encoder
         x = Input(shape=(self.dim,), name="input")
         self.encoder = self._set_encoder(x)
         # print out summary of what we just did

@@ -1,5 +1,4 @@
 import numpy as np
-import math 
 
 class Layer(): 
     def __init__(self, neuron_count, input_size, activation_method, beta):
