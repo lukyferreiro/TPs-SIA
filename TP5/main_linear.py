@@ -1,15 +1,15 @@
 import json
 from src.utils import DataConfig
-from src.utils import extract_patterns
 from src.autoencoder import Autoencoder
 from src.plots import *
 from data.font import *
+from data.font import _font_3
 
 def main(): 
     with open('./config.json', 'r') as f:
         data_config = json.load(f)
 
-    c = DataConfig(data_config)
+    c = DataConfig(data_config, _font_3)
 
     print(c.input_data)
 
@@ -28,23 +28,13 @@ def main():
     print(autoencoder)
     autoencoder.train()
 
-    """
     numbers = []
-    for num in new_patterns:
+    for num in c.input_data:
         predicted = autoencoder.predict(num)
         numbers.append(predicted)
         
     plot_letters(numbers, "Numeros predicted")
-    """
-
     
-    predicted = autoencoder.predict(c.input_data[7])
-    predicted = predicted.reshape((1, len(predicted)))
-    plot_letters(predicted, "G")
-
-    predicted = autoencoder.predict(c.input_data[8])
-    predicted = predicted.reshape((1, len(predicted)))
-    plot_letters(predicted, "H")
 
     list = []
     for i in range(len(c.input_data)):

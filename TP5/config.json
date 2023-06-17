@@ -10,7 +10,7 @@
     "beta": 1.0,
 
     "qty_hidden_layers": 3,
-    "qty_nodes_in_hidden_layers": [25,15,10],
+    "qty_nodes_in_hidden_layers": [25,12,5],
     "latent_space_size": 2,
 
     "optimizer_method": "ADAM",
