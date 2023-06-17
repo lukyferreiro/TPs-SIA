@@ -47,6 +47,7 @@ class Autoencoder:
         self.layers, self.latent_space_idx = self.__init_layers()  # Inicialización de las capas
     
     # Inicializar conjuntos de training y testing
+    """
     def __divide_data_by_percentage(self, input, expected, p):
         num_rows = int(p * input.shape[0])
         idx = np.random.permutation(input.shape[0])
@@ -55,6 +56,7 @@ class Autoencoder:
         t2 = input[idx[num_rows:], :]
         e2 = expected[idx[num_rows:]]
         return t1, e1, t2, e2
+    """
 
     def __init_layers(self):
         layers = []

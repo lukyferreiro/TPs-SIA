@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from data.font import symbols3
 
 def plot_letters(letters, desc):
     num_letters = len(letters)
@@ -30,12 +29,15 @@ def plot_letters(letters, desc):
     fig.suptitle(desc, fontsize=20, fontweight="bold")
     plt.show()
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 def create_letter_plot(letter, ax):
     array = np.array(letter).reshape((7, 5))
-    cmap = plt.cm.get_cmap('Blues')
+    cmap = plt.cm.get_cmap('Greys')
     cmap.set_under(color='white')
 
-    ax.imshow(array, cmap=cmap, vmin=-1, vmax=1)
+    ax.imshow(array, cmap=cmap, vmin=0, vmax=1)
 
     # Dibujar líneas adicionales en cada celda
     for i in range(6):
@@ -44,22 +46,20 @@ def create_letter_plot(letter, ax):
 
     for i in range(7):
         for j in range(5):
-            if array[i, j] > 0.5: # Si el valor es cercano a 1, colorear la celda de negro
-                ax.add_patch(plt.Rectangle((j-0.5, i-0.5), 1, 1, linewidth=2, edgecolor='black', facecolor='black'))
-            else:  # Si el valor es cercano a 0, dejar la celda en blanco
-                ax.add_patch(plt.Rectangle((j-0.5, i-0.5), 1, 1, linewidth=2, edgecolor='black', facecolor='white'))
+            value = array[i, j]
+            color = str(1 - value)  # Convertir el valor en escala de gris (1 - valor)
+            ax.add_patch(plt.Rectangle((j-0.5, i-0.5), 1, 1, linewidth=2, edgecolor='black', facecolor=color))
 
     ax.axis('off')
 
-def plot_latent_space(latent_space):
+
+def plot_latent_space(latent_space, symbols):
     fig, ax = plt.subplots()
 
     ax.set_title("Espacio latente")
-    ax.set_ylim((0, 1.1))
-    ax.set_xlim((0, 1.1))
 
     for i in range(len(latent_space[:, 0])):
-        ax.annotate(symbols3[i], (latent_space[i][0], latent_space[i][1]))
+        ax.annotate(symbols[i], (latent_space[i][0], latent_space[i][1]))
 
     ax.scatter(latent_space[:, 0], latent_space[:, 1])
 
@@ -94,7 +94,7 @@ def plot_latent_space2(vae, n=30, figsize=15):
     pixel_range = np.arange(start_range, end_range, digit_size)
     sample_range_x = np.round(grid_x, 1)
     sample_range_y = np.round(grid_y, 1)
-    plt.xticks(pixel_range, sample_range_x)
+    plt.xticks(pixel_range, sample_range_x, rotation=90)
     plt.yticks(pixel_range, sample_range_y)
     plt.xlabel("z[0]")
     plt.ylabel("z[1]")
