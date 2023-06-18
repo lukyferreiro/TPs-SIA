@@ -3,13 +3,13 @@ import copy
 from src.utils import DataConfig, alter_data
 from src.autoencoder import Autoencoder
 from src.plots import *
-from data.font import _font_1, symbols1
+from data.font import _font_num, symbols_num    
 
 def main(): 
-    with open('./config.json', 'r') as f:
+    with open('./config_denoising.json', 'r') as f:
         data_config = json.load(f)
 
-    c = DataConfig(data_config, _font_1)
+    c = DataConfig(data_config, _font_num)
     plot_letters(c.input_data, "Conjunto de entrenamiento")
 
     autoencoder = Autoencoder(c.input_data, len(c.input_data[0]), c.latent_space_size,
@@ -20,6 +20,22 @@ def main():
                             c.epsilon)
     autoencoder.train()
 
+    # Análisis de dataset original
+    predicted = []
+    for x in c.input_data:
+        p = autoencoder.predict(x)
+        predicted.append(p)
+    plot_letters(predicted, "Predicted")
+    
+    list = []
+    for i in range(len(c.input_data)):
+        value = autoencoder.latent_space(c.input_data[i])
+        list.append(value)
+        print("Latent space value: ", value, " for letter in index ", i)
+    plot_latent_space(np.array(list), symbols_num)
+
+
+    # Análisis de dataset mutado
     for i in [round(0.1*i,2) for i in range(1,6)]:
         print(f"----------------Mutacion={i}----------------")
         original_input = copy.deepcopy(c.input_data)
@@ -31,13 +47,15 @@ def main():
             p = autoencoder.predict(x)
             predicted.append(p)
         plot_letters(predicted, "Predicted")
+        
+        list = []
+        for i in range(len(original_input)):
+            value = autoencoder.latent_space(original_input[i])
+            list.append(value)
+            print("Latent space value: ", value, " for letter in index ", i)
+        plot_latent_space(np.array(list), symbols_num)
     
-    list = []
-    for i in range(len(c.input_data)):
-        value = autoencoder.latent_space(c.input_data[i])
-        list.append(value)
-        print("Latent space value: ", value, " for letter in index ", i)
-    plot_latent_space(np.array(list), symbols1)
+
 
 if __name__ == "__main__":
     main()
