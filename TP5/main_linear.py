@@ -2,8 +2,7 @@ import json
 from src.utils import DataConfig
 from src.autoencoder import Autoencoder
 from src.plots import *
-from data.font import *
-from data.font import _font_3
+from data.font import _font_3, symbols3
 
 def main(): 
     with open('./config.json', 'r') as f:
@@ -13,10 +12,7 @@ def main():
 
     print(c.input_data)
 
-    plot_letters(c.input_data, "ASDASDAS")
-
-    #new_patterns = extract_patterns(_font_num)
-    #plot_letters(new_patterns, "Numeros")
+    plot_letters(c.input_data, "Conjunto de entrenamiento")
 
     autoencoder = Autoencoder(c.input_data, len(c.input_data[0]), c.latent_space_size,
                               c.learning_rate, c.bias, c.epochs, c.training_percentage,
@@ -24,24 +20,19 @@ def main():
                               c.output_activation, c.hidden_activation, c.beta,
                               c.optimizer_method, c.alpha, c.beta1, c.beta2,
                               c.epsilon)
-  
-    print(autoencoder)
     autoencoder.train()
 
-    numbers = []
-    for num in c.input_data:
-        predicted = autoencoder.predict(num)
-        numbers.append(predicted)
-        
-    plot_letters(numbers, "Numeros predicted")
+    predicted = []
+    for x in c.input_data:
+        p = autoencoder.predict(x)
+        predicted.append(p)
+    plot_letters(predicted, "Predicted")
     
-
     list = []
     for i in range(len(c.input_data)):
         value = autoencoder.latent_space(c.input_data[i])
         list.append(value)
         print("Latent space value: ", value, " for letter in index ", i)
-
     plot_latent_space(np.array(list), symbols3)
 
     
