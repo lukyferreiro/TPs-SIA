@@ -32,8 +32,9 @@ def check_arr(arr, str):
    
 class DataConfig:
 
-    def __init__(self, data, fonts):
-      self.input_data = extract_patterns(fonts)
+    def __init__(self, data, fonts=None):
+      if fonts != None:
+         self.input_data = extract_patterns(fonts)
       self.bias = check_positivity(data['bias'], "bias")
 
       # Training params

@@ -1,0 +1,28 @@
+{
+    "learning_rate": 0.001,
+    "epochs": 15000,
+    "bias": 1,
+    "training_percentage": 1.0,
+    "min_error": 0.001,
+
+    "output_activation": "LOG",
+    "hidden_activation": "TANH",
+    "beta": 1.0,
+
+    "qty_hidden_layers": 1,
+    "qty_nodes_in_hidden_layers": [15],
+    "latent_space_size": 2,
+
+    "optimizer_method": "ADAM",
+    "alpha": 0.8,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "epsilon": 1e-8,
+
+    "activation_options": [
+        "TANH", "LOG"
+    ],
+    "optimizer_options": [
+        "ADAM", "MOMENTUM", "NONE"
+    ]
+}
