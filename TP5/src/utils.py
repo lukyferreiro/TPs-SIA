@@ -1,4 +1,5 @@
 import numpy as np
+from data.font import _font_1
 
 def check_positivity(num, str):
    if not type(num) == int or num < 0:
@@ -32,9 +33,8 @@ def check_arr(arr, str):
    
 class DataConfig:
 
-    def __init__(self, data, fonts=None):
-      if fonts != None:
-         self.input_data = extract_patterns(fonts)
+    def __init__(self, data, fonts=_font_1):
+      self.input_data = extract_patterns(fonts)
       self.bias = check_positivity(data['bias'], "bias")
 
       # Training params

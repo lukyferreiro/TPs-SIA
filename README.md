@@ -35,5 +35,4 @@ neuronales de aprendizaje no supervisado: modelo de Kohonen, regla de Oja y mode
 
 ## TP5 - [Deep Learning: Autoencoders](https://github.com/lukyferreiro/TPs-SIA/tree/main/TP5)
 
-En este TP se realizan diferentes programas en Python donde se implementan diferetes tipos de Autoencoders:
-Autoencoder Lineal, Denoising Autoencoder y Autoencoder Variacional.
+En este TP se realizan diferentes programas en Python donde se implementan diferentes tipos de Autoencoders: Autoencoder Lineal, Denoising Autoencoder y Autoencoder Variacional.

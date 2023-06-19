@@ -36,21 +36,18 @@ def main():
     decoder.summary()
 
     # Entrenamos el VAE
-    """
-    (x_train, _), (x_test, _) = keras.datasets.fashion_mnist.load_data()
+    
+    (x_train, y_train), (x_test, y_test) = keras.datasets.fashion_mnist.load_data()
     mnist_digits = np.concatenate([x_train, x_test], axis=0)
     mnist_digits = np.expand_dims(mnist_digits, -1).astype("float32") / 255
-
+    
+    vae = VAE(encoder, decoder)
     vae.compile(optimizer=keras.optimizers.Adam())
     vae.fit(mnist_digits, epochs=30, batch_size=128)
 
     plot_latent_space2(vae)
-    """
-    vae = VAE(encoder, decoder)
-
-    (x_train, y_train), _ = keras.datasets.fashion_mnist.load_data()
+    
     x_train = np.expand_dims(x_train, -1).astype("float32") / 255
-
     plot_label_clusters(vae, x_train, y_train)
 
 if __name__ == "__main__":

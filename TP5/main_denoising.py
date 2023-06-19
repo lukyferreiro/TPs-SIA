@@ -3,13 +3,13 @@ import copy
 from src.utils import DataConfig, alter_data
 from src.autoencoder import Autoencoder
 from src.plots import *
-from data.font import _font_num, symbols_num    
+from data.font import _font_3, symbols3    
 
 def main(): 
     with open('./config_denoising.json', 'r') as f:
         data_config = json.load(f)
 
-    c = DataConfig(data_config, _font_num)
+    c = DataConfig(data_config, _font_3)
     plot_letters(c.input_data, "Conjunto de entrenamiento")
 
     autoencoder = Autoencoder(c.input_data, len(c.input_data[0]), c.latent_space_size,
@@ -32,7 +32,7 @@ def main():
         value = autoencoder.latent_space(c.input_data[i])
         list.append(value)
         print("Latent space value: ", value, " for letter in index ", i)
-    plot_latent_space(np.array(list), symbols_num)
+    plot_latent_space(np.array(list), symbols3)
 
 
     # Análisis de dataset mutado
@@ -53,7 +53,7 @@ def main():
             value = autoencoder.latent_space(original_input[i])
             list.append(value)
             print("Latent space value: ", value, " for letter in index ", i)
-        plot_latent_space(np.array(list), symbols_num)
+        plot_latent_space(np.array(list), symbols3)
     
 
 

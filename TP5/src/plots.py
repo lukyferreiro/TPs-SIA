@@ -29,8 +29,6 @@ def plot_letters(letters, desc):
     fig.suptitle(desc, fontsize=20, fontweight="bold")
     plt.show()
 
-import numpy as np
-import matplotlib.pyplot as plt
 
 def create_letter_plot(letter, ax):
     array = np.array(letter).reshape((7, 5))
