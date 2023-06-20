@@ -74,8 +74,27 @@ def extract_patterns(font):
         patterns.append(matrix)
     return np.array(patterns)
 
-def alter_data(data, p):
-    for elem in data:
-        for i in range(len(elem)):
-            if np.random.default_rng().random() < p:
-                elem[i] = (elem[i] + 1) % 2
+def alter_data(data, prob):
+   rng = np.random.default_rng()
+   mutated_data = []
+   for elem in data:
+      mutated_elem = []
+      for value in elem:
+         if rng.random() < prob:
+            noise = rng.uniform(0, 0.5)
+            if value == 0:
+               mutated_elem.append(float(value) + noise)
+            else:
+               mutated_elem.append(float(value) - noise)
+         else: 
+            mutated_elem.append(float(value))
+      mutated_data.append(mutated_elem)
+   return mutated_data
+
+
+def divide_data_by_percentage(input, percentage):
+   num_rows = int(percentage * input.shape[0])
+   idx = np.random.permutation(input.shape[0])
+   t1 = input[idx[:num_rows], :]
+   t2 = input[idx[num_rows:], :]
+   return t1, t2

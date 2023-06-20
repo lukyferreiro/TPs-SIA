@@ -21,9 +21,9 @@ class Autoencoder:
         self.epochs = epochs
         self.training_percentage = training_percentage
 
-        #self.train_input_data = self.train_expected_data = self.test_input_data = self.test_expected_data = None
-        #if training_percentage < 1:
-        #    self.train_input_data, self.train_expected_data, self.test_input_data, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.expected_data, self.training_percentage)
+        self.train_input_data = self.train_expected_data = self.test_input_data = self.test_expected_data = None
+        if training_percentage < 1:
+            self.train_input_data, self.train_expected_data, self.test_input_data, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.training_percentage)
 
         self.min_error = min_error
         # self.out_array = out_array
@@ -48,6 +48,7 @@ class Autoencoder:
     
     # Inicializar conjuntos de training y testing
     """
+
     def __divide_data_by_percentage(self, input, expected, p):
         num_rows = int(p * input.shape[0])
         idx = np.random.permutation(input.shape[0])
@@ -56,7 +57,14 @@ class Autoencoder:
         t2 = input[idx[num_rows:], :]
         e2 = expected[idx[num_rows:]]
         return t1, e1, t2, e2
-    """
+        """
+    def __divide_data_by_percentage(self, input, p):
+        num_rows = int(p * input.shape[0])
+        idx = np.random.permutation(input.shape[0])
+        t1 = input[idx[:num_rows], :]
+        t2 = input[idx[num_rows:], :]
+        return t1, t1, t2, t2
+    
 
     def __init_layers(self):
         layers = []
@@ -113,9 +121,7 @@ class Autoencoder:
                              inverted_hidden_nodes[current_decoder_layer-1],
                              self.output_activation, self.beta) 
         layers.append(output_layer)
-
-        print(latent_space_idx)
-
+        
         return layers, latent_space_idx
     
     def __get_num_outputs(self):
