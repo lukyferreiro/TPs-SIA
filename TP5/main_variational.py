@@ -36,7 +36,6 @@ def main():
     decoder.summary()
 
     # Entrenamos el VAE
-    
     (x_train, y_train), (x_test, y_test) = keras.datasets.fashion_mnist.load_data()
     mnist_digits = np.concatenate([x_train, x_test], axis=0)
     mnist_digits = np.expand_dims(mnist_digits, -1).astype("float32") / 255

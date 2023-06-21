@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 import copy
 
 class Autoencoder:
-    def __init__(self, input_data, input_data_len, latent_space_size, learning_rate, bias, epochs, training_percentage, min_error,
+    def __init__(self, input_data, expected_data, latent_space_size, learning_rate, bias, epochs, training_percentage, min_error,
                  qty_hidden_layers, qty_nodes_in_hidden_layers, output_activation, hidden_activation, beta,
                  optimization_method, alpha, beta1, beta2, epsilon):
 
         # Info del set de entrenamiento 
-        self.input_data_len = input_data_len
+        self.input_data_len = len(input_data[0])
         self.bias = bias
         self.input_data = input_data
-        self.expected_data = input_data
+        self.expected_data = expected_data
         self.min, self.max = self.__calculate_min_and_max(self.expected_data)
         self.train_MSE = -1
 
@@ -47,17 +47,6 @@ class Autoencoder:
         self.layers, self.latent_space_idx = self.__init_layers()  # Inicialización de las capas
     
     # Inicializar conjuntos de training y testing
-    """
-
-    def __divide_data_by_percentage(self, input, expected, p):
-        num_rows = int(p * input.shape[0])
-        idx = np.random.permutation(input.shape[0])
-        t1 = input[idx[:num_rows], :]
-        e1 = expected[idx[:num_rows]]
-        t2 = input[idx[num_rows:], :]
-        e2 = expected[idx[num_rows:]]
-        return t1, e1, t2, e2
-        """
     def __divide_data_by_percentage(self, input, p):
         num_rows = int(p * input.shape[0])
         idx = np.random.permutation(input.shape[0])
@@ -65,7 +54,6 @@ class Autoencoder:
         t2 = input[idx[num_rows:], :]
         return t1, t1, t2, t2
     
-
     def __init_layers(self):
         layers = []
         current_encoder_layer = 0

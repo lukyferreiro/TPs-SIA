@@ -12,7 +12,7 @@ def main():
     c = DataConfig(data_config, _font_3)
     plot_letters(c.input_data, "Conjunto de entrenamiento")
 
-    autoencoder = Autoencoder(c.input_data, len(c.input_data[0]), c.latent_space_size,
+    autoencoder = Autoencoder(c.input_data, c.input_data, c.latent_space_size,
                             c.learning_rate, c.bias, c.epochs, c.training_percentage,
                             c.min_error, c.qty_hidden_layers, c.qty_nodes_in_hidden_layers, 
                             c.output_activation, c.hidden_activation, c.beta,
@@ -36,26 +36,26 @@ def main():
 
 
     # Análisis de dataset mutado
-    for i in [round(0.1*i,2) for i in range(1,6)]:
+    for i, prob in enumerate([round(0.1*n,2) for n in range(1,6)]):
         print(f"----------------Mutacion={i}----------------")
         original_input = copy.deepcopy(c.input_data)
-        alter_data(original_input, i)
-        plot_letters(original_input, "Mutated dataset")
+        print(original_input)
+        mutated_data = alter_data(original_input, prob)
+        print(mutated_data)
+        plot_letters(mutated_data, f"Mutated dataset (with {prob})")
 
         predicted = []
-        for x in original_input:
+        for x in mutated_data:
             p = autoencoder.predict(x)
             predicted.append(p)
         plot_letters(predicted, "Predicted")
         
         list = []
-        for i in range(len(original_input)):
-            value = autoencoder.latent_space(original_input[i])
+        for k in range(len(mutated_data)):
+            value = autoencoder.latent_space(mutated_data[k])
             list.append(value)
-            print("Latent space value: ", value, " for letter in index ", i)
+            print("Latent space value: ", value, " for letter in index ", k)
         plot_latent_space(np.array(list), symbols3)
-    
-
 
 if __name__ == "__main__":
     main()

@@ -14,7 +14,7 @@ def main():
 
     plot_letters(c.input_data, "Conjunto de entrenamiento")
 
-    autoencoder = Autoencoder(c.input_data, len(c.input_data[0]), c.latent_space_size,
+    autoencoder = Autoencoder(c.input_data, c.input_data, c.latent_space_size,
                               c.learning_rate, c.bias, c.epochs, c.training_percentage,
                               c.min_error, c.qty_hidden_layers, c.qty_nodes_in_hidden_layers, 
                               c.output_activation, c.hidden_activation, c.beta,
