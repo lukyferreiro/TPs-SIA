@@ -1,5 +1,6 @@
 import numpy as np
 from data.font import _font_1
+import random
 
 def check_positivity(num, str):
    if not type(num) == int or num < 0:
@@ -74,6 +75,7 @@ def extract_patterns(font):
         patterns.append(matrix)
     return np.array(patterns)
 
+"""
 def alter_data(data, prob):
    rng = np.random.default_rng()
    mutated_data = []
@@ -92,3 +94,25 @@ def alter_data(data, prob):
       else: 
          mutated_data.append(elem)
    return mutated_data, qty_mutated
+"""
+
+def alter_data(data, prob, n):
+    rng = np.random.default_rng()
+    mutated_data = []
+    mutated_indices = random.sample(range(len(data)), n)  # Indices aleatorios para mutar
+    for i, elem in enumerate(data):
+        mutated_elem = []
+        if i in mutated_indices:
+            for value in elem:
+                if rng.random() < prob:
+                    noise = rng.uniform(0, 0.5)
+                    if value == 0:
+                        mutated_elem.append(float(value) + noise)
+                    else:
+                        mutated_elem.append(float(value) - noise)
+                else:
+                    mutated_elem.append(float(value))
+        else:
+            mutated_elem = elem
+        mutated_data.append(mutated_elem)
+    return mutated_data
