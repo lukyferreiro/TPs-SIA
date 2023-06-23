@@ -191,6 +191,17 @@ class Autoencoder:
         activations = self.activate(init_input)
         return activations[-1]
 
+    def predict_latent_space(self, latent_space):
+        activations = [latent_space]
+        
+        i = self.latent_space_idx + 1
+
+        while i < len(self.layers):
+            activations.append(self.layers[i].activate(activations[-1]))
+            i = i + 1
+
+        return activations[-1]
+
     def latent_space(self, init_input):
         activations = self.activate(init_input)
         return activations[self.latent_space_idx + 1]
