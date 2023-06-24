@@ -11,9 +11,8 @@ class StochasticLayer():
     def activate(self, input):
         self.latentMean = self.mean.activate(input)
         self.latentLogVar = self.logVar.activate(input)
-        self.epsilon = np.random.standard_normal(size=(self.neuron_count, input.shape[0]))
+        self.epsilon = np.random.standard_normal(size=self.neuron_count)
         self.sample = self.latentMean + np.exp(self.latentLogVar / 2.) * self.epsilon
-
         return self.sample
 
     def apply_delta(self, lastGradient):

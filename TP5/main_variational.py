@@ -17,9 +17,9 @@ def main():
                             c.output_activation, c.hidden_activation, c.beta,
                             c.optimizer_method, c.alpha, c.beta1, c.beta2,
                             c.epsilon)
-    autoencoder.train()
+    
+    #autoencoder.train()
 
-    print(autoencoder)
 
     predicted = []
     for x in c.input_data:

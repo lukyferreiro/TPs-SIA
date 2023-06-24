@@ -78,13 +78,8 @@ class VariationalAutoencoder:
 
         latent_space_idx = current_encoder_layer
 
-        stochastic_layer = StochasticLayer(self.latent_space_size, self.qty_nodes_in_hidden_layer[current_encoder_layer-1], self.output_activation, self.beta)
-
         # Inicializamos capa conectada a capa latente 
-        latent_layer = Layer(self.latent_space_size,
-                             self.qty_nodes_in_hidden_layer[current_encoder_layer-1],
-                             self.output_activation, self.beta) 
-        layers.append(latent_layer)
+        stochastic_layer = StochasticLayer(self.latent_space_size, self.qty_nodes_in_hidden_layer[current_encoder_layer-1], self.output_activation, self.beta)
 
         # Inicializamos las capas asociadas al encoder. 
         # EJ: 5 -> 10 ya que el espacio latente se comparte
@@ -153,6 +148,8 @@ class VariationalAutoencoder:
                 activations = self.activate(input[i])
                 Os.append(activations[-1])
 
+                print("Llego aca")
+
                 # Calculate error of output layer
                 self.layers[-1].calc_error_d(expected[i] - Os[i], Os[i])
                 
@@ -188,22 +185,22 @@ class VariationalAutoencoder:
 
         i = 0
 
-        print("A")
-
-        while i < self.latent_space_idx :
-            print("A")
+        while i < self.latent_space_idx:
+            print(activations[-1])
             activations.append(self.layers[i].activate(activations[-1]))
             i += 1
+        print(activations[-1])
 
         activations.append(self.stochastic_layer.activate(activations[-1]))
 
         while i < len(self.layers):
+            print(activations[-1])
             activations.append(self.layers[i].activate(activations[-1]))
 
         return activations
         
     def predict(self, init_input):
-        activations = self.activate
+        activations = self.activate(init_input)
         return activations[-1]
 
     def predict_latent_space(self, latent_space):
