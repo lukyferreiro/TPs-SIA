@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow import keras
 
+
 INPUT_ROWS = 28
 INPUT_COLS = 28
 INPUT_SIZE = INPUT_COLS * INPUT_ROWS
@@ -14,6 +15,44 @@ LATENT_SIZE = 20
 HIDDEN_SIZE = 100
 HIDDEN_SIZE2 = 200
 HIDDEN_SIZE3 = 300
+
+def plot_latent_space_vae(vae, n=10, figsize=15, digit_size=28):
+    scale = 1.0
+    figure = np.zeros((digit_size * n, digit_size * n))
+    grid_x = np.linspace(-scale, scale, n)
+    grid_y = np.linspace(-scale, scale, n)[::-1]
+
+    for i, yi in enumerate(grid_y):
+        for j, xi in enumerate(grid_x):
+            z_sample = np.array([[xi, yi]])
+            x_decoded = vae.decoder.predict(z_sample)
+            digit = x_decoded[0].reshape(digit_size, digit_size)
+            figure[
+                i * digit_size : (i + 1) * digit_size,
+                j * digit_size : (j + 1) * digit_size,
+            ] = digit
+
+    plt.figure(figsize=(figsize, figsize))
+    start_range = digit_size // 2
+    end_range = n * digit_size + start_range
+    pixel_range = np.arange(start_range, end_range, digit_size)
+    sample_range_x = np.round(grid_x, 1)
+    sample_range_y = np.round(grid_y, 1)
+    plt.xticks(pixel_range, sample_range_x, rotation=90)
+    plt.yticks(pixel_range, sample_range_y)
+    plt.xlabel("z[0]")
+    plt.ylabel("z[1]")
+    plt.imshow(figure, cmap="Greys_r")
+    plt.show()
+
+def plot_label_clusters(vae, data, labels):
+    z_mean, _, _ = vae.encoder.predict(data)
+    plt.figure(figsize=(12, 10))
+    plt.scatter(z_mean[:, 0], z_mean[:, 1], c=labels)
+    plt.colorbar()
+    plt.xlabel("z[0]")
+    plt.ylabel("z[1]")
+    plt.show()
 
 if __name__ == "__main__":
     (x_train, y_train), (x_test, y_test) = keras.datasets.fashion_mnist.load_data()
@@ -23,8 +62,6 @@ if __name__ == "__main__":
 
     dataset_input_list = x_train_flattened
     dataset_input_list = np.expand_dims(dataset_input_list, -1).astype("float32") / 255
-
-    print(dataset_input_list[0])
 
     # Set the learning rate and optimizer for training
     optimizer = Adam(0.0001)
@@ -43,4 +80,6 @@ if __name__ == "__main__":
 
     vae = VAE(encoder, sampler, decoder)
 
-    vae.train(dataset_input=dataset_input_list, epochs=1000)
+    vae.train(dataset_input=dataset_input_list, epochs=100)
+
+    plot_latent_space_vae(vae)
