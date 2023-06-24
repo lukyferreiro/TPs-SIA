@@ -1,6 +1,6 @@
 {
     "learning_rate": 0.001,
-    "epochs": 15000,
+    "epochs": 1000,
     "bias": 1,
     "training_percentage": 1.0,
     "min_error": 0.001,
