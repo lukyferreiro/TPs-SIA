@@ -26,7 +26,6 @@ class Autoencoder:
             self.train_input_data, self.train_expected_data, self.test_input_data, self.test_expected_data = self.__divide_data_by_percentage(self.input_data, self.training_percentage)
 
         self.min_error = min_error
-        # self.out_array = out_array
 
         # Metodos de activacion
         self.output_activation = output_activation
@@ -112,15 +111,6 @@ class Autoencoder:
         
         return layers, latent_space_idx
     
-    def __get_num_outputs(self):
-        if isinstance(self.expected_data, np.ndarray) and self.expected_data.ndim == 1:
-            return 1
-        # Comprobar si expected es una matriz
-        elif isinstance(self.expected_data, np.ndarray) and self.expected_data.ndim == 2:
-            return self.expected_data.shape[1]
-        else:
-            raise ValueError("Expected debe ser un array o una matriz")
-
     def __calculate_min_and_max(self, expected_data):
         return np.min(expected_data), np.max(expected_data)
 
@@ -174,11 +164,6 @@ class Autoencoder:
 
         print(f"Finished Training. \n MSE: {self.train_MSE}")
 
-        # if self.training_percentage < 1:
-        #    test_accuracy, test_mse = self.test(self.test_input_data, self.test_expected_data)
-        #else:
-        #    test_accuracy, test_mse = self.test(self.input_data, self.expected_data)
-
         return mse_errors, current_epoch
     
     def activate(self, init_input):
@@ -222,47 +207,6 @@ class Autoencoder:
             error += (expected[i] - self.__denormalize_image(Os[i])) ** 2
         return np.sum(error) / size
         
-    def accuracy(self,test_set,expected_out,out_classes):
-        matches = 0
-        for case_idx in range(len(test_set)):
-            activations = self.activate(test_set[case_idx])
-            guess = self.__denormalize_image(activations[-1][0])
-            closest_idx = (np.abs(out_classes-guess)).argmin()
-
-            print(guess)
-
-            matches += 1 if out_classes[closest_idx] == expected_out[case_idx] else 0
-        return matches/len(test_set)
-
-    def accuracy_multiple(self,test_set,expected_out):
-        matches = 0
-        for case_idx in range(len(test_set)):
-            activations = self.activate(test_set[case_idx])
-            guess = self.__denormalize_image(activations[-1])
-            max_idx = guess.argmax()
-            matches += 1 if expected_out[case_idx][max_idx] == 1 else 0
-
-            print(f"Expected {expected_out[case_idx].argmax()}.  Guess {max_idx}")
-
-        return matches/len(test_set)
-
-    def test(self, input, expected):
-        test_accuracy = -1
-        if (self.__get_num_outputs() > 1):
-            test_accuracy = self.accuracy_multiple(input, expected)
-        else:
-            test_accuracy = self.accuracy(input, expected, self.out_array)
-
-        Os = []
-        for i in range(len(input)):
-            activations = self.activate(input[i])
-            Os.append(activations[-1])
-        test_mse = self.mid_square_error(Os, expected)
-
-        print(f"Test Accuracy: {test_accuracy}")
-        print(f"Test MSE = {test_mse}")
-        return test_accuracy, test_mse
-
     # -----------------------NORMALIZATION-----------------------
     def normalize_image(self, values, output_activation):
         switcher = {
