@@ -53,26 +53,18 @@ def create_letter_plot(letter, ax):
 
 def plot_latent_space(latent_space, symbols):
     fig, ax = plt.subplots()
-
     ax.set_title("Espacio latente")
-
     for i in range(len(latent_space[:, 0])):
         ax.annotate(symbols[i], (latent_space[i][0], latent_space[i][1]))
-
     ax.scatter(latent_space[:, 0], latent_space[:, 1])
-
     plt.show()
 
 
 # https://keras.io/examples/generative/vae/
 
-def plot_latent_space2(vae, n=30, figsize=15):
-    # display an n*n 2D manifold of digits
-    digit_size = 28
+def plot_latent_space_vae(vae, n=10, figsize=15, digit_size=28):
     scale = 1.0
     figure = np.zeros((digit_size * n, digit_size * n))
-    # linearly spaced coordinates corresponding to the 2D plot
-    # of digit classes in the latent space
     grid_x = np.linspace(-scale, scale, n)
     grid_y = np.linspace(-scale, scale, n)[::-1]
 
@@ -100,10 +92,7 @@ def plot_latent_space2(vae, n=30, figsize=15):
     plt.show()
 
 def plot_label_clusters(vae, data, labels):
-    # display a 2D plot of the digit classes in the latent space
     z_mean, _, _ = vae.encoder.predict(data)
-    print(z_mean.shape)
-    print(np.array(labels).shape)
     plt.figure(figsize=(12, 10))
     plt.scatter(z_mean[:, 0], z_mean[:, 1], c=labels)
     plt.colorbar()

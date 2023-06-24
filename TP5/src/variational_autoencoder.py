@@ -230,7 +230,8 @@ class VariationalAutoencoder:
     def __str__(self) -> str:
         str = "Autoencoder\n"
         for i in range(len(self.layers)):
-            str += f"Capa {i}: {self.layers[i].get_weights().shape} \n {self.layers[i]}\n"
+            str += f"Capa {i}: {self.layers[i].get_weights().shape} \n"
+            #str += f"Capa {i}: {self.layers[i].get_weights().shape} \n {self.layers[i]}\n"
         return str
     
     def __repr__(self) -> str:

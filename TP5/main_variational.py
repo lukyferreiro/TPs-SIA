@@ -19,6 +19,7 @@ def main():
                             c.epsilon)
     
     #autoencoder.train()
+    print(autoencoder)
 
 
     predicted = []
