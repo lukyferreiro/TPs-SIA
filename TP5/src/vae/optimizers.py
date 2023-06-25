@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 import numpy as np
 
 class Adam():
@@ -21,12 +20,8 @@ class Adam():
             self.v = np.zeros(variableGradient.shape)
 
         self.t = self.t + 1
-
-        self.m = self.beta_1 * self.m + (1 - self.beta_1) * variableGradient  # Update biased first moment estimate
-        self.v = self.beta_2 * self.v + (1 - self.beta_2) * np.square(
-            variableGradient)  # Update biased second raw moment estimate
-
-        m_hat = 1.0 / (1.0 - self.beta_1 ** self.t) * self.m  # Compute bias-corrected first moment estimate
-        v_hat = 1.0 / (1.0 - self.beta_2 ** self.t) * self.v  # Compute bias-correct second raw moment estimate
-
+        self.m = self.beta_1 * self.m + (1 - self.beta_1) * variableGradient 
+        self.v = self.beta_2 * self.v + (1 - self.beta_2) * np.square(variableGradient)  
+        m_hat = 1.0 / (1.0 - self.beta_1 ** self.t) * self.m  
+        v_hat = 1.0 / (1.0 - self.beta_2 ** self.t) * self.v
         variable -= self.learningFactor * np.divide(m_hat, np.sqrt(v_hat) + self.epsilon)

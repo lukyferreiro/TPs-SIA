@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 class Activation(ABC):
     _name = "activation name"
@@ -17,24 +15,6 @@ class Activation(ABC):
     @abstractmethod
     def __str__(self):
         pass
-
-    @staticmethod
-    def funcFromStr(name):
-        functions = {
-            "Identity": Identity(),
-            "Sigmoid": Sigmoid(),
-            "ReLU": ReLU(),
-            "Tanh": Tanh(),
-        }
-        return functions[name]
-
-    def _plot(self):
-        x = np.linspace(-10, 10, 100)
-        plt.plot(x, self.apply(x))
-        plt.xlabel("x")
-        plt.ylabel("f(x)")
-        plt.title(self._name)
-        plt.show()
 
 
 class Identity(Activation):

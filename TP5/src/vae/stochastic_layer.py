@@ -7,22 +7,18 @@ class Dense():
     def __init__(self, inputDim = 1, outputDim = 1, activation = Sigmoid(), optimizer = Adam()):
         self.inputDim = inputDim
         self.outputDim = outputDim
-
         self.activation = activation
-
         self.weightOptimizer = copy.copy(optimizer)
         self.biasOptimizer = copy.copy(optimizer)
-
         limit = np.sqrt(6 / (inputDim + outputDim)) 
         self.weight = np.random.uniform(-limit, limit,(outputDim, inputDim))
-        self.bias   = np.zeros(outputDim)
+        self.bias = np.zeros(outputDim)
 
     def feedforward(self, input):
         if input.ndim == 1:
             input = np.squeeze(input).reshape((input.shape[0], self.batchSize))
 
         self.input = input
-
         self.z = np.dot(self.weight, self.input) + np.tile(self.bias, (self.input.shape[1], 1)).T
         self.a = self.activation.apply(self.z)
         return self.a
@@ -33,11 +29,9 @@ class Dense():
             lastGradient *= self.activation.derivative(self.z)
 
         gradWeight = np.dot(lastGradient, self.input.T)
-        gradBias   = np.sum(lastGradient, axis=1)
-
+        gradBias = np.sum(lastGradient, axis=1)
         self.weightOptimizer.optimize(self.weight, gradWeight)
         self.biasOptimizer.optimize(self.bias, gradBias)
-
         self.gradient = np.dot(oldWeight.T, lastGradient)
         return self.gradient
 
@@ -73,26 +67,19 @@ class StochasticLayer():
     def feedforward(self, input):
         self.latentMean = self.mean.feedforward(input)
         self.latentLogVar = self.logVar.feedforward(input)
-
         self.epsilon = np.random.standard_normal(size=(self.outputDim, input.shape[1]))
         self.sample = self.latentMean + np.exp(self.latentLogVar / 2.) * self.epsilon
-
         return self.sample
 
     def backpropagate(self, lastGradient):
         gradLogVar = {}
         gradMean = {}
         tmp = self.outputDim * lastGradient.shape[1]
-
         gradLogVar["KL"] = (np.exp(self.latentLogVar) - 1) / (2 * tmp)
         gradMean["KL"] = self.latentMean / tmp
-
         gradLogVar["MSE"] = 0.5 * lastGradient * self.epsilon * np.exp(self.latentLogVar / 2.)
         gradMean["MSE"] = lastGradient
-
-        return self.mean.backward(gradMean["KL"] + gradMean["MSE"]) + self.logVar.backward(
-            gradLogVar["KL"] + gradLogVar["MSE"])
+        return self.mean.backward(gradMean["KL"] + gradMean["MSE"]) + self.logVar.backward(gradLogVar["KL"] + gradLogVar["MSE"])
 
     def getKLDivergence(self, output):
-        return - np.sum(1 + self.latentLogVar - np.square(self.latentMean) - np.exp(self.latentLogVar)) / (
-                    2 * self.outputDim * output.shape[1])
+        return - np.sum(1 + self.latentLogVar - np.square(self.latentMean) - np.exp(self.latentLogVar)) / (2 * self.outputDim * output.shape[1])

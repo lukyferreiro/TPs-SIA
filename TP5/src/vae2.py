@@ -18,7 +18,7 @@ class VAE(keras.Model):
 
     def train(self, trainset):
         self.compile(optimizer=keras.optimizers.Adam())
-        self.fit(trainset, epochs=50, batch_size=100)
+        self.fit(trainset, epochs=100, batch_size=100)
 
     def initiateDecoder(self, latent):
         latInputs = keras.Input(shape=(latent,))

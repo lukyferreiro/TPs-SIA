@@ -1,48 +1,5 @@
 import numpy as np
-import copy
-
-from activations import Identity
 from loss import MSE
-from optimizers import Adam
-from stochastic_layer import Dense
-
-class Sampler():
-    def __init__(self, inputDim=1, outputDim=1, optimizer=Adam()):
-        self.inputDim = inputDim
-        self.outputDim = outputDim
-        self.mean = Dense(self.inputDim, self.outputDim, activation=Identity(), optimizer=copy.copy(optimizer))
-        self.logVar = Dense(self.inputDim, self.outputDim, activation=Identity(), optimizer=copy.copy(optimizer))
-
-    def feedforward(self, input):
-        self.latentMean = self.mean.feedforward(input)
-        self.latentLogVar = self.logVar.feedforward(input)
-
-        self.epsilon = np.random.standard_normal(size=(self.outputDim, input.shape[1]))
-        self.sample = self.latentMean + np.exp(self.latentLogVar / 2.) * self.epsilon
-
-        return self.sample
-
-    def backpropagate(self, lastGradient):
-        gradLogVar = {}
-        gradMean = {}
-        tmp = self.outputDim * lastGradient.shape[1]
-
-        # KL divergence gradients
-        gradLogVar["KL"] = (np.exp(self.latentLogVar) - 1) / (2 * tmp)
-        gradMean["KL"] = self.latentMean / tmp
-
-        # MSE gradients
-        gradLogVar["MSE"] = 0.5 * lastGradient * self.epsilon * np.exp(self.latentLogVar / 2.)
-        gradMean["MSE"] = lastGradient
-
-        # backpropagate gradients thorugh self.mean and self.logVar
-        return self.mean.backward(gradMean["KL"] + gradMean["MSE"]) + self.logVar.backward(
-            gradLogVar["KL"] + gradLogVar["MSE"])
-
-    def getKLDivergence(self, output):
-        # output.shape[1] == batchSize
-        return - np.sum(1 + self.latentLogVar - np.square(self.latentMean) - np.exp(self.latentLogVar)) / (
-                    2 * self.outputDim * output.shape[1])
 
 class MLP():
     def __init__(self):
@@ -66,10 +23,7 @@ class MLP():
 
     def backpropagate(self, output, useLoss=True, updateParameters=True):
         if useLoss:
-            # step 1:
-            lastGradient = self.loss.derivative(output, self.layers[-1].a) * self.layers[-1].activation.derivative(
-                self.layers[-1].z)
-            # step 2:
+            lastGradient = self.loss.derivative(output, self.layers[-1].a) * self.layers[-1].activation.derivative(self.layers[-1].z)
             isOutputLayer = True
             for layer in self.layers[::-1]:
                 lastGradient = layer.backward(lastGradient, outputLayer=isOutputLayer)
@@ -82,7 +36,6 @@ class MLP():
                 lastGradient = layer.backward(lastGradient, outputLayer=isOutputLayer)
 
     def train(self, dataset_input, dataset_output, epochs=1, batchSize=1):
-        # set batch size before training
         for layer in self.layers:
             layer.setBatchSize(batchSize)
 

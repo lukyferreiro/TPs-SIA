@@ -2,23 +2,13 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 class Loss(ABC):
-    """
-    An abstract class which represents loss functions which can be applied
-    to the output layer in a neural network.
-    """
 
     @abstractmethod
     def apply(self,x):
-        """
-        Evaluate loss function.
-        """
         pass
 
     @abstractmethod
     def derivative(self,x):
-        """
-        Evaluate derivative of loss function.
-        """
         pass
 
 class MSE(Loss):
