@@ -93,7 +93,7 @@ class VAE():
 
         for i in range(epochs):
             print(i)
-            for j in range(15):
+            for j in range(10000):
                 input_reshaped = np.reshape(dataset_input[j], (len(dataset_input[j]), batchSize))
                 output_reshaped = np.reshape(dataset_input[j], (len(dataset_input[j]), batchSize))
 
