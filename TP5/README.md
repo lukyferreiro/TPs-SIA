@@ -9,8 +9,7 @@ El siguiente TP consta de varios ejercicios:
      Ademas se testean diferentes arquitecturas, tecnicas de optimización y como la red puede generar un nueva letra
      que no pertenece al conjunto de entrenamiento.
     - Denoising Autoencoder para estudiar su capacidad de eliminar ruido sobre el mismo dataset.
-2. Construir un conjunto de datos nuevos y utilizar el Autoencoder anterior para generar una nueva muestra
-para juzgar que pertenece al conjunto de datos presentado al autoencoder.
+2. Construir un conjunto de datos nuevos e implementar un autoencoder variacional para representar el espacio latente.
 
 
 ### Requisitos

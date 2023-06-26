@@ -43,19 +43,6 @@ class Dense():
         self.batchSize = batchSize
         self.weightOptimizer.setLearningFactor(self.batchSize)
         self.biasOptimizer.setLearningFactor(self.batchSize)
-
-    def __str__(self):
-        out  = f"DENSE {self.inputDim} -> {self.outputDim} [{self.activation}]\n"
-        tmp  = len(out) * "-" + "\n"
-        out  = tmp + out + tmp
-        out += f"Total parameters: {self.numParameters()} \n"
-        out += f"---> WEIGHTS: {self.weight.shape}\n"
-        out += f"---> BIASES: {self.bias.shape}\n"
-        out += tmp
-        return out
-    
-    def __repr__(self) -> str:
-        return self.__str__()
     
 class StochasticLayer():
     def __init__(self, inputDim=1, outputDim=1, optimizer=Adam()):
